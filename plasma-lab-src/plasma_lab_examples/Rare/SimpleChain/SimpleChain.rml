@@ -1,0 +1,10 @@
+dtmc
+
+module chain
+
+	s : [0..11] init 0;
+	
+	[] s<10 -> 0.10 : (s'=11) + 0.90 : (s'=s+1);
+
+
+endmodule

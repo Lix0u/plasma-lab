@@ -1,0 +1,7 @@
+observer chainObserver
+	score : double init 0;
+	decided : bool init false;
+
+	[] s != 11 & score < s -> (score'=score+1);
+	[] s>=10 -> (decided'=true);
+endobserver

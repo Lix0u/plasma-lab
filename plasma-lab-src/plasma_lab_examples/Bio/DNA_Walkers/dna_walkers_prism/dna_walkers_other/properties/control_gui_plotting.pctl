@@ -1,0 +1,12 @@
+const int K;
+
+1-  P=? [ F[60*K,60*K] (w1=2) ]
+
+1- P=? [ F[60*K,60*K] (w1=6) ]
+
+1-P=? [ F[60*K,60*K] (w1=7) ]
+
+1-P=? [ F[60*K,60*K] (w1=8) ]
+
+
+// use this for plot generation

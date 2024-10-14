@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pnml xmlns="http://www.pnml.org/version-2009/grammar/pnml">
+  <net id="Generate-By-Cosmos-0001" type="http://www.pnml.org/version-2009/grammar/ptnet">
+    <page id="page0">
+      <name><text>DefaultPage</text></name>
+      <place id="0">
+        <name><text>A1</text></name>
+        <initialMarking><text>2</text></initialMarking>
+      </place>
+      <place id="1">
+        <name><text>A2</text></name>
+        <initialMarking><text>1</text></initialMarking>
+      </place>
+      <place id="2">
+        <name><text>A3</text></name>
+        <initialMarking><text>1</text></initialMarking>
+      </place>
+      <place id="3">
+        <name><text>A6</text></name>
+        <initialMarking><text>1</text></initialMarking>
+      </place>
+      <place id="4">
+        <name><text>A7</text></name>
+        <initialMarking><text>1</text></initialMarking>
+      </place>
+      <place id="5">
+        <name><text>A8</text></name>
+        <initialMarking><text>1</text></initialMarking>
+      </place>
+      <transition id="6">
+        <name><text>t1_2</text></name>
+      </transition>
+      <transition id="7">
+        <name><text>t1_3</text></name>
+      </transition>
+      <transition id="8">
+        <name><text>t2_1</text></name>
+      </transition>
+      <transition id="9">
+        <name><text>t2_3</text></name>
+      </transition>
+      <transition id="10">
+        <name><text>t3_1</text></name>
+      </transition>
+      <transition id="11">
+        <name><text>t3_2</text></name>
+      </transition>
+      <transition id="12">
+        <name><text>t3_6</text></name>
+      </transition>
+      <transition id="13">
+        <name><text>t6_3</text></name>
+      </transition>
+      <transition id="14">
+        <name><text>t6_7</text></name>
+      </transition>
+      <transition id="15">
+        <name><text>t6_8</text></name>
+      </transition>
+      <transition id="16">
+        <name><text>t7_6</text></name>
+      </transition>
+      <transition id="17">
+        <name><text>t7_8</text></name>
+      </transition>
+      <transition id="18">
+        <name><text>tloop8</text></name>
+      </transition>
+      <arc id="19" source="0" target="6">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="20" source="1" target="6">
+        <inscription><text>1</text></inscription>
+      </arc>
+      <arc id="21" source="0" target="7">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="22" source="2" target="7">
+        <inscription><text>1</text></inscription>
+      </arc>
+      <arc id="23" source="1" target="8">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="24" source="0" target="8">
+        <inscription><text>1</text></inscription>
+      </arc>
+      <arc id="25" source="1" target="9">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="26" source="2" target="9">
+        <inscription><text>1</text></inscription>
+      </arc>
+      <arc id="27" source="2" target="10">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="28" source="0" target="10">
+        <inscription><text>1</text></inscription>
+      </arc>
+      <arc id="29" source="2" target="11">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="30" source="1" target="11">
+        <inscription><text>1</text></inscription>
+      </arc>
+      <arc id="31" source="2" target="12">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="32" source="3" target="12">
+        <inscription><text>1</text></inscription>
+      </arc>
+      <arc id="33" source="3" target="13">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="34" source="2" target="13">
+        <inscription><text>1</text></inscription>
+      </arc>
+      <arc id="35" source="3" target="14">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="36" source="4" target="14">
+        <inscription><text>1</text></inscription>
+      </arc>
+      <arc id="37" source="3" target="15">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="38" source="5" target="15">
+        <inscription><text>1</text></inscription>
+      </arc>
+      <arc id="39" source="4" target="16">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="40" source="3" target="16">
+        <inscription><text>1</text></inscription>
+      </arc>
+      <arc id="41" source="4" target="17">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="42" source="5" target="17">
+        <inscription><text>1</text></inscription>
+      </arc>
+      <arc id="43" source="5" target="18">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="44" source="6" target="1">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="45" source="7" target="2">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="46" source="8" target="0">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="47" source="9" target="2">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="48" source="10" target="0">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="49" source="11" target="1">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="50" source="12" target="3">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="51" source="13" target="2">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="52" source="14" target="4">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="53" source="15" target="5">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="54" source="16" target="3">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="55" source="17" target="5">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="56" source="18" target="5">
+        <inscription><text>2</text></inscription>
+      </arc>
+    </page>
+  </net>
+</pnml>
+<xml>

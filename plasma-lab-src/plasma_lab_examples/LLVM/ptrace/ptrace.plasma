@@ -1,0 +1,2 @@
+sim -S -X -C --ExternalPlatform ./libplatformPlasma.so --poptions func:syscaller --poptions func:ptracer
+./ptrace.ll

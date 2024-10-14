@@ -1,0 +1,3435 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlasmaProject name="Rabin">
+  <models>
+    <model name="rabin_choice6" type="rml">
+      <content>//Rabin's choice coordination problem
+//Amended 03/10/2010
+//Ensure all tourists' do not start from same location
+
+mdp 
+
+const N = 6; //Number of tourists
+
+const t1 = 1; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t2 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t3 = 1; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t4 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t5 = 1; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t6 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+
+const int BOUND = 100;//set to manage model size
+
+
+//======== Records update of the left noticeboard ==================
+
+module leftboard
+
+nlb : [0..BOUND] init 0;//number on  left board
+lbm : [0..1] init 0; //mode of nlb 0 --&gt; 'even', 1 --&gt; 'odd'
+
+[t1_nlb_up] (lbm = 0) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t1_nlb_up] (lbm = 1) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t2_nlb_up] (lbm = 0) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t2_nlb_up] (lbm = 1) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t3_nlb_up] (lbm = 0) &amp; (t3_loc = 0) &amp; (lin = 0) &amp; (t3_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t3_nlb_up] (lbm = 1) &amp; (t3_loc = 0) &amp; (lin = 0) &amp; (t3_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t4_nlb_up] (lbm = 0) &amp; (t4_loc = 0) &amp; (lin = 0) &amp; (t4_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t4_nlb_up] (lbm = 1) &amp; (t4_loc = 0) &amp; (lin = 0) &amp; (t4_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t5_nlb_up] (lbm = 0) &amp; (t5_loc = 0) &amp; (lin = 0) &amp; (t5_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t5_nlb_up] (lbm = 1) &amp; (t5_loc = 0) &amp; (lin = 0) &amp; (t5_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t6_nlb_up] (lbm = 0) &amp; (t6_loc = 0) &amp; (lin = 0) &amp; (t6_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t6_nlb_up] (lbm = 1) &amp; (t6_loc = 0) &amp; (lin = 0) &amp; (t6_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+endmodule
+
+//======== Records update of the right noticeboard ==================
+
+module rightboard
+
+nrb : [0..BOUND] init 0;//number on right board
+rbm : [0..1] init 0; //mode of nrb 0 --&gt; 'even', 1 --&gt; 'odd'
+
+[t1_nrb_up] (rbm = 0) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t1_nrb_up] (rbm = 1) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t2_nrb_up] (rbm = 0) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t2_nrb_up] (rbm = 1) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t3_nrb_up] (rbm = 0) &amp; (t3_loc = 1) &amp; (rin = 0) &amp; (t3_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t3_nrb_up] (rbm = 1) &amp; (t3_loc = 1) &amp; (rin = 0) &amp; (t3_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t4_nrb_up] (rbm = 0) &amp; (t4_loc = 1) &amp; (rin = 0) &amp; (t4_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t4_nrb_up] (rbm = 1) &amp; (t4_loc = 1) &amp; (rin = 0) &amp; (t4_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t5_nrb_up] (rbm = 0) &amp; (t5_loc = 1) &amp; (rin = 0) &amp; (t5_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t5_nrb_up] (rbm = 1) &amp; (t5_loc = 1) &amp; (rin = 0) &amp; (t5_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t6_nrb_up] (rbm = 0) &amp; (t6_loc = 1) &amp; (rin = 0) &amp; (t6_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t6_nrb_up] (rbm = 1) &amp; (t6_loc = 1) &amp; (rin = 0) &amp; (t6_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+endmodule
+
+//======== Counts the number of tourists entering the left/right meeting place ==================
+
+module counter
+
+rin : [0..N] init 0;//number of tourists inside the 'right' meeting place
+lin : [0..N] init 0;//number of tourists inside the 'left' meeting place
+
+[t1_enter_l]  (t1_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t1_enter_r]  (t1_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t1_must_l]   (t1_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t1_must_r]   (t1_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t2_enter_l]  (t2_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t2_enter_r]  (t2_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t2_must_l]   (t2_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t2_must_r]   (t2_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t3_enter_l]  (t3_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t3_enter_r]  (t3_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t3_must_l]   (t3_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t3_must_r]   (t3_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t4_enter_l]  (t4_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t4_enter_r]  (t4_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t4_must_l]   (t4_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t4_must_r]   (t4_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t5_enter_l]  (t5_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t5_enter_r]  (t5_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t5_must_l]   (t5_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t5_must_r]   (t5_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t6_enter_l]  (t6_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t6_enter_r]  (t6_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t6_must_l]   (t6_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t6_must_r]   (t6_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+endmodule
+
+//======== controls sequence of actions for tourists' at left/right location ==================
+
+module semaphore
+
+flag : [0..1] init 0;
+
+[t1_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t1_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t1_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t1_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t2_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t2_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t2_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t2_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t3_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t3_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t3_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t3_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t4_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t4_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t4_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t4_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t5_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t5_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t5_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t5_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t6_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t6_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t6_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t6_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+endmodule
+
+
+
+//======== Models the activity of a single tourist ==================
+
+module tourist1
+
+t1_loc : [0..2] init t1;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t1_val : [0..BOUND] init 0;//value on a tourist's notepad
+t1_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t1_nlb_up]   (t1_com = 0) &amp; (t1_loc = 0) &amp; (lin = 0) -&gt; (t1_com' = 1);
+[t1_nrb_up]   (t1_com = 0) &amp; (t1_loc = 1) &amp; (rin = 0) -&gt; (t1_com' = 1);
+
+[t1_l_up]     (t1_com = 1) &amp; (t1_loc = 0) &amp; (lin = 0) -&gt; (t1_val' = nlb) &amp; (t1_loc' = 1) &amp; (t1_com' = 0);
+[t1_r_up]     (t1_com = 1) &amp; (t1_loc = 1) &amp; (rin = 0) -&gt; (t1_val' = nrb) &amp; (t1_loc' = 0) &amp; (t1_com' = 0);
+
+[t1_l_copy]   (flag = 0) &amp; (t1_loc = 0) &amp; (t1_val &lt; nlb) -&gt;  (t1_val' = nlb) &amp; (t1_loc' = 1);
+[t1_r_copy]   (flag = 0) &amp; (t1_loc = 1) &amp; (t1_val &lt; nrb) -&gt;  (t1_val' = nrb) &amp; (t1_loc' = 0); 
+
+[t1_enter_l]  (flag = 0) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val &gt; nlb)  -&gt; (t1_loc' = 2);
+[t1_enter_r]  (flag = 0) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val &gt; nrb)  -&gt; (t1_loc' = 2);
+
+[t1_must_l]   (flag = 0) &amp; (t1_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t1_loc' = 2);
+[t1_must_r]   (flag = 0) &amp; (t1_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t1_loc' = 2);
+
+[t1_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t1_loc = 2) -&gt; (t1_val' = t1_val) ;
+[t1_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t1_loc = 2) -&gt; (t1_val' = t1_val) ;
+
+endmodule
+
+module tourist2
+
+t2_loc : [0..2] init t2;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t2_val : [0..BOUND] init 0;//value on a tourist's notepad
+t2_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t2_nlb_up]   (t2_com = 0) &amp; (t2_loc = 0) &amp; (lin = 0) -&gt; (t2_com' = 1);
+[t2_nrb_up]   (t2_com = 0) &amp; (t2_loc = 1) &amp; (rin = 0) -&gt; (t2_com' = 1);
+
+[t2_l_up]     (t2_com = 1) &amp; (t2_loc = 0) &amp; (lin = 0) -&gt; (t2_val' = nlb) &amp; (t2_loc' = 1) &amp; (t2_com' = 0);
+[t2_r_up]     (t2_com = 1) &amp; (t2_loc = 1) &amp; (rin = 0) -&gt; (t2_val' = nrb) &amp; (t2_loc' = 0) &amp; (t2_com' = 0);
+
+[t2_l_copy]   (flag = 0) &amp; (t2_loc = 0) &amp; (t2_val &lt; nlb) -&gt;  (t2_val' = nlb) &amp; (t2_loc' = 1);
+[t2_r_copy]   (flag = 0) &amp; (t2_loc = 1) &amp; (t2_val &lt; nrb) -&gt;  (t2_val' = nrb) &amp; (t2_loc' = 0); 
+
+[t2_enter_l]  (flag = 0) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val &gt; nlb)  -&gt; (t2_loc' = 2);
+[t2_enter_r]  (flag = 0) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val &gt; nrb)  -&gt; (t2_loc' = 2);
+
+[t2_must_l]   (flag = 0) &amp; (t2_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t2_loc' = 2);
+[t2_must_r]   (flag = 0) &amp; (t2_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t2_loc' = 2);
+
+[t2_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t2_loc = 2) -&gt; (t2_val' = t2_val) ;
+[t2_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t2_loc = 2) -&gt; (t2_val' = t2_val) ;
+
+endmodule
+
+module tourist3
+
+t3_loc : [0..2] init t3;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t3_val : [0..BOUND] init 0;//value on a tourist's notepad
+t3_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t3_nlb_up]   (t3_com = 0) &amp; (t3_loc = 0) &amp; (lin = 0) -&gt; (t3_com' = 1);
+[t3_nrb_up]   (t3_com = 0) &amp; (t3_loc = 1) &amp; (rin = 0) -&gt; (t3_com' = 1);
+
+[t3_l_up]     (t3_com = 1) &amp; (t3_loc = 0) &amp; (lin = 0) -&gt; (t3_val' = nlb) &amp; (t3_loc' = 1) &amp; (t3_com' = 0);
+[t3_r_up]     (t3_com = 1) &amp; (t3_loc = 1) &amp; (rin = 0) -&gt; (t3_val' = nrb) &amp; (t3_loc' = 0) &amp; (t3_com' = 0);
+
+[t3_l_copy]   (flag = 0) &amp; (t3_loc = 0) &amp; (t3_val &lt; nlb) -&gt;  (t3_val' = nlb) &amp; (t3_loc' = 1);
+[t3_r_copy]   (flag = 0) &amp; (t3_loc = 1) &amp; (t3_val &lt; nrb) -&gt;  (t3_val' = nrb) &amp; (t3_loc' = 0); 
+
+[t3_enter_l]  (flag = 0) &amp; (t3_loc = 0) &amp; (lin = 0) &amp; (t3_val &gt; nlb)  -&gt; (t3_loc' = 2);
+[t3_enter_r]  (flag = 0) &amp; (t3_loc = 1) &amp; (rin = 0) &amp; (t3_val &gt; nrb)  -&gt; (t3_loc' = 2);
+
+[t3_must_l]   (flag = 0) &amp; (t3_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t3_loc' = 2);
+[t3_must_r]   (flag = 0) &amp; (t3_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t3_loc' = 2);
+
+[t3_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t3_loc = 2) -&gt; (t3_val' = t3_val) ;
+[t3_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t3_loc = 2) -&gt; (t3_val' = t3_val) ;
+
+endmodule
+
+module tourist4
+
+t4_loc : [0..2] init t4;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t4_val : [0..BOUND] init 0;//value on a tourist's notepad
+t4_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t4_nlb_up]   (t4_com = 0) &amp; (t4_loc = 0) &amp; (lin = 0) -&gt; (t4_com' = 1);
+[t4_nrb_up]   (t4_com = 0) &amp; (t4_loc = 1) &amp; (rin = 0) -&gt; (t4_com' = 1);
+
+[t4_l_up]     (t4_com = 1) &amp; (t4_loc = 0) &amp; (lin = 0) -&gt; (t4_val' = nlb) &amp; (t4_loc' = 1) &amp; (t4_com' = 0);
+[t4_r_up]     (t4_com = 1) &amp; (t4_loc = 1) &amp; (rin = 0) -&gt; (t4_val' = nrb) &amp; (t4_loc' = 0) &amp; (t4_com' = 0);
+
+[t4_l_copy]   (flag = 0) &amp; (t4_loc = 0) &amp; (t4_val &lt; nlb) -&gt;  (t4_val' = nlb) &amp; (t4_loc' = 1);
+[t4_r_copy]   (flag = 0) &amp; (t4_loc = 1) &amp; (t4_val &lt; nrb) -&gt;  (t4_val' = nrb) &amp; (t4_loc' = 0); 
+
+[t4_enter_l]  (flag = 0) &amp; (t4_loc = 0) &amp; (lin = 0) &amp; (t4_val &gt; nlb)  -&gt; (t4_loc' = 2);
+[t4_enter_r]  (flag = 0) &amp; (t4_loc = 1) &amp; (rin = 0) &amp; (t4_val &gt; nrb)  -&gt; (t4_loc' = 2);
+
+[t4_must_l]   (flag = 0) &amp; (t4_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t4_loc' = 2);
+[t4_must_r]   (flag = 0) &amp; (t4_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t4_loc' = 2);
+
+[t4_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t4_loc = 2) -&gt; (t4_val' = t4_val) ;
+[t4_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t4_loc = 2) -&gt; (t4_val' = t4_val) ;
+
+endmodule
+
+module tourist5
+
+t5_loc : [0..2] init t5;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t5_val : [0..BOUND] init 0;//value on a tourist's notepad
+t5_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t5_nlb_up]   (t5_com = 0) &amp; (t5_loc = 0) &amp; (lin = 0) -&gt; (t5_com' = 1);
+[t5_nrb_up]   (t5_com = 0) &amp; (t5_loc = 1) &amp; (rin = 0) -&gt; (t5_com' = 1);
+
+[t5_l_up]     (t5_com = 1) &amp; (t5_loc = 0) &amp; (lin = 0) -&gt; (t5_val' = nlb) &amp; (t5_loc' = 1) &amp; (t5_com' = 0);
+[t5_r_up]     (t5_com = 1) &amp; (t5_loc = 1) &amp; (rin = 0) -&gt; (t5_val' = nrb) &amp; (t5_loc' = 0) &amp; (t5_com' = 0);
+
+[t5_l_copy]   (flag = 0) &amp; (t5_loc = 0) &amp; (t5_val &lt; nlb) -&gt;  (t5_val' = nlb) &amp; (t5_loc' = 1);
+[t5_r_copy]   (flag = 0) &amp; (t5_loc = 1) &amp; (t5_val &lt; nrb) -&gt;  (t5_val' = nrb) &amp; (t5_loc' = 0); 
+
+[t5_enter_l]  (flag = 0) &amp; (t5_loc = 0) &amp; (lin = 0) &amp; (t5_val &gt; nlb)  -&gt; (t5_loc' = 2);
+[t5_enter_r]  (flag = 0) &amp; (t5_loc = 1) &amp; (rin = 0) &amp; (t5_val &gt; nrb)  -&gt; (t5_loc' = 2);
+
+[t5_must_l]   (flag = 0) &amp; (t5_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t5_loc' = 2);
+[t5_must_r]   (flag = 0) &amp; (t5_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t5_loc' = 2);
+
+[t5_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t5_loc = 2) -&gt; (t5_val' = t5_val) ;
+[t5_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t5_loc = 2) -&gt; (t5_val' = t5_val) ;
+
+endmodule
+
+module tourist6
+
+t6_loc : [0..2] init t6;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t6_val : [0..BOUND] init 0;//value on a tourist's notepad
+t6_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t6_nlb_up]   (t6_com = 0) &amp; (t6_loc = 0) &amp; (lin = 0) -&gt; (t6_com' = 1);
+[t6_nrb_up]   (t6_com = 0) &amp; (t6_loc = 1) &amp; (rin = 0) -&gt; (t6_com' = 1);
+
+[t6_l_up]     (t6_com = 1) &amp; (t6_loc = 0) &amp; (lin = 0) -&gt; (t6_val' = nlb) &amp; (t6_loc' = 1) &amp; (t6_com' = 0);
+[t6_r_up]     (t6_com = 1) &amp; (t6_loc = 1) &amp; (rin = 0) -&gt; (t6_val' = nrb) &amp; (t6_loc' = 0) &amp; (t6_com' = 0);
+
+[t6_l_copy]   (flag = 0) &amp; (t6_loc = 0) &amp; (t6_val &lt; nlb) -&gt;  (t6_val' = nlb) &amp; (t6_loc' = 1);
+[t6_r_copy]   (flag = 0) &amp; (t6_loc = 1) &amp; (t6_val &lt; nrb) -&gt;  (t6_val' = nrb) &amp; (t6_loc' = 0); 
+
+[t6_enter_l]  (flag = 0) &amp; (t6_loc = 0) &amp; (lin = 0) &amp; (t6_val &gt; nlb)  -&gt; (t6_loc' = 2);
+[t6_enter_r]  (flag = 0) &amp; (t6_loc = 1) &amp; (rin = 0) &amp; (t6_val &gt; nrb)  -&gt; (t6_loc' = 2);
+
+[t6_must_l]   (flag = 0) &amp; (t6_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t6_loc' = 2);
+[t6_must_r]   (flag = 0) &amp; (t6_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t6_loc' = 2);
+
+[t6_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t6_loc = 2) -&gt; (t6_val' = t6_val) ;
+[t6_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t6_loc = 2) -&gt; (t6_val' = t6_val) ;
+
+endmodule
+
+rewards "rounds"
+
+lin != N &amp; rin != N : 1; 
+
+endrewards</content>
+    </model>
+    <model name="rabin_choice2" type="rml">
+      <content>//Rabin's choice coordination problem
+//Amended 03/10/2010
+//Ensure all tourists' do not start from same location
+
+mdp
+
+const N = 2; //Number of tourists
+
+const t1 = 1; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t2 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+
+const int BOUND = 100;//set to manage model size
+
+
+//======== Records update of the left noticeboard ==================
+
+module leftboard
+
+nlb : [0..BOUND] init 0;//number on  left board
+lbm : [0..1] init 0; //mode of nlb 0 --&gt; 'even', 1 --&gt; 'odd'
+
+[t1_nlb_up] (lbm = 0) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t1_nlb_up] (lbm = 1) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t2_nlb_up] (lbm = 0) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t2_nlb_up] (lbm = 1) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+endmodule
+
+//======== Records update of the right noticeboard ==================
+
+module rightboard
+
+nrb : [0..BOUND] init 0;//number on right board
+rbm : [0..1] init 0; //mode of nrb 0 --&gt; 'even', 1 --&gt; 'odd'
+
+
+[t1_nrb_up] (rbm = 0) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t1_nrb_up] (rbm = 1) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t2_nrb_up] (rbm = 0) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t2_nrb_up] (rbm = 1) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+endmodule
+
+//======== Counts the number of tourists entering the left/right meeting place ==================
+
+module counter
+
+rin : [0..N] init 0;//number of tourists inside the 'right' meeting place
+lin : [0..N] init 0;//number of tourists inside the 'left' meeting place
+
+[t1_enter_l]  (t1_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t1_enter_r]  (t1_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t1_must_l]   (t1_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t1_must_r]   (t1_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t2_enter_l]  (t2_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t2_enter_r]  (t2_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t2_must_l]   (t2_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t2_must_r]   (t2_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+endmodule
+
+//======== controls sequence of actions for tourists' at left/right location ==================
+
+module semaphore
+
+flag : [0..1] init 0;
+
+[t1_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t1_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t1_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t1_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t2_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t2_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t2_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t2_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+endmodule
+
+
+
+//======== Models the activity of a single tourist ==================
+
+module tourist1
+
+t1_loc : [0..2] init 1;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t1_val : [0..BOUND] init 0;//value on a tourist's notepad
+t1_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t1_nlb_up]   (t1_com = 0) &amp; (t1_loc = 0) &amp; (lin = 0) -&gt; (t1_com' = 1);
+[t1_nrb_up]   (t1_com = 0) &amp; (t1_loc = 1) &amp; (rin = 0) -&gt; (t1_com' = 1);
+
+[t1_l_up]     (t1_com = 1) &amp; (t1_loc = 0) &amp; (lin = 0) -&gt; (t1_val' = nlb) &amp; (t1_loc' = 1) &amp; (t1_com' = 0);
+[t1_r_up]     (t1_com = 1) &amp; (t1_loc = 1) &amp; (rin = 0) -&gt; (t1_val' = nrb) &amp; (t1_loc' = 0) &amp; (t1_com' = 0);
+
+[t1_l_copy]   (flag = 0) &amp; (t1_loc = 0) &amp; (t1_val &lt; nlb) -&gt;  (t1_val' = nlb) &amp; (t1_loc' = 1);
+[t1_r_copy]   (flag = 0) &amp; (t1_loc = 1) &amp; (t1_val &lt; nrb) -&gt;  (t1_val' = nrb) &amp; (t1_loc' = 0); 
+
+[t1_enter_l]  (flag = 0) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val &gt; nlb)  -&gt; (t1_loc' = 2);
+[t1_enter_r]  (flag = 0) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val &gt; nrb)  -&gt; (t1_loc' = 2);
+
+[t1_must_l]   (flag = 0) &amp; (t1_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t1_loc' = 2);
+[t1_must_r]   (flag = 0) &amp; (t1_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t1_loc' = 2);
+
+[t1_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t1_loc = 2) -&gt; (t1_val' = t1_val) ;
+[t1_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t1_loc = 2) -&gt; (t1_val' = t1_val) ;
+
+endmodule
+
+module tourist2
+
+t2_loc : [0..2] init 0;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t2_val : [0..BOUND] init 0;//value on a tourist's notepad
+t2_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t2_nlb_up]   (t2_com = 0) &amp; (t2_loc = 0) &amp; (lin = 0) -&gt; (t2_com' = 1);
+[t2_nrb_up]   (t2_com = 0) &amp; (t2_loc = 1) &amp; (rin = 0) -&gt; (t2_com' = 1);
+
+[t2_l_up]     (t2_com = 1) &amp; (t2_loc = 0) &amp; (lin = 0) -&gt; (t2_val' = nlb) &amp; (t2_loc' = 1) &amp; (t2_com' = 0);
+[t2_r_up]     (t2_com = 1) &amp; (t2_loc = 1) &amp; (rin = 0) -&gt; (t2_val' = nrb) &amp; (t2_loc' = 0) &amp; (t2_com' = 0);
+
+[t2_l_copy]   (flag = 0) &amp; (t2_loc = 0) &amp; (t2_val &lt; nlb) -&gt;  (t2_val' = nlb) &amp; (t2_loc' = 1);
+[t2_r_copy]   (flag = 0) &amp; (t2_loc = 1) &amp; (t2_val &lt; nrb) -&gt;  (t2_val' = nrb) &amp; (t2_loc' = 0); 
+
+[t2_enter_l]  (flag = 0) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val &gt; nlb)  -&gt; (t2_loc' = 2);
+[t2_enter_r]  (flag = 0) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val &gt; nrb)  -&gt; (t2_loc' = 2);
+
+[t2_must_l]   (flag = 0) &amp; (t2_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t2_loc' = 2);
+[t2_must_r]   (flag = 0) &amp; (t2_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t2_loc' = 2);
+
+[t2_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t2_loc = 2) -&gt; (t2_val' = t2_val) ;
+[t2_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t2_loc = 2) -&gt; (t2_val' = t2_val) ;
+
+endmodule
+
+
+rewards "rounds"
+
+lin != N &amp; rin != N : 1; 
+
+endrewards</content>
+    </model>
+    <model name="rabin_choice2_unbounded" type="rml">
+      <content>//Rabin's choice coordination problem
+//Amended 03/10/2010
+//Ensure all tourists' do not start from same location
+
+mdp
+
+const N = 2; //Number of tourists
+
+const t1 = 1; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t2 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+
+//======== Records update of the left noticeboard ==================
+
+module leftboard
+
+nlb : int init 0;//number on  left board
+lbm : [0..1] init 0; //mode of nlb 0 --&gt; 'even', 1 --&gt; 'odd'
+
+[t1_nlb_up] (lbm = 0) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val = nlb) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t1_nlb_up] (lbm = 1) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val = nlb) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t2_nlb_up] (lbm = 0) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val = nlb) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t2_nlb_up] (lbm = 1) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val = nlb) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+endmodule
+
+//======== Records update of the right noticeboard ==================
+
+module rightboard
+
+nrb : int init 0;//number on right board
+rbm : [0..1] init 0; //mode of nrb 0 --&gt; 'even', 1 --&gt; 'odd'
+
+
+[t1_nrb_up] (rbm = 0) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val = nrb) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t1_nrb_up] (rbm = 1) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val = nrb) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t2_nrb_up] (rbm = 0) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val = nrb) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t2_nrb_up] (rbm = 1) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val = nrb) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+endmodule
+
+//======== Counts the number of tourists entering the left/right meeting place ==================
+
+module counter
+
+rin : [0..N] init 0;//number of tourists inside the 'right' meeting place
+lin : [0..N] init 0;//number of tourists inside the 'left' meeting place
+
+[t1_enter_l]  (t1_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t1_enter_r]  (t1_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t1_must_l]   (t1_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t1_must_r]   (t1_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t2_enter_l]  (t2_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t2_enter_r]  (t2_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t2_must_l]   (t2_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t2_must_r]   (t2_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+endmodule
+
+//======== controls sequence of actions for tourists' at left/right location ==================
+
+module semaphore
+
+flag : [0..1] init 0;
+
+[t1_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t1_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t1_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t1_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t2_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t2_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t2_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t2_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+endmodule
+
+
+
+//======== Models the activity of a single tourist ==================
+
+module tourist1
+
+t1_loc : [0..2] init 1;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t1_val : int init 0;//value on a tourist's notepad
+t1_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t1_nlb_up]   (t1_com = 0) &amp; (t1_loc = 0) &amp; (lin = 0) -&gt; (t1_com' = 1);
+[t1_nrb_up]   (t1_com = 0) &amp; (t1_loc = 1) &amp; (rin = 0) -&gt; (t1_com' = 1);
+
+[t1_l_up]     (t1_com = 1) &amp; (t1_loc = 0) &amp; (lin = 0) -&gt; (t1_val' = nlb) &amp; (t1_loc' = 1) &amp; (t1_com' = 0);
+[t1_r_up]     (t1_com = 1) &amp; (t1_loc = 1) &amp; (rin = 0) -&gt; (t1_val' = nrb) &amp; (t1_loc' = 0) &amp; (t1_com' = 0);
+
+[t1_l_copy]   (flag = 0) &amp; (t1_loc = 0) &amp; (t1_val &lt; nlb) -&gt;  (t1_val' = nlb) &amp; (t1_loc' = 1);
+[t1_r_copy]   (flag = 0) &amp; (t1_loc = 1) &amp; (t1_val &lt; nrb) -&gt;  (t1_val' = nrb) &amp; (t1_loc' = 0); 
+
+[t1_enter_l]  (flag = 0) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val &gt; nlb)  -&gt; (t1_loc' = 2);
+[t1_enter_r]  (flag = 0) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val &gt; nrb)  -&gt; (t1_loc' = 2);
+
+[t1_must_l]   (flag = 0) &amp; (t1_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t1_loc' = 2);
+[t1_must_r]   (flag = 0) &amp; (t1_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t1_loc' = 2);
+
+[t1_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t1_loc = 2) -&gt; (t1_val' = t1_val) ;
+[t1_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t1_loc = 2) -&gt; (t1_val' = t1_val) ;
+
+endmodule
+
+module tourist2
+
+t2_loc : [0..2] init 0;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t2_val : int init 0;//value on a tourist's notepad
+t2_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t2_nlb_up]   (t2_com = 0) &amp; (t2_loc = 0) &amp; (lin = 0) -&gt; (t2_com' = 1);
+[t2_nrb_up]   (t2_com = 0) &amp; (t2_loc = 1) &amp; (rin = 0) -&gt; (t2_com' = 1);
+
+[t2_l_up]     (t2_com = 1) &amp; (t2_loc = 0) &amp; (lin = 0) -&gt; (t2_val' = nlb) &amp; (t2_loc' = 1) &amp; (t2_com' = 0);
+[t2_r_up]     (t2_com = 1) &amp; (t2_loc = 1) &amp; (rin = 0) -&gt; (t2_val' = nrb) &amp; (t2_loc' = 0) &amp; (t2_com' = 0);
+
+[t2_l_copy]   (flag = 0) &amp; (t2_loc = 0) &amp; (t2_val &lt; nlb) -&gt;  (t2_val' = nlb) &amp; (t2_loc' = 1);
+[t2_r_copy]   (flag = 0) &amp; (t2_loc = 1) &amp; (t2_val &lt; nrb) -&gt;  (t2_val' = nrb) &amp; (t2_loc' = 0); 
+
+[t2_enter_l]  (flag = 0) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val &gt; nlb)  -&gt; (t2_loc' = 2);
+[t2_enter_r]  (flag = 0) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val &gt; nrb)  -&gt; (t2_loc' = 2);
+
+[t2_must_l]   (flag = 0) &amp; (t2_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t2_loc' = 2);
+[t2_must_r]   (flag = 0) &amp; (t2_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t2_loc' = 2);
+
+[t2_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t2_loc = 2) -&gt; (t2_val' = t2_val) ;
+[t2_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t2_loc = 2) -&gt; (t2_val' = t2_val) ;
+
+endmodule</content>
+    </model>
+    <model name="rabin_choice6_unbounded" type="rml">
+      <content>//Rabin's choice coordination problem
+//Amended 03/10/2010
+//Ensure all tourists' do not start from same location
+
+mdp 
+
+const N = 6; //Number of tourists
+
+const t1 = 1; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t2 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t3 = 1; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t4 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t5 = 1; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t6 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+
+//======== Records update of the left noticeboard ==================
+
+module leftboard
+
+nlb : int init 0;//number on  left board
+lbm : [0..1] init 0; //mode of nlb 0 --&gt; 'even', 1 --&gt; 'odd'
+
+[t1_nlb_up] (lbm = 0) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val = nlb) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t1_nlb_up] (lbm = 1) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val = nlb) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t2_nlb_up] (lbm = 0) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val = nlb) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t2_nlb_up] (lbm = 1) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val = nlb) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t3_nlb_up] (lbm = 0) &amp; (t3_loc = 0) &amp; (lin = 0) &amp; (t3_val = nlb) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t3_nlb_up] (lbm = 1) &amp; (t3_loc = 0) &amp; (lin = 0) &amp; (t3_val = nlb) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t4_nlb_up] (lbm = 0) &amp; (t4_loc = 0) &amp; (lin = 0) &amp; (t4_val = nlb) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t4_nlb_up] (lbm = 1) &amp; (t4_loc = 0) &amp; (lin = 0) &amp; (t4_val = nlb) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t5_nlb_up] (lbm = 0) &amp; (t5_loc = 0) &amp; (lin = 0) &amp; (t5_val = nlb) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t5_nlb_up] (lbm = 1) &amp; (t5_loc = 0) &amp; (lin = 0) &amp; (t5_val = nlb) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t6_nlb_up] (lbm = 0) &amp; (t6_loc = 0) &amp; (lin = 0) &amp; (t6_val = nlb) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t6_nlb_up] (lbm = 1) &amp; (t6_loc = 0) &amp; (lin = 0) &amp; (t6_val = nlb) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+endmodule
+
+//======== Records update of the right noticeboard ==================
+
+module rightboard
+
+nrb : int init 0;//number on right board
+rbm : [0..1] init 0; //mode of nrb 0 --&gt; 'even', 1 --&gt; 'odd'
+
+[t1_nrb_up] (rbm = 0) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val = nrb) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t1_nrb_up] (rbm = 1) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val = nrb) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t2_nrb_up] (rbm = 0) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val = nrb) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t2_nrb_up] (rbm = 1) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val = nrb) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t3_nrb_up] (rbm = 0) &amp; (t3_loc = 1) &amp; (rin = 0) &amp; (t3_val = nrb) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t3_nrb_up] (rbm = 1) &amp; (t3_loc = 1) &amp; (rin = 0) &amp; (t3_val = nrb) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t4_nrb_up] (rbm = 0) &amp; (t4_loc = 1) &amp; (rin = 0) &amp; (t4_val = nrb) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t4_nrb_up] (rbm = 1) &amp; (t4_loc = 1) &amp; (rin = 0) &amp; (t4_val = nrb) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t5_nrb_up] (rbm = 0) &amp; (t5_loc = 1) &amp; (rin = 0) &amp; (t5_val = nrb) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t5_nrb_up] (rbm = 1) &amp; (t5_loc = 1) &amp; (rin = 0) &amp; (t5_val = nrb) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t6_nrb_up] (rbm = 0) &amp; (t6_loc = 1) &amp; (rin = 0) &amp; (t6_val = nrb) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t6_nrb_up] (rbm = 1) &amp; (t6_loc = 1) &amp; (rin = 0) &amp; (t6_val = nrb) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+endmodule
+
+//======== Counts the number of tourists entering the left/right meeting place ==================
+
+module counter
+
+rin : [0..N] init 0;//number of tourists inside the 'right' meeting place
+lin : [0..N] init 0;//number of tourists inside the 'left' meeting place
+
+[t1_enter_l]  (t1_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t1_enter_r]  (t1_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t1_must_l]   (t1_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t1_must_r]   (t1_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t2_enter_l]  (t2_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t2_enter_r]  (t2_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t2_must_l]   (t2_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t2_must_r]   (t2_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t3_enter_l]  (t3_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t3_enter_r]  (t3_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t3_must_l]   (t3_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t3_must_r]   (t3_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t4_enter_l]  (t4_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t4_enter_r]  (t4_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t4_must_l]   (t4_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t4_must_r]   (t4_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t5_enter_l]  (t5_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t5_enter_r]  (t5_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t5_must_l]   (t5_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t5_must_r]   (t5_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t6_enter_l]  (t6_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t6_enter_r]  (t6_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t6_must_l]   (t6_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t6_must_r]   (t6_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+endmodule
+
+//======== controls sequence of actions for tourists' at left/right location ==================
+
+module semaphore
+
+flag : [0..1] init 0;
+
+[t1_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t1_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t1_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t1_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t2_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t2_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t2_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t2_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t3_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t3_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t3_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t3_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t4_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t4_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t4_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t4_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t5_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t5_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t5_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t5_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t6_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t6_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t6_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t6_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+endmodule
+
+
+
+//======== Models the activity of a single tourist ==================
+
+module tourist1
+
+t1_loc : [0..2] init t1;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t1_val : int init 0;//value on a tourist's notepad
+t1_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t1_nlb_up]   (t1_com = 0) &amp; (t1_loc = 0) &amp; (lin = 0) -&gt; (t1_com' = 1);
+[t1_nrb_up]   (t1_com = 0) &amp; (t1_loc = 1) &amp; (rin = 0) -&gt; (t1_com' = 1);
+
+[t1_l_up]     (t1_com = 1) &amp; (t1_loc = 0) &amp; (lin = 0) -&gt; (t1_val' = nlb) &amp; (t1_loc' = 1) &amp; (t1_com' = 0);
+[t1_r_up]     (t1_com = 1) &amp; (t1_loc = 1) &amp; (rin = 0) -&gt; (t1_val' = nrb) &amp; (t1_loc' = 0) &amp; (t1_com' = 0);
+
+[t1_l_copy]   (flag = 0) &amp; (t1_loc = 0) &amp; (t1_val &lt; nlb) -&gt;  (t1_val' = nlb) &amp; (t1_loc' = 1);
+[t1_r_copy]   (flag = 0) &amp; (t1_loc = 1) &amp; (t1_val &lt; nrb) -&gt;  (t1_val' = nrb) &amp; (t1_loc' = 0); 
+
+[t1_enter_l]  (flag = 0) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val &gt; nlb)  -&gt; (t1_loc' = 2);
+[t1_enter_r]  (flag = 0) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val &gt; nrb)  -&gt; (t1_loc' = 2);
+
+[t1_must_l]   (flag = 0) &amp; (t1_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t1_loc' = 2);
+[t1_must_r]   (flag = 0) &amp; (t1_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t1_loc' = 2);
+
+[t1_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t1_loc = 2) -&gt; (t1_val' = t1_val) ;
+[t1_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t1_loc = 2) -&gt; (t1_val' = t1_val) ;
+
+endmodule
+
+module tourist2
+
+t2_loc : [0..2] init t2;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t2_val : int init 0;//value on a tourist's notepad
+t2_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t2_nlb_up]   (t2_com = 0) &amp; (t2_loc = 0) &amp; (lin = 0) -&gt; (t2_com' = 1);
+[t2_nrb_up]   (t2_com = 0) &amp; (t2_loc = 1) &amp; (rin = 0) -&gt; (t2_com' = 1);
+
+[t2_l_up]     (t2_com = 1) &amp; (t2_loc = 0) &amp; (lin = 0) -&gt; (t2_val' = nlb) &amp; (t2_loc' = 1) &amp; (t2_com' = 0);
+[t2_r_up]     (t2_com = 1) &amp; (t2_loc = 1) &amp; (rin = 0) -&gt; (t2_val' = nrb) &amp; (t2_loc' = 0) &amp; (t2_com' = 0);
+
+[t2_l_copy]   (flag = 0) &amp; (t2_loc = 0) &amp; (t2_val &lt; nlb) -&gt;  (t2_val' = nlb) &amp; (t2_loc' = 1);
+[t2_r_copy]   (flag = 0) &amp; (t2_loc = 1) &amp; (t2_val &lt; nrb) -&gt;  (t2_val' = nrb) &amp; (t2_loc' = 0); 
+
+[t2_enter_l]  (flag = 0) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val &gt; nlb)  -&gt; (t2_loc' = 2);
+[t2_enter_r]  (flag = 0) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val &gt; nrb)  -&gt; (t2_loc' = 2);
+
+[t2_must_l]   (flag = 0) &amp; (t2_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t2_loc' = 2);
+[t2_must_r]   (flag = 0) &amp; (t2_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t2_loc' = 2);
+
+[t2_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t2_loc = 2) -&gt; (t2_val' = t2_val) ;
+[t2_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t2_loc = 2) -&gt; (t2_val' = t2_val) ;
+
+endmodule
+
+module tourist3
+
+t3_loc : [0..2] init t3;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t3_val : int init 0;//value on a tourist's notepad
+t3_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t3_nlb_up]   (t3_com = 0) &amp; (t3_loc = 0) &amp; (lin = 0) -&gt; (t3_com' = 1);
+[t3_nrb_up]   (t3_com = 0) &amp; (t3_loc = 1) &amp; (rin = 0) -&gt; (t3_com' = 1);
+
+[t3_l_up]     (t3_com = 1) &amp; (t3_loc = 0) &amp; (lin = 0) -&gt; (t3_val' = nlb) &amp; (t3_loc' = 1) &amp; (t3_com' = 0);
+[t3_r_up]     (t3_com = 1) &amp; (t3_loc = 1) &amp; (rin = 0) -&gt; (t3_val' = nrb) &amp; (t3_loc' = 0) &amp; (t3_com' = 0);
+
+[t3_l_copy]   (flag = 0) &amp; (t3_loc = 0) &amp; (t3_val &lt; nlb) -&gt;  (t3_val' = nlb) &amp; (t3_loc' = 1);
+[t3_r_copy]   (flag = 0) &amp; (t3_loc = 1) &amp; (t3_val &lt; nrb) -&gt;  (t3_val' = nrb) &amp; (t3_loc' = 0); 
+
+[t3_enter_l]  (flag = 0) &amp; (t3_loc = 0) &amp; (lin = 0) &amp; (t3_val &gt; nlb)  -&gt; (t3_loc' = 2);
+[t3_enter_r]  (flag = 0) &amp; (t3_loc = 1) &amp; (rin = 0) &amp; (t3_val &gt; nrb)  -&gt; (t3_loc' = 2);
+
+[t3_must_l]   (flag = 0) &amp; (t3_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t3_loc' = 2);
+[t3_must_r]   (flag = 0) &amp; (t3_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t3_loc' = 2);
+
+[t3_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t3_loc = 2) -&gt; (t3_val' = t3_val) ;
+[t3_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t3_loc = 2) -&gt; (t3_val' = t3_val) ;
+
+endmodule
+
+module tourist4
+
+t4_loc : [0..2] init t4;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t4_val : int init 0;//value on a tourist's notepad
+t4_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t4_nlb_up]   (t4_com = 0) &amp; (t4_loc = 0) &amp; (lin = 0) -&gt; (t4_com' = 1);
+[t4_nrb_up]   (t4_com = 0) &amp; (t4_loc = 1) &amp; (rin = 0) -&gt; (t4_com' = 1);
+
+[t4_l_up]     (t4_com = 1) &amp; (t4_loc = 0) &amp; (lin = 0) -&gt; (t4_val' = nlb) &amp; (t4_loc' = 1) &amp; (t4_com' = 0);
+[t4_r_up]     (t4_com = 1) &amp; (t4_loc = 1) &amp; (rin = 0) -&gt; (t4_val' = nrb) &amp; (t4_loc' = 0) &amp; (t4_com' = 0);
+
+[t4_l_copy]   (flag = 0) &amp; (t4_loc = 0) &amp; (t4_val &lt; nlb) -&gt;  (t4_val' = nlb) &amp; (t4_loc' = 1);
+[t4_r_copy]   (flag = 0) &amp; (t4_loc = 1) &amp; (t4_val &lt; nrb) -&gt;  (t4_val' = nrb) &amp; (t4_loc' = 0); 
+
+[t4_enter_l]  (flag = 0) &amp; (t4_loc = 0) &amp; (lin = 0) &amp; (t4_val &gt; nlb)  -&gt; (t4_loc' = 2);
+[t4_enter_r]  (flag = 0) &amp; (t4_loc = 1) &amp; (rin = 0) &amp; (t4_val &gt; nrb)  -&gt; (t4_loc' = 2);
+
+[t4_must_l]   (flag = 0) &amp; (t4_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t4_loc' = 2);
+[t4_must_r]   (flag = 0) &amp; (t4_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t4_loc' = 2);
+
+[t4_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t4_loc = 2) -&gt; (t4_val' = t4_val) ;
+[t4_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t4_loc = 2) -&gt; (t4_val' = t4_val) ;
+
+endmodule
+
+module tourist5
+
+t5_loc : [0..2] init t5;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t5_val : int init 0;//value on a tourist's notepad
+t5_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t5_nlb_up]   (t5_com = 0) &amp; (t5_loc = 0) &amp; (lin = 0) -&gt; (t5_com' = 1);
+[t5_nrb_up]   (t5_com = 0) &amp; (t5_loc = 1) &amp; (rin = 0) -&gt; (t5_com' = 1);
+
+[t5_l_up]     (t5_com = 1) &amp; (t5_loc = 0) &amp; (lin = 0) -&gt; (t5_val' = nlb) &amp; (t5_loc' = 1) &amp; (t5_com' = 0);
+[t5_r_up]     (t5_com = 1) &amp; (t5_loc = 1) &amp; (rin = 0) -&gt; (t5_val' = nrb) &amp; (t5_loc' = 0) &amp; (t5_com' = 0);
+
+[t5_l_copy]   (flag = 0) &amp; (t5_loc = 0) &amp; (t5_val &lt; nlb) -&gt;  (t5_val' = nlb) &amp; (t5_loc' = 1);
+[t5_r_copy]   (flag = 0) &amp; (t5_loc = 1) &amp; (t5_val &lt; nrb) -&gt;  (t5_val' = nrb) &amp; (t5_loc' = 0); 
+
+[t5_enter_l]  (flag = 0) &amp; (t5_loc = 0) &amp; (lin = 0) &amp; (t5_val &gt; nlb)  -&gt; (t5_loc' = 2);
+[t5_enter_r]  (flag = 0) &amp; (t5_loc = 1) &amp; (rin = 0) &amp; (t5_val &gt; nrb)  -&gt; (t5_loc' = 2);
+
+[t5_must_l]   (flag = 0) &amp; (t5_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t5_loc' = 2);
+[t5_must_r]   (flag = 0) &amp; (t5_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t5_loc' = 2);
+
+[t5_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t5_loc = 2) -&gt; (t5_val' = t5_val) ;
+[t5_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t5_loc = 2) -&gt; (t5_val' = t5_val) ;
+
+endmodule
+
+module tourist6
+
+t6_loc : [0..2] init t6;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t6_val : int init 0;//value on a tourist's notepad
+t6_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t6_nlb_up]   (t6_com = 0) &amp; (t6_loc = 0) &amp; (lin = 0) -&gt; (t6_com' = 1);
+[t6_nrb_up]   (t6_com = 0) &amp; (t6_loc = 1) &amp; (rin = 0) -&gt; (t6_com' = 1);
+
+[t6_l_up]     (t6_com = 1) &amp; (t6_loc = 0) &amp; (lin = 0) -&gt; (t6_val' = nlb) &amp; (t6_loc' = 1) &amp; (t6_com' = 0);
+[t6_r_up]     (t6_com = 1) &amp; (t6_loc = 1) &amp; (rin = 0) -&gt; (t6_val' = nrb) &amp; (t6_loc' = 0) &amp; (t6_com' = 0);
+
+[t6_l_copy]   (flag = 0) &amp; (t6_loc = 0) &amp; (t6_val &lt; nlb) -&gt;  (t6_val' = nlb) &amp; (t6_loc' = 1);
+[t6_r_copy]   (flag = 0) &amp; (t6_loc = 1) &amp; (t6_val &lt; nrb) -&gt;  (t6_val' = nrb) &amp; (t6_loc' = 0); 
+
+[t6_enter_l]  (flag = 0) &amp; (t6_loc = 0) &amp; (lin = 0) &amp; (t6_val &gt; nlb)  -&gt; (t6_loc' = 2);
+[t6_enter_r]  (flag = 0) &amp; (t6_loc = 1) &amp; (rin = 0) &amp; (t6_val &gt; nrb)  -&gt; (t6_loc' = 2);
+
+[t6_must_l]   (flag = 0) &amp; (t6_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t6_loc' = 2);
+[t6_must_r]   (flag = 0) &amp; (t6_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t6_loc' = 2);
+
+[t6_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t6_loc = 2) -&gt; (t6_val' = t6_val) ;
+[t6_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t6_loc = 2) -&gt; (t6_val' = t6_val) ;
+
+endmodule
+
+
+rewards "rounds"
+
+lin != N &amp; rin != N : 1; 
+
+endrewards</content>
+    </model>
+    <model name="rabin_choice5" type="rml">
+      <content>//Rabin's choice coordination problem
+//Amended 03/10/2010
+//Ensure all tourists' do not start from same location
+
+mdp 
+
+const N = 5; //Number of tourists
+
+const t1 = 1; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t2 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t3 = 1; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t4 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t5 = 1; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+
+const int BOUND = 100;//set to manage model size
+
+
+//======== Records update of the left noticeboard ==================
+
+module leftboard
+
+nlb : [0..BOUND] init 0;//number on  left board
+lbm : [0..1] init 0; //mode of nlb 0 --&gt; 'even', 1 --&gt; 'odd'
+
+[t1_nlb_up] (lbm = 0) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t1_nlb_up] (lbm = 1) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t2_nlb_up] (lbm = 0) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t2_nlb_up] (lbm = 1) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t3_nlb_up] (lbm = 0) &amp; (t3_loc = 0) &amp; (lin = 0) &amp; (t3_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t3_nlb_up] (lbm = 1) &amp; (t3_loc = 0) &amp; (lin = 0) &amp; (t3_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t4_nlb_up] (lbm = 0) &amp; (t4_loc = 0) &amp; (lin = 0) &amp; (t4_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t4_nlb_up] (lbm = 1) &amp; (t4_loc = 0) &amp; (lin = 0) &amp; (t4_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t5_nlb_up] (lbm = 0) &amp; (t5_loc = 0) &amp; (lin = 0) &amp; (t5_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t5_nlb_up] (lbm = 1) &amp; (t5_loc = 0) &amp; (lin = 0) &amp; (t5_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+endmodule
+
+//======== Records update of the right noticeboard ==================
+
+module rightboard
+
+nrb : [0..BOUND] init 0;//number on right board
+rbm : [0..1] init 0; //mode of nrb 0 --&gt; 'even', 1 --&gt; 'odd'
+
+[t1_nrb_up] (rbm = 0) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t1_nrb_up] (rbm = 1) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t2_nrb_up] (rbm = 0) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t2_nrb_up] (rbm = 1) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t3_nrb_up] (rbm = 0) &amp; (t3_loc = 1) &amp; (rin = 0) &amp; (t3_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t3_nrb_up] (rbm = 1) &amp; (t3_loc = 1) &amp; (rin = 0) &amp; (t3_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t4_nrb_up] (rbm = 0) &amp; (t4_loc = 1) &amp; (rin = 0) &amp; (t4_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t4_nrb_up] (rbm = 1) &amp; (t4_loc = 1) &amp; (rin = 0) &amp; (t4_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t5_nrb_up] (rbm = 0) &amp; (t5_loc = 1) &amp; (rin = 0) &amp; (t5_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t5_nrb_up] (rbm = 1) &amp; (t5_loc = 1) &amp; (rin = 0) &amp; (t5_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+endmodule
+
+//======== Counts the number of tourists entering the left/right meeting place ==================
+
+module counter
+
+rin : [0..N] init 0;//number of tourists inside the 'right' meeting place
+lin : [0..N] init 0;//number of tourists inside the 'left' meeting place
+
+[t1_enter_l]  (t1_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t1_enter_r]  (t1_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t1_must_l]   (t1_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t1_must_r]   (t1_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t2_enter_l]  (t2_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t2_enter_r]  (t2_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t2_must_l]   (t2_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t2_must_r]   (t2_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t3_enter_l]  (t3_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t3_enter_r]  (t3_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t3_must_l]   (t3_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t3_must_r]   (t3_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t4_enter_l]  (t4_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t4_enter_r]  (t4_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t4_must_l]   (t4_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t4_must_r]   (t4_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t5_enter_l]  (t5_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t5_enter_r]  (t5_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t5_must_l]   (t5_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t5_must_r]   (t5_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+endmodule
+
+//======== controls sequence of actions for tourists' at left/right location ==================
+
+module semaphore
+
+flag : [0..1] init 0;
+
+[t1_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t1_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t1_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t1_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t2_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t2_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t2_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t2_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t3_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t3_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t3_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t3_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t4_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t4_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t4_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t4_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t5_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t5_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t5_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t5_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+endmodule
+
+
+
+//======== Models the activity of a single tourist ==================
+
+module tourist1
+
+t1_loc : [0..2] init t1;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t1_val : [0..BOUND] init 0;//value on a tourist's notepad
+t1_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t1_nlb_up]   (t1_com = 0) &amp; (t1_loc = 0) &amp; (lin = 0) -&gt; (t1_com' = 1);
+[t1_nrb_up]   (t1_com = 0) &amp; (t1_loc = 1) &amp; (rin = 0) -&gt; (t1_com' = 1);
+
+[t1_l_up]     (t1_com = 1) &amp; (t1_loc = 0) &amp; (lin = 0) -&gt; (t1_val' = nlb) &amp; (t1_loc' = 1) &amp; (t1_com' = 0);
+[t1_r_up]     (t1_com = 1) &amp; (t1_loc = 1) &amp; (rin = 0) -&gt; (t1_val' = nrb) &amp; (t1_loc' = 0) &amp; (t1_com' = 0);
+
+[t1_l_copy]   (flag = 0) &amp; (t1_loc = 0) &amp; (t1_val &lt; nlb) -&gt;  (t1_val' = nlb) &amp; (t1_loc' = 1);
+[t1_r_copy]   (flag = 0) &amp; (t1_loc = 1) &amp; (t1_val &lt; nrb) -&gt;  (t1_val' = nrb) &amp; (t1_loc' = 0); 
+
+[t1_enter_l]  (flag = 0) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val &gt; nlb)  -&gt; (t1_loc' = 2);
+[t1_enter_r]  (flag = 0) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val &gt; nrb)  -&gt; (t1_loc' = 2);
+
+[t1_must_l]   (flag = 0) &amp; (t1_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t1_loc' = 2);
+[t1_must_r]   (flag = 0) &amp; (t1_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t1_loc' = 2);
+
+[t1_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t1_loc = 2) -&gt; (t1_val' = t1_val) ;
+[t1_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t1_loc = 2) -&gt; (t1_val' = t1_val) ;
+
+endmodule
+
+module tourist2
+
+t2_loc : [0..2] init t2;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t2_val : [0..BOUND] init 0;//value on a tourist's notepad
+t2_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t2_nlb_up]   (t2_com = 0) &amp; (t2_loc = 0) &amp; (lin = 0) -&gt; (t2_com' = 1);
+[t2_nrb_up]   (t2_com = 0) &amp; (t2_loc = 1) &amp; (rin = 0) -&gt; (t2_com' = 1);
+
+[t2_l_up]     (t2_com = 1) &amp; (t2_loc = 0) &amp; (lin = 0) -&gt; (t2_val' = nlb) &amp; (t2_loc' = 1) &amp; (t2_com' = 0);
+[t2_r_up]     (t2_com = 1) &amp; (t2_loc = 1) &amp; (rin = 0) -&gt; (t2_val' = nrb) &amp; (t2_loc' = 0) &amp; (t2_com' = 0);
+
+[t2_l_copy]   (flag = 0) &amp; (t2_loc = 0) &amp; (t2_val &lt; nlb) -&gt;  (t2_val' = nlb) &amp; (t2_loc' = 1);
+[t2_r_copy]   (flag = 0) &amp; (t2_loc = 1) &amp; (t2_val &lt; nrb) -&gt;  (t2_val' = nrb) &amp; (t2_loc' = 0); 
+
+[t2_enter_l]  (flag = 0) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val &gt; nlb)  -&gt; (t2_loc' = 2);
+[t2_enter_r]  (flag = 0) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val &gt; nrb)  -&gt; (t2_loc' = 2);
+
+[t2_must_l]   (flag = 0) &amp; (t2_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t2_loc' = 2);
+[t2_must_r]   (flag = 0) &amp; (t2_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t2_loc' = 2);
+
+[t2_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t2_loc = 2) -&gt; (t2_val' = t2_val) ;
+[t2_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t2_loc = 2) -&gt; (t2_val' = t2_val) ;
+
+endmodule
+
+module tourist3
+
+t3_loc : [0..2] init t3;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t3_val : [0..BOUND] init 0;//value on a tourist's notepad
+t3_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t3_nlb_up]   (t3_com = 0) &amp; (t3_loc = 0) &amp; (lin = 0) -&gt; (t3_com' = 1);
+[t3_nrb_up]   (t3_com = 0) &amp; (t3_loc = 1) &amp; (rin = 0) -&gt; (t3_com' = 1);
+
+[t3_l_up]     (t3_com = 1) &amp; (t3_loc = 0) &amp; (lin = 0) -&gt; (t3_val' = nlb) &amp; (t3_loc' = 1) &amp; (t3_com' = 0);
+[t3_r_up]     (t3_com = 1) &amp; (t3_loc = 1) &amp; (rin = 0) -&gt; (t3_val' = nrb) &amp; (t3_loc' = 0) &amp; (t3_com' = 0);
+
+[t3_l_copy]   (flag = 0) &amp; (t3_loc = 0) &amp; (t3_val &lt; nlb) -&gt;  (t3_val' = nlb) &amp; (t3_loc' = 1);
+[t3_r_copy]   (flag = 0) &amp; (t3_loc = 1) &amp; (t3_val &lt; nrb) -&gt;  (t3_val' = nrb) &amp; (t3_loc' = 0); 
+
+[t3_enter_l]  (flag = 0) &amp; (t3_loc = 0) &amp; (lin = 0) &amp; (t3_val &gt; nlb)  -&gt; (t3_loc' = 2);
+[t3_enter_r]  (flag = 0) &amp; (t3_loc = 1) &amp; (rin = 0) &amp; (t3_val &gt; nrb)  -&gt; (t3_loc' = 2);
+
+[t3_must_l]   (flag = 0) &amp; (t3_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t3_loc' = 2);
+[t3_must_r]   (flag = 0) &amp; (t3_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t3_loc' = 2);
+
+[t3_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t3_loc = 2) -&gt; (t3_val' = t3_val) ;
+[t3_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t3_loc = 2) -&gt; (t3_val' = t3_val) ;
+
+endmodule
+
+module tourist4
+
+t4_loc : [0..2] init t4;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t4_val : [0..BOUND] init 0;//value on a tourist's notepad
+t4_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t4_nlb_up]   (t4_com = 0) &amp; (t4_loc = 0) &amp; (lin = 0) -&gt; (t4_com' = 1);
+[t4_nrb_up]   (t4_com = 0) &amp; (t4_loc = 1) &amp; (rin = 0) -&gt; (t4_com' = 1);
+
+[t4_l_up]     (t4_com = 1) &amp; (t4_loc = 0) &amp; (lin = 0) -&gt; (t4_val' = nlb) &amp; (t4_loc' = 1) &amp; (t4_com' = 0);
+[t4_r_up]     (t4_com = 1) &amp; (t4_loc = 1) &amp; (rin = 0) -&gt; (t4_val' = nrb) &amp; (t4_loc' = 0) &amp; (t4_com' = 0);
+
+[t4_l_copy]   (flag = 0) &amp; (t4_loc = 0) &amp; (t4_val &lt; nlb) -&gt;  (t4_val' = nlb) &amp; (t4_loc' = 1);
+[t4_r_copy]   (flag = 0) &amp; (t4_loc = 1) &amp; (t4_val &lt; nrb) -&gt;  (t4_val' = nrb) &amp; (t4_loc' = 0); 
+
+[t4_enter_l]  (flag = 0) &amp; (t4_loc = 0) &amp; (lin = 0) &amp; (t4_val &gt; nlb)  -&gt; (t4_loc' = 2);
+[t4_enter_r]  (flag = 0) &amp; (t4_loc = 1) &amp; (rin = 0) &amp; (t4_val &gt; nrb)  -&gt; (t4_loc' = 2);
+
+[t4_must_l]   (flag = 0) &amp; (t4_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t4_loc' = 2);
+[t4_must_r]   (flag = 0) &amp; (t4_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t4_loc' = 2);
+
+[t4_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t4_loc = 2) -&gt; (t4_val' = t4_val) ;
+[t4_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t4_loc = 2) -&gt; (t4_val' = t4_val) ;
+
+endmodule
+
+module tourist5
+
+t5_loc : [0..2] init t5;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t5_val : [0..BOUND] init 0;//value on a tourist's notepad
+t5_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t5_nlb_up]   (t5_com = 0) &amp; (t5_loc = 0) &amp; (lin = 0) -&gt; (t5_com' = 1);
+[t5_nrb_up]   (t5_com = 0) &amp; (t5_loc = 1) &amp; (rin = 0) -&gt; (t5_com' = 1);
+
+[t5_l_up]     (t5_com = 1) &amp; (t5_loc = 0) &amp; (lin = 0) -&gt; (t5_val' = nlb) &amp; (t5_loc' = 1) &amp; (t5_com' = 0);
+[t5_r_up]     (t5_com = 1) &amp; (t5_loc = 1) &amp; (rin = 0) -&gt; (t5_val' = nrb) &amp; (t5_loc' = 0) &amp; (t5_com' = 0);
+
+[t5_l_copy]   (flag = 0) &amp; (t5_loc = 0) &amp; (t5_val &lt; nlb) -&gt;  (t5_val' = nlb) &amp; (t5_loc' = 1);
+[t5_r_copy]   (flag = 0) &amp; (t5_loc = 1) &amp; (t5_val &lt; nrb) -&gt;  (t5_val' = nrb) &amp; (t5_loc' = 0); 
+
+[t5_enter_l]  (flag = 0) &amp; (t5_loc = 0) &amp; (lin = 0) &amp; (t5_val &gt; nlb)  -&gt; (t5_loc' = 2);
+[t5_enter_r]  (flag = 0) &amp; (t5_loc = 1) &amp; (rin = 0) &amp; (t5_val &gt; nrb)  -&gt; (t5_loc' = 2);
+
+[t5_must_l]   (flag = 0) &amp; (t5_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t5_loc' = 2);
+[t5_must_r]   (flag = 0) &amp; (t5_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t5_loc' = 2);
+
+[t5_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t5_loc = 2) -&gt; (t5_val' = t5_val) ;
+[t5_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t5_loc = 2) -&gt; (t5_val' = t5_val) ;
+
+endmodule
+
+rewards "rounds"
+
+lin != N &amp; rin != N : 1; 
+
+endrewards</content>
+    </model>
+    <model name="rabin_choice4" type="rml">
+      <content>//Rabin's choice coordination problem
+//Amended 03/10/2010
+//Ensure all tourists' do not start from same location
+
+mdp 
+
+const N = 4; //Number of tourists
+
+const t1 = 1; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t2 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t3 = 1; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t4 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+
+const int BOUND = 100;//set to manage model size
+
+
+//======== Records update of the left noticeboard ==================
+
+module leftboard
+
+nlb : [0..BOUND] init 0;//number on  left board
+lbm : [0..1] init 0; //mode of nlb 0 --&gt; 'even', 1 --&gt; 'odd'
+
+[t1_nlb_up] (lbm = 0) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t1_nlb_up] (lbm = 1) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t2_nlb_up] (lbm = 0) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t2_nlb_up] (lbm = 1) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t3_nlb_up] (lbm = 0) &amp; (t3_loc = 0) &amp; (lin = 0) &amp; (t3_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t3_nlb_up] (lbm = 1) &amp; (t3_loc = 0) &amp; (lin = 0) &amp; (t3_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t4_nlb_up] (lbm = 0) &amp; (t4_loc = 0) &amp; (lin = 0) &amp; (t4_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t4_nlb_up] (lbm = 1) &amp; (t4_loc = 0) &amp; (lin = 0) &amp; (t4_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+endmodule
+
+//======== Records update of the right noticeboard ==================
+
+module rightboard
+
+nrb : [0..BOUND] init 0;//number on right board
+rbm : [0..1] init 0; //mode of nrb 0 --&gt; 'even', 1 --&gt; 'odd'
+
+[t1_nrb_up] (rbm = 0) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t1_nrb_up] (rbm = 1) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t2_nrb_up] (rbm = 0) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t2_nrb_up] (rbm = 1) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t3_nrb_up] (rbm = 0) &amp; (t3_loc = 1) &amp; (rin = 0) &amp; (t3_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t3_nrb_up] (rbm = 1) &amp; (t3_loc = 1) &amp; (rin = 0) &amp; (t3_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t4_nrb_up] (rbm = 0) &amp; (t4_loc = 1) &amp; (rin = 0) &amp; (t4_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t4_nrb_up] (rbm = 1) &amp; (t4_loc = 1) &amp; (rin = 0) &amp; (t4_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+endmodule
+
+//======== Counts the number of tourists entering the left/right meeting place ==================
+
+module counter
+
+rin : [0..N] init 0;//number of tourists inside the 'right' meeting place
+lin : [0..N] init 0;//number of tourists inside the 'left' meeting place
+
+[t1_enter_l]  (t1_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t1_enter_r]  (t1_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t1_must_l]   (t1_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t1_must_r]   (t1_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t2_enter_l]  (t2_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t2_enter_r]  (t2_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t2_must_l]   (t2_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t2_must_r]   (t2_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t3_enter_l]  (t3_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t3_enter_r]  (t3_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t3_must_l]   (t3_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t3_must_r]   (t3_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t4_enter_l]  (t4_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t4_enter_r]  (t4_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t4_must_l]   (t4_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t4_must_r]   (t4_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+endmodule
+
+//======== controls sequence of actions for tourists' at left/right location ==================
+
+module semaphore
+
+flag : [0..1] init 0;
+
+[t1_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t1_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t1_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t1_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t2_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t2_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t2_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t2_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t3_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t3_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t3_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t3_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t4_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t4_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t4_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t4_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+endmodule
+
+
+
+//======== Models the activity of a single tourist ==================
+
+module tourist1
+
+t1_loc : [0..2] init t1;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t1_val : [0..BOUND] init 0;//value on a tourist's notepad
+t1_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t1_nlb_up]   (t1_com = 0) &amp; (t1_loc = 0) &amp; (lin = 0) -&gt; (t1_com' = 1);
+[t1_nrb_up]   (t1_com = 0) &amp; (t1_loc = 1) &amp; (rin = 0) -&gt; (t1_com' = 1);
+
+[t1_l_up]     (t1_com = 1) &amp; (t1_loc = 0) &amp; (lin = 0) -&gt; (t1_val' = nlb) &amp; (t1_loc' = 1) &amp; (t1_com' = 0);
+[t1_r_up]     (t1_com = 1) &amp; (t1_loc = 1) &amp; (rin = 0) -&gt; (t1_val' = nrb) &amp; (t1_loc' = 0) &amp; (t1_com' = 0);
+
+[t1_l_copy]   (flag = 0) &amp; (t1_loc = 0) &amp; (t1_val &lt; nlb) -&gt;  (t1_val' = nlb) &amp; (t1_loc' = 1);
+[t1_r_copy]   (flag = 0) &amp; (t1_loc = 1) &amp; (t1_val &lt; nrb) -&gt;  (t1_val' = nrb) &amp; (t1_loc' = 0); 
+
+[t1_enter_l]  (flag = 0) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val &gt; nlb)  -&gt; (t1_loc' = 2);
+[t1_enter_r]  (flag = 0) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val &gt; nrb)  -&gt; (t1_loc' = 2);
+
+[t1_must_l]   (flag = 0) &amp; (t1_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t1_loc' = 2);
+[t1_must_r]   (flag = 0) &amp; (t1_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t1_loc' = 2);
+
+[t1_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t1_loc = 2) -&gt; (t1_val' = t1_val) ;
+[t1_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t1_loc = 2) -&gt; (t1_val' = t1_val) ;
+
+endmodule
+
+module tourist2
+
+t2_loc : [0..2] init t2;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t2_val : [0..BOUND] init 0;//value on a tourist's notepad
+t2_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t2_nlb_up]   (t2_com = 0) &amp; (t2_loc = 0) &amp; (lin = 0) -&gt; (t2_com' = 1);
+[t2_nrb_up]   (t2_com = 0) &amp; (t2_loc = 1) &amp; (rin = 0) -&gt; (t2_com' = 1);
+
+[t2_l_up]     (t2_com = 1) &amp; (t2_loc = 0) &amp; (lin = 0) -&gt; (t2_val' = nlb) &amp; (t2_loc' = 1) &amp; (t2_com' = 0);
+[t2_r_up]     (t2_com = 1) &amp; (t2_loc = 1) &amp; (rin = 0) -&gt; (t2_val' = nrb) &amp; (t2_loc' = 0) &amp; (t2_com' = 0);
+
+[t2_l_copy]   (flag = 0) &amp; (t2_loc = 0) &amp; (t2_val &lt; nlb) -&gt;  (t2_val' = nlb) &amp; (t2_loc' = 1);
+[t2_r_copy]   (flag = 0) &amp; (t2_loc = 1) &amp; (t2_val &lt; nrb) -&gt;  (t2_val' = nrb) &amp; (t2_loc' = 0); 
+
+[t2_enter_l]  (flag = 0) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val &gt; nlb)  -&gt; (t2_loc' = 2);
+[t2_enter_r]  (flag = 0) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val &gt; nrb)  -&gt; (t2_loc' = 2);
+
+[t2_must_l]   (flag = 0) &amp; (t2_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t2_loc' = 2);
+[t2_must_r]   (flag = 0) &amp; (t2_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t2_loc' = 2);
+
+[t2_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t2_loc = 2) -&gt; (t2_val' = t2_val) ;
+[t2_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t2_loc = 2) -&gt; (t2_val' = t2_val) ;
+
+endmodule
+
+module tourist3
+
+t3_loc : [0..2] init t3;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t3_val : [0..BOUND] init 0;//value on a tourist's notepad
+t3_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t3_nlb_up]   (t3_com = 0) &amp; (t3_loc = 0) &amp; (lin = 0) -&gt; (t3_com' = 1);
+[t3_nrb_up]   (t3_com = 0) &amp; (t3_loc = 1) &amp; (rin = 0) -&gt; (t3_com' = 1);
+
+[t3_l_up]     (t3_com = 1) &amp; (t3_loc = 0) &amp; (lin = 0) -&gt; (t3_val' = nlb) &amp; (t3_loc' = 1) &amp; (t3_com' = 0);
+[t3_r_up]     (t3_com = 1) &amp; (t3_loc = 1) &amp; (rin = 0) -&gt; (t3_val' = nrb) &amp; (t3_loc' = 0) &amp; (t3_com' = 0);
+
+[t3_l_copy]   (flag = 0) &amp; (t3_loc = 0) &amp; (t3_val &lt; nlb) -&gt;  (t3_val' = nlb) &amp; (t3_loc' = 1);
+[t3_r_copy]   (flag = 0) &amp; (t3_loc = 1) &amp; (t3_val &lt; nrb) -&gt;  (t3_val' = nrb) &amp; (t3_loc' = 0); 
+
+[t3_enter_l]  (flag = 0) &amp; (t3_loc = 0) &amp; (lin = 0) &amp; (t3_val &gt; nlb)  -&gt; (t3_loc' = 2);
+[t3_enter_r]  (flag = 0) &amp; (t3_loc = 1) &amp; (rin = 0) &amp; (t3_val &gt; nrb)  -&gt; (t3_loc' = 2);
+
+[t3_must_l]   (flag = 0) &amp; (t3_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t3_loc' = 2);
+[t3_must_r]   (flag = 0) &amp; (t3_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t3_loc' = 2);
+
+[t3_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t3_loc = 2) -&gt; (t3_val' = t3_val) ;
+[t3_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t3_loc = 2) -&gt; (t3_val' = t3_val) ;
+
+endmodule
+
+module tourist4
+
+t4_loc : [0..2] init t4;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t4_val : [0..BOUND] init 0;//value on a tourist's notepad
+t4_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t4_nlb_up]   (t4_com = 0) &amp; (t4_loc = 0) &amp; (lin = 0) -&gt; (t4_com' = 1);
+[t4_nrb_up]   (t4_com = 0) &amp; (t4_loc = 1) &amp; (rin = 0) -&gt; (t4_com' = 1);
+
+[t4_l_up]     (t4_com = 1) &amp; (t4_loc = 0) &amp; (lin = 0) -&gt; (t4_val' = nlb) &amp; (t4_loc' = 1) &amp; (t4_com' = 0);
+[t4_r_up]     (t4_com = 1) &amp; (t4_loc = 1) &amp; (rin = 0) -&gt; (t4_val' = nrb) &amp; (t4_loc' = 0) &amp; (t4_com' = 0);
+
+[t4_l_copy]   (flag = 0) &amp; (t4_loc = 0) &amp; (t4_val &lt; nlb) -&gt;  (t4_val' = nlb) &amp; (t4_loc' = 1);
+[t4_r_copy]   (flag = 0) &amp; (t4_loc = 1) &amp; (t4_val &lt; nrb) -&gt;  (t4_val' = nrb) &amp; (t4_loc' = 0); 
+
+[t4_enter_l]  (flag = 0) &amp; (t4_loc = 0) &amp; (lin = 0) &amp; (t4_val &gt; nlb)  -&gt; (t4_loc' = 2);
+[t4_enter_r]  (flag = 0) &amp; (t4_loc = 1) &amp; (rin = 0) &amp; (t4_val &gt; nrb)  -&gt; (t4_loc' = 2);
+
+[t4_must_l]   (flag = 0) &amp; (t4_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t4_loc' = 2);
+[t4_must_r]   (flag = 0) &amp; (t4_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t4_loc' = 2);
+
+[t4_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t4_loc = 2) -&gt; (t4_val' = t4_val) ;
+[t4_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t4_loc = 2) -&gt; (t4_val' = t4_val) ;
+
+endmodule
+
+rewards "rounds"
+
+lin != N &amp; rin != N : 1; 
+
+endrewards</content>
+    </model>
+    <model name="rabin_choice3" type="rml">
+      <content>//Rabin's choice coordination problem
+//Amended 03/10/2010
+//Ensure all tourists' do not start from same location
+
+mdp 
+
+const N = 3; //Number of tourists
+
+const t1 = 1; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t2 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t3 = 1; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+
+const int BOUND = 100;//set to manage model size
+
+
+//======== Records update of the left noticeboard ==================
+
+module leftboard
+
+nlb : [0..BOUND] init 0;//number on  left board
+lbm : [0..1] init 0; //mode of nlb 0 --&gt; 'even', 1 --&gt; 'odd'
+
+[t1_nlb_up] (lbm = 0) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t1_nlb_up] (lbm = 1) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t2_nlb_up] (lbm = 0) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t2_nlb_up] (lbm = 1) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t3_nlb_up] (lbm = 0) &amp; (t3_loc = 0) &amp; (lin = 0) &amp; (t3_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t3_nlb_up] (lbm = 1) &amp; (t3_loc = 0) &amp; (lin = 0) &amp; (t3_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+endmodule
+
+//======== Records update of the right noticeboard ==================
+
+module rightboard
+
+nrb : [0..BOUND] init 0;//number on right board
+rbm : [0..1] init 0; //mode of nrb 0 --&gt; 'even', 1 --&gt; 'odd'
+
+[t1_nrb_up] (rbm = 0) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t1_nrb_up] (rbm = 1) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t2_nrb_up] (rbm = 0) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t2_nrb_up] (rbm = 1) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t3_nrb_up] (rbm = 0) &amp; (t3_loc = 1) &amp; (rin = 0) &amp; (t3_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t3_nrb_up] (rbm = 1) &amp; (t3_loc = 1) &amp; (rin = 0) &amp; (t3_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+endmodule
+
+//======== Counts the number of tourists entering the left/right meeting place ==================
+
+module counter
+
+rin : [0..N] init 0;//number of tourists inside the 'right' meeting place
+lin : [0..N] init 0;//number of tourists inside the 'left' meeting place
+
+[t1_enter_l]  (t1_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t1_enter_r]  (t1_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t1_must_l]   (t1_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t1_must_r]   (t1_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t2_enter_l]  (t2_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t2_enter_r]  (t2_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t2_must_l]   (t2_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t2_must_r]   (t2_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t3_enter_l]  (t3_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t3_enter_r]  (t3_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t3_must_l]   (t3_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t3_must_r]   (t3_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+endmodule
+
+//======== controls sequence of actions for tourists' at left/right location ==================
+
+module semaphore
+
+flag : [0..1] init 0;
+
+[t1_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t1_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t1_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t1_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t2_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t2_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t2_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t2_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t3_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t3_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t3_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t3_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+endmodule
+
+
+
+//======== Models the activity of a single tourist ==================
+
+module tourist1
+
+t1_loc : [0..2] init t1;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t1_val : [0..BOUND] init 0;//value on a tourist's notepad
+t1_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t1_nlb_up]   (t1_com = 0) &amp; (t1_loc = 0) &amp; (lin = 0) -&gt; (t1_com' = 1);
+[t1_nrb_up]   (t1_com = 0) &amp; (t1_loc = 1) &amp; (rin = 0) -&gt; (t1_com' = 1);
+
+[t1_l_up]     (t1_com = 1) &amp; (t1_loc = 0) &amp; (lin = 0) -&gt; (t1_val' = nlb) &amp; (t1_loc' = 1) &amp; (t1_com' = 0);
+[t1_r_up]     (t1_com = 1) &amp; (t1_loc = 1) &amp; (rin = 0) -&gt; (t1_val' = nrb) &amp; (t1_loc' = 0) &amp; (t1_com' = 0);
+
+[t1_l_copy]   (flag = 0) &amp; (t1_loc = 0) &amp; (t1_val &lt; nlb) -&gt;  (t1_val' = nlb) &amp; (t1_loc' = 1);
+[t1_r_copy]   (flag = 0) &amp; (t1_loc = 1) &amp; (t1_val &lt; nrb) -&gt;  (t1_val' = nrb) &amp; (t1_loc' = 0); 
+
+[t1_enter_l]  (flag = 0) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val &gt; nlb)  -&gt; (t1_loc' = 2);
+[t1_enter_r]  (flag = 0) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val &gt; nrb)  -&gt; (t1_loc' = 2);
+
+[t1_must_l]   (flag = 0) &amp; (t1_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t1_loc' = 2);
+[t1_must_r]   (flag = 0) &amp; (t1_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t1_loc' = 2);
+
+[t1_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t1_loc = 2) -&gt; (t1_val' = t1_val) ;
+[t1_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t1_loc = 2) -&gt; (t1_val' = t1_val) ;
+
+endmodule
+
+module tourist2
+
+t2_loc : [0..2] init t2;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t2_val : [0..BOUND] init 0;//value on a tourist's notepad
+t2_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t2_nlb_up]   (t2_com = 0) &amp; (t2_loc = 0) &amp; (lin = 0) -&gt; (t2_com' = 1);
+[t2_nrb_up]   (t2_com = 0) &amp; (t2_loc = 1) &amp; (rin = 0) -&gt; (t2_com' = 1);
+
+[t2_l_up]     (t2_com = 1) &amp; (t2_loc = 0) &amp; (lin = 0) -&gt; (t2_val' = nlb) &amp; (t2_loc' = 1) &amp; (t2_com' = 0);
+[t2_r_up]     (t2_com = 1) &amp; (t2_loc = 1) &amp; (rin = 0) -&gt; (t2_val' = nrb) &amp; (t2_loc' = 0) &amp; (t2_com' = 0);
+
+[t2_l_copy]   (flag = 0) &amp; (t2_loc = 0) &amp; (t2_val &lt; nlb) -&gt;  (t2_val' = nlb) &amp; (t2_loc' = 1);
+[t2_r_copy]   (flag = 0) &amp; (t2_loc = 1) &amp; (t2_val &lt; nrb) -&gt;  (t2_val' = nrb) &amp; (t2_loc' = 0); 
+
+[t2_enter_l]  (flag = 0) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val &gt; nlb)  -&gt; (t2_loc' = 2);
+[t2_enter_r]  (flag = 0) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val &gt; nrb)  -&gt; (t2_loc' = 2);
+
+[t2_must_l]   (flag = 0) &amp; (t2_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t2_loc' = 2);
+[t2_must_r]   (flag = 0) &amp; (t2_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t2_loc' = 2);
+
+[t2_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t2_loc = 2) -&gt; (t2_val' = t2_val) ;
+[t2_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t2_loc = 2) -&gt; (t2_val' = t2_val) ;
+
+endmodule
+
+module tourist3
+
+t3_loc : [0..2] init t3;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t3_val : [0..BOUND] init 0;//value on a tourist's notepad
+t3_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t3_nlb_up]   (t3_com = 0) &amp; (t3_loc = 0) &amp; (lin = 0) -&gt; (t3_com' = 1);
+[t3_nrb_up]   (t3_com = 0) &amp; (t3_loc = 1) &amp; (rin = 0) -&gt; (t3_com' = 1);
+
+[t3_l_up]     (t3_com = 1) &amp; (t3_loc = 0) &amp; (lin = 0) -&gt; (t3_val' = nlb) &amp; (t3_loc' = 1) &amp; (t3_com' = 0);
+[t3_r_up]     (t3_com = 1) &amp; (t3_loc = 1) &amp; (rin = 0) -&gt; (t3_val' = nrb) &amp; (t3_loc' = 0) &amp; (t3_com' = 0);
+
+[t3_l_copy]   (flag = 0) &amp; (t3_loc = 0) &amp; (t3_val &lt; nlb) -&gt;  (t3_val' = nlb) &amp; (t3_loc' = 1);
+[t3_r_copy]   (flag = 0) &amp; (t3_loc = 1) &amp; (t3_val &lt; nrb) -&gt;  (t3_val' = nrb) &amp; (t3_loc' = 0); 
+
+[t3_enter_l]  (flag = 0) &amp; (t3_loc = 0) &amp; (lin = 0) &amp; (t3_val &gt; nlb)  -&gt; (t3_loc' = 2);
+[t3_enter_r]  (flag = 0) &amp; (t3_loc = 1) &amp; (rin = 0) &amp; (t3_val &gt; nrb)  -&gt; (t3_loc' = 2);
+
+[t3_must_l]   (flag = 0) &amp; (t3_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t3_loc' = 2);
+[t3_must_r]   (flag = 0) &amp; (t3_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t3_loc' = 2);
+
+[t3_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t3_loc = 2) -&gt; (t3_val' = t3_val) ;
+[t3_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t3_loc = 2) -&gt; (t3_val' = t3_val) ;
+
+endmodule
+
+rewards "rounds"
+
+lin != N &amp; rin != N : 1; 
+
+endrewards</content>
+    </model>
+    <model name="rabin_choice10" type="rml">
+      <content>//Rabin's choice coordination problem
+//Amended 03/10/2010
+//Ensure all tourists' do not start from same location
+
+mdp 
+
+const N = 10; //Number of tourists
+
+const t1 = 1; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t2 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t3 = 1; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t4 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t5 = 1; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t6 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t7 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t8 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t9 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t10 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+
+const int BOUND = 100;//set to manage model size
+
+
+//======== Records update of the left noticeboard ==================
+
+module leftboard
+
+nlb : [0..BOUND] init 0;//number on  left board
+lbm : [0..1] init 0; //mode of nlb 0 --&gt; 'even', 1 --&gt; 'odd'
+
+[t1_nlb_up] (lbm = 0) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t1_nlb_up] (lbm = 1) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t2_nlb_up] (lbm = 0) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t2_nlb_up] (lbm = 1) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t3_nlb_up] (lbm = 0) &amp; (t3_loc = 0) &amp; (lin = 0) &amp; (t3_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t3_nlb_up] (lbm = 1) &amp; (t3_loc = 0) &amp; (lin = 0) &amp; (t3_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t4_nlb_up] (lbm = 0) &amp; (t4_loc = 0) &amp; (lin = 0) &amp; (t4_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t4_nlb_up] (lbm = 1) &amp; (t4_loc = 0) &amp; (lin = 0) &amp; (t4_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t5_nlb_up] (lbm = 0) &amp; (t5_loc = 0) &amp; (lin = 0) &amp; (t5_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t5_nlb_up] (lbm = 1) &amp; (t5_loc = 0) &amp; (lin = 0) &amp; (t5_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t6_nlb_up] (lbm = 0) &amp; (t6_loc = 0) &amp; (lin = 0) &amp; (t6_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t6_nlb_up] (lbm = 1) &amp; (t6_loc = 0) &amp; (lin = 0) &amp; (t6_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t7_nlb_up] (lbm = 0) &amp; (t7_loc = 0) &amp; (lin = 0) &amp; (t7_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t7_nlb_up] (lbm = 1) &amp; (t7_loc = 0) &amp; (lin = 0) &amp; (t7_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t8_nlb_up] (lbm = 0) &amp; (t8_loc = 0) &amp; (lin = 0) &amp; (t8_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t8_nlb_up] (lbm = 1) &amp; (t8_loc = 0) &amp; (lin = 0) &amp; (t8_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t9_nlb_up] (lbm = 0) &amp; (t9_loc = 0) &amp; (lin = 0) &amp; (t9_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t9_nlb_up] (lbm = 1) &amp; (t9_loc = 0) &amp; (lin = 0) &amp; (t9_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t10_nlb_up] (lbm = 0) &amp; (t10_loc = 0) &amp; (lin = 0) &amp; (t10_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t10_nlb_up] (lbm = 1) &amp; (t10_loc = 0) &amp; (lin = 0) &amp; (t10_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+endmodule
+
+//======== Records update of the right noticeboard ==================
+
+module rightboard
+
+nrb : [0..BOUND] init 0;//number on right board
+rbm : [0..1] init 0; //mode of nrb 0 --&gt; 'even', 1 --&gt; 'odd'
+
+[t1_nrb_up] (rbm = 0) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t1_nrb_up] (rbm = 1) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t2_nrb_up] (rbm = 0) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t2_nrb_up] (rbm = 1) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t3_nrb_up] (rbm = 0) &amp; (t3_loc = 1) &amp; (rin = 0) &amp; (t3_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t3_nrb_up] (rbm = 1) &amp; (t3_loc = 1) &amp; (rin = 0) &amp; (t3_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t4_nrb_up] (rbm = 0) &amp; (t4_loc = 1) &amp; (rin = 0) &amp; (t4_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t4_nrb_up] (rbm = 1) &amp; (t4_loc = 1) &amp; (rin = 0) &amp; (t4_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t5_nrb_up] (rbm = 0) &amp; (t5_loc = 1) &amp; (rin = 0) &amp; (t5_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t5_nrb_up] (rbm = 1) &amp; (t5_loc = 1) &amp; (rin = 0) &amp; (t5_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t6_nrb_up] (rbm = 0) &amp; (t6_loc = 1) &amp; (rin = 0) &amp; (t6_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t6_nrb_up] (rbm = 1) &amp; (t6_loc = 1) &amp; (rin = 0) &amp; (t6_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t7_nrb_up] (rbm = 0) &amp; (t7_loc = 1) &amp; (rin = 0) &amp; (t7_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t7_nrb_up] (rbm = 1) &amp; (t7_loc = 1) &amp; (rin = 0) &amp; (t7_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t8_nrb_up] (rbm = 0) &amp; (t8_loc = 1) &amp; (rin = 0) &amp; (t8_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t8_nrb_up] (rbm = 1) &amp; (t8_loc = 1) &amp; (rin = 0) &amp; (t8_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t9_nrb_up] (rbm = 0) &amp; (t9_loc = 1) &amp; (rin = 0) &amp; (t9_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t9_nrb_up] (rbm = 1) &amp; (t9_loc = 1) &amp; (rin = 0) &amp; (t9_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t10_nrb_up] (rbm = 0) &amp; (t10_loc = 1) &amp; (rin = 0) &amp; (t10_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t10_nrb_up] (rbm = 1) &amp; (t10_loc = 1) &amp; (rin = 0) &amp; (t10_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+
+endmodule
+
+//======== Counts the number of tourists entering the left/right meeting place ==================
+
+module counter
+
+rin : [0..N] init 0;//number of tourists inside the 'right' meeting place
+lin : [0..N] init 0;//number of tourists inside the 'left' meeting place
+
+[t1_enter_l]  (t1_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t1_enter_r]  (t1_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t1_must_l]   (t1_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t1_must_r]   (t1_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t2_enter_l]  (t2_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t2_enter_r]  (t2_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t2_must_l]   (t2_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t2_must_r]   (t2_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t3_enter_l]  (t3_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t3_enter_r]  (t3_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t3_must_l]   (t3_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t3_must_r]   (t3_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t4_enter_l]  (t4_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t4_enter_r]  (t4_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t4_must_l]   (t4_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t4_must_r]   (t4_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t5_enter_l]  (t5_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t5_enter_r]  (t5_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t5_must_l]   (t5_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t5_must_r]   (t5_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t6_enter_l]  (t6_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t6_enter_r]  (t6_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t6_must_l]   (t6_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t6_must_r]   (t6_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t7_enter_l]  (t7_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t7_enter_r]  (t7_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t7_must_l]   (t7_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t7_must_r]   (t7_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t8_enter_l]  (t8_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t8_enter_r]  (t8_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t8_must_l]   (t8_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t8_must_r]   (t8_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t9_enter_l]  (t9_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t9_enter_r]  (t9_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t9_must_l]   (t9_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t9_must_r]   (t9_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t10_enter_l]  (t10_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t10_enter_r]  (t10_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t10_must_l]   (t10_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t10_must_r]   (t10_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+endmodule
+
+//======== controls sequence of actions for tourists' at left/right location ==================
+
+module semaphore
+
+flag : [0..1] init 0;
+
+[t1_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t1_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t1_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t1_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t2_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t2_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t2_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t2_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t3_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t3_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t3_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t3_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t4_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t4_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t4_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t4_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t5_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t5_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t5_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t5_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t6_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t6_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t6_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t6_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t7_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t7_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t7_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t7_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t8_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t8_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t8_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t8_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t9_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t9_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t9_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t9_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t10_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t10_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t10_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t10_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+endmodule
+
+
+
+//======== Models the activity of a single tourist ==================
+
+module tourist1
+
+t1_loc : [0..2] init t1;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t1_val : [0..BOUND] init 0;//value on a tourist's notepad
+t1_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t1_nlb_up]   (t1_com = 0) &amp; (t1_loc = 0) &amp; (lin = 0) -&gt; (t1_com' = 1);
+[t1_nrb_up]   (t1_com = 0) &amp; (t1_loc = 1) &amp; (rin = 0) -&gt; (t1_com' = 1);
+
+[t1_l_up]     (t1_com = 1) &amp; (t1_loc = 0) &amp; (lin = 0) -&gt; (t1_val' = nlb) &amp; (t1_loc' = 1) &amp; (t1_com' = 0);
+[t1_r_up]     (t1_com = 1) &amp; (t1_loc = 1) &amp; (rin = 0) -&gt; (t1_val' = nrb) &amp; (t1_loc' = 0) &amp; (t1_com' = 0);
+
+[t1_l_copy]   (flag = 0) &amp; (t1_loc = 0) &amp; (t1_val &lt; nlb) -&gt;  (t1_val' = nlb) &amp; (t1_loc' = 1);
+[t1_r_copy]   (flag = 0) &amp; (t1_loc = 1) &amp; (t1_val &lt; nrb) -&gt;  (t1_val' = nrb) &amp; (t1_loc' = 0); 
+
+[t1_enter_l]  (flag = 0) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val &gt; nlb)  -&gt; (t1_loc' = 2);
+[t1_enter_r]  (flag = 0) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val &gt; nrb)  -&gt; (t1_loc' = 2);
+
+[t1_must_l]   (flag = 0) &amp; (t1_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t1_loc' = 2);
+[t1_must_r]   (flag = 0) &amp; (t1_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t1_loc' = 2);
+
+[t1_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t1_loc = 2) -&gt; (t1_val' = t1_val) ;
+[t1_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t1_loc = 2) -&gt; (t1_val' = t1_val) ;
+
+endmodule
+
+module tourist2
+
+t2_loc : [0..2] init t2;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t2_val : [0..BOUND] init 0;//value on a tourist's notepad
+t2_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t2_nlb_up]   (t2_com = 0) &amp; (t2_loc = 0) &amp; (lin = 0) -&gt; (t2_com' = 1);
+[t2_nrb_up]   (t2_com = 0) &amp; (t2_loc = 1) &amp; (rin = 0) -&gt; (t2_com' = 1);
+
+[t2_l_up]     (t2_com = 1) &amp; (t2_loc = 0) &amp; (lin = 0) -&gt; (t2_val' = nlb) &amp; (t2_loc' = 1) &amp; (t2_com' = 0);
+[t2_r_up]     (t2_com = 1) &amp; (t2_loc = 1) &amp; (rin = 0) -&gt; (t2_val' = nrb) &amp; (t2_loc' = 0) &amp; (t2_com' = 0);
+
+[t2_l_copy]   (flag = 0) &amp; (t2_loc = 0) &amp; (t2_val &lt; nlb) -&gt;  (t2_val' = nlb) &amp; (t2_loc' = 1);
+[t2_r_copy]   (flag = 0) &amp; (t2_loc = 1) &amp; (t2_val &lt; nrb) -&gt;  (t2_val' = nrb) &amp; (t2_loc' = 0); 
+
+[t2_enter_l]  (flag = 0) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val &gt; nlb)  -&gt; (t2_loc' = 2);
+[t2_enter_r]  (flag = 0) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val &gt; nrb)  -&gt; (t2_loc' = 2);
+
+[t2_must_l]   (flag = 0) &amp; (t2_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t2_loc' = 2);
+[t2_must_r]   (flag = 0) &amp; (t2_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t2_loc' = 2);
+
+[t2_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t2_loc = 2) -&gt; (t2_val' = t2_val) ;
+[t2_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t2_loc = 2) -&gt; (t2_val' = t2_val) ;
+
+endmodule
+
+module tourist3
+
+t3_loc : [0..2] init t3;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t3_val : [0..BOUND] init 0;//value on a tourist's notepad
+t3_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t3_nlb_up]   (t3_com = 0) &amp; (t3_loc = 0) &amp; (lin = 0) -&gt; (t3_com' = 1);
+[t3_nrb_up]   (t3_com = 0) &amp; (t3_loc = 1) &amp; (rin = 0) -&gt; (t3_com' = 1);
+
+[t3_l_up]     (t3_com = 1) &amp; (t3_loc = 0) &amp; (lin = 0) -&gt; (t3_val' = nlb) &amp; (t3_loc' = 1) &amp; (t3_com' = 0);
+[t3_r_up]     (t3_com = 1) &amp; (t3_loc = 1) &amp; (rin = 0) -&gt; (t3_val' = nrb) &amp; (t3_loc' = 0) &amp; (t3_com' = 0);
+
+[t3_l_copy]   (flag = 0) &amp; (t3_loc = 0) &amp; (t3_val &lt; nlb) -&gt;  (t3_val' = nlb) &amp; (t3_loc' = 1);
+[t3_r_copy]   (flag = 0) &amp; (t3_loc = 1) &amp; (t3_val &lt; nrb) -&gt;  (t3_val' = nrb) &amp; (t3_loc' = 0); 
+
+[t3_enter_l]  (flag = 0) &amp; (t3_loc = 0) &amp; (lin = 0) &amp; (t3_val &gt; nlb)  -&gt; (t3_loc' = 2);
+[t3_enter_r]  (flag = 0) &amp; (t3_loc = 1) &amp; (rin = 0) &amp; (t3_val &gt; nrb)  -&gt; (t3_loc' = 2);
+
+[t3_must_l]   (flag = 0) &amp; (t3_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t3_loc' = 2);
+[t3_must_r]   (flag = 0) &amp; (t3_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t3_loc' = 2);
+
+[t3_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t3_loc = 2) -&gt; (t3_val' = t3_val) ;
+[t3_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t3_loc = 2) -&gt; (t3_val' = t3_val) ;
+
+endmodule
+
+module tourist4
+
+t4_loc : [0..2] init t4;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t4_val : [0..BOUND] init 0;//value on a tourist's notepad
+t4_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t4_nlb_up]   (t4_com = 0) &amp; (t4_loc = 0) &amp; (lin = 0) -&gt; (t4_com' = 1);
+[t4_nrb_up]   (t4_com = 0) &amp; (t4_loc = 1) &amp; (rin = 0) -&gt; (t4_com' = 1);
+
+[t4_l_up]     (t4_com = 1) &amp; (t4_loc = 0) &amp; (lin = 0) -&gt; (t4_val' = nlb) &amp; (t4_loc' = 1) &amp; (t4_com' = 0);
+[t4_r_up]     (t4_com = 1) &amp; (t4_loc = 1) &amp; (rin = 0) -&gt; (t4_val' = nrb) &amp; (t4_loc' = 0) &amp; (t4_com' = 0);
+
+[t4_l_copy]   (flag = 0) &amp; (t4_loc = 0) &amp; (t4_val &lt; nlb) -&gt;  (t4_val' = nlb) &amp; (t4_loc' = 1);
+[t4_r_copy]   (flag = 0) &amp; (t4_loc = 1) &amp; (t4_val &lt; nrb) -&gt;  (t4_val' = nrb) &amp; (t4_loc' = 0); 
+
+[t4_enter_l]  (flag = 0) &amp; (t4_loc = 0) &amp; (lin = 0) &amp; (t4_val &gt; nlb)  -&gt; (t4_loc' = 2);
+[t4_enter_r]  (flag = 0) &amp; (t4_loc = 1) &amp; (rin = 0) &amp; (t4_val &gt; nrb)  -&gt; (t4_loc' = 2);
+
+[t4_must_l]   (flag = 0) &amp; (t4_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t4_loc' = 2);
+[t4_must_r]   (flag = 0) &amp; (t4_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t4_loc' = 2);
+
+[t4_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t4_loc = 2) -&gt; (t4_val' = t4_val) ;
+[t4_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t4_loc = 2) -&gt; (t4_val' = t4_val) ;
+
+endmodule
+
+module tourist5
+
+t5_loc : [0..2] init t5;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t5_val : [0..BOUND] init 0;//value on a tourist's notepad
+t5_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t5_nlb_up]   (t5_com = 0) &amp; (t5_loc = 0) &amp; (lin = 0) -&gt; (t5_com' = 1);
+[t5_nrb_up]   (t5_com = 0) &amp; (t5_loc = 1) &amp; (rin = 0) -&gt; (t5_com' = 1);
+
+[t5_l_up]     (t5_com = 1) &amp; (t5_loc = 0) &amp; (lin = 0) -&gt; (t5_val' = nlb) &amp; (t5_loc' = 1) &amp; (t5_com' = 0);
+[t5_r_up]     (t5_com = 1) &amp; (t5_loc = 1) &amp; (rin = 0) -&gt; (t5_val' = nrb) &amp; (t5_loc' = 0) &amp; (t5_com' = 0);
+
+[t5_l_copy]   (flag = 0) &amp; (t5_loc = 0) &amp; (t5_val &lt; nlb) -&gt;  (t5_val' = nlb) &amp; (t5_loc' = 1);
+[t5_r_copy]   (flag = 0) &amp; (t5_loc = 1) &amp; (t5_val &lt; nrb) -&gt;  (t5_val' = nrb) &amp; (t5_loc' = 0); 
+
+[t5_enter_l]  (flag = 0) &amp; (t5_loc = 0) &amp; (lin = 0) &amp; (t5_val &gt; nlb)  -&gt; (t5_loc' = 2);
+[t5_enter_r]  (flag = 0) &amp; (t5_loc = 1) &amp; (rin = 0) &amp; (t5_val &gt; nrb)  -&gt; (t5_loc' = 2);
+
+[t5_must_l]   (flag = 0) &amp; (t5_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t5_loc' = 2);
+[t5_must_r]   (flag = 0) &amp; (t5_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t5_loc' = 2);
+
+[t5_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t5_loc = 2) -&gt; (t5_val' = t5_val) ;
+[t5_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t5_loc = 2) -&gt; (t5_val' = t5_val) ;
+
+endmodule
+
+module tourist6
+
+t6_loc : [0..2] init t6;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t6_val : [0..BOUND] init 0;//value on a tourist's notepad
+t6_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t6_nlb_up]   (t6_com = 0) &amp; (t6_loc = 0) &amp; (lin = 0) -&gt; (t6_com' = 1);
+[t6_nrb_up]   (t6_com = 0) &amp; (t6_loc = 1) &amp; (rin = 0) -&gt; (t6_com' = 1);
+
+[t6_l_up]     (t6_com = 1) &amp; (t6_loc = 0) &amp; (lin = 0) -&gt; (t6_val' = nlb) &amp; (t6_loc' = 1) &amp; (t6_com' = 0);
+[t6_r_up]     (t6_com = 1) &amp; (t6_loc = 1) &amp; (rin = 0) -&gt; (t6_val' = nrb) &amp; (t6_loc' = 0) &amp; (t6_com' = 0);
+
+[t6_l_copy]   (flag = 0) &amp; (t6_loc = 0) &amp; (t6_val &lt; nlb) -&gt;  (t6_val' = nlb) &amp; (t6_loc' = 1);
+[t6_r_copy]   (flag = 0) &amp; (t6_loc = 1) &amp; (t6_val &lt; nrb) -&gt;  (t6_val' = nrb) &amp; (t6_loc' = 0); 
+
+[t6_enter_l]  (flag = 0) &amp; (t6_loc = 0) &amp; (lin = 0) &amp; (t6_val &gt; nlb)  -&gt; (t6_loc' = 2);
+[t6_enter_r]  (flag = 0) &amp; (t6_loc = 1) &amp; (rin = 0) &amp; (t6_val &gt; nrb)  -&gt; (t6_loc' = 2);
+
+[t6_must_l]   (flag = 0) &amp; (t6_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t6_loc' = 2);
+[t6_must_r]   (flag = 0) &amp; (t6_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t6_loc' = 2);
+
+[t6_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t6_loc = 2) -&gt; (t6_val' = t6_val) ;
+[t6_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t6_loc = 2) -&gt; (t6_val' = t6_val) ;
+
+endmodule
+
+module tourist7
+
+t7_loc : [0..2] init t7;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t7_val : [0..BOUND] init 0;//value on a tourist's notepad
+t7_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t7_nlb_up]   (t7_com = 0) &amp; (t7_loc = 0) &amp; (lin = 0) -&gt; (t7_com' = 1);
+[t7_nrb_up]   (t7_com = 0) &amp; (t7_loc = 1) &amp; (rin = 0) -&gt; (t7_com' = 1);
+
+[t7_l_up]     (t7_com = 1) &amp; (t7_loc = 0) &amp; (lin = 0) -&gt; (t7_val' = nlb) &amp; (t7_loc' = 1) &amp; (t7_com' = 0);
+[t7_r_up]     (t7_com = 1) &amp; (t7_loc = 1) &amp; (rin = 0) -&gt; (t7_val' = nrb) &amp; (t7_loc' = 0) &amp; (t7_com' = 0);
+
+[t7_l_copy]   (flag = 0) &amp; (t7_loc = 0) &amp; (t7_val &lt; nlb) -&gt;  (t7_val' = nlb) &amp; (t7_loc' = 1);
+[t7_r_copy]   (flag = 0) &amp; (t7_loc = 1) &amp; (t7_val &lt; nrb) -&gt;  (t7_val' = nrb) &amp; (t7_loc' = 0); 
+
+[t7_enter_l]  (flag = 0) &amp; (t7_loc = 0) &amp; (lin = 0) &amp; (t7_val &gt; nlb)  -&gt; (t7_loc' = 2);
+[t7_enter_r]  (flag = 0) &amp; (t7_loc = 1) &amp; (rin = 0) &amp; (t7_val &gt; nrb)  -&gt; (t7_loc' = 2);
+
+[t7_must_l]   (flag = 0) &amp; (t7_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t7_loc' = 2);
+[t7_must_r]   (flag = 0) &amp; (t7_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t7_loc' = 2);
+
+[t7_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t7_loc = 2) -&gt; (t7_val' = t7_val) ;
+[t7_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t7_loc = 2) -&gt; (t7_val' = t7_val) ;
+
+endmodule
+
+module tourist8
+
+t8_loc : [0..2] init t8;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t8_val : [0..BOUND] init 0;//value on a tourist's notepad
+t8_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t8_nlb_up]   (t8_com = 0) &amp; (t8_loc = 0) &amp; (lin = 0) -&gt; (t8_com' = 1);
+[t8_nrb_up]   (t8_com = 0) &amp; (t8_loc = 1) &amp; (rin = 0) -&gt; (t8_com' = 1);
+
+[t8_l_up]     (t8_com = 1) &amp; (t8_loc = 0) &amp; (lin = 0) -&gt; (t8_val' = nlb) &amp; (t8_loc' = 1) &amp; (t8_com' = 0);
+[t8_r_up]     (t8_com = 1) &amp; (t8_loc = 1) &amp; (rin = 0) -&gt; (t8_val' = nrb) &amp; (t8_loc' = 0) &amp; (t8_com' = 0);
+
+[t8_l_copy]   (flag = 0) &amp; (t8_loc = 0) &amp; (t8_val &lt; nlb) -&gt;  (t8_val' = nlb) &amp; (t8_loc' = 1);
+[t8_r_copy]   (flag = 0) &amp; (t8_loc = 1) &amp; (t8_val &lt; nrb) -&gt;  (t8_val' = nrb) &amp; (t8_loc' = 0); 
+
+[t8_enter_l]  (flag = 0) &amp; (t8_loc = 0) &amp; (lin = 0) &amp; (t8_val &gt; nlb)  -&gt; (t8_loc' = 2);
+[t8_enter_r]  (flag = 0) &amp; (t8_loc = 1) &amp; (rin = 0) &amp; (t8_val &gt; nrb)  -&gt; (t8_loc' = 2);
+
+[t8_must_l]   (flag = 0) &amp; (t8_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t8_loc' = 2);
+[t8_must_r]   (flag = 0) &amp; (t8_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t8_loc' = 2);
+
+[t8_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t8_loc = 2) -&gt; (t8_val' = t8_val) ;
+[t8_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t8_loc = 2) -&gt; (t8_val' = t8_val) ;
+
+endmodule
+
+module tourist9
+
+t9_loc : [0..2] init t9;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t9_val : [0..BOUND] init 0;//value on a tourist's notepad
+t9_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t9_nlb_up]   (t9_com = 0) &amp; (t9_loc = 0) &amp; (lin = 0) -&gt; (t9_com' = 1);
+[t9_nrb_up]   (t9_com = 0) &amp; (t9_loc = 1) &amp; (rin = 0) -&gt; (t9_com' = 1);
+
+[t9_l_up]     (t9_com = 1) &amp; (t9_loc = 0) &amp; (lin = 0) -&gt; (t9_val' = nlb) &amp; (t9_loc' = 1) &amp; (t9_com' = 0);
+[t9_r_up]     (t9_com = 1) &amp; (t9_loc = 1) &amp; (rin = 0) -&gt; (t9_val' = nrb) &amp; (t9_loc' = 0) &amp; (t9_com' = 0);
+
+[t9_l_copy]   (flag = 0) &amp; (t9_loc = 0) &amp; (t9_val &lt; nlb) -&gt;  (t9_val' = nlb) &amp; (t9_loc' = 1);
+[t9_r_copy]   (flag = 0) &amp; (t9_loc = 1) &amp; (t9_val &lt; nrb) -&gt;  (t9_val' = nrb) &amp; (t9_loc' = 0); 
+
+[t9_enter_l]  (flag = 0) &amp; (t9_loc = 0) &amp; (lin = 0) &amp; (t9_val &gt; nlb)  -&gt; (t9_loc' = 2);
+[t9_enter_r]  (flag = 0) &amp; (t9_loc = 1) &amp; (rin = 0) &amp; (t9_val &gt; nrb)  -&gt; (t9_loc' = 2);
+
+[t9_must_l]   (flag = 0) &amp; (t9_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t9_loc' = 2);
+[t9_must_r]   (flag = 0) &amp; (t9_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t9_loc' = 2);
+
+[t9_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t9_loc = 2) -&gt; (t9_val' = t9_val) ;
+[t9_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t9_loc = 2) -&gt; (t9_val' = t9_val) ;
+
+endmodule
+
+module tourist10
+
+t10_loc : [0..2] init t10;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t10_val : [0..BOUND] init 0;//value on a tourist's notepad
+t10_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t10_nlb_up]   (t10_com = 0) &amp; (t10_loc = 0) &amp; (lin = 0) -&gt; (t10_com' = 1);
+[t10_nrb_up]   (t10_com = 0) &amp; (t10_loc = 1) &amp; (rin = 0) -&gt; (t10_com' = 1);
+
+[t10_l_up]     (t10_com = 1) &amp; (t10_loc = 0) &amp; (lin = 0) -&gt; (t10_val' = nlb) &amp; (t10_loc' = 1) &amp; (t10_com' = 0);
+[t10_r_up]     (t10_com = 1) &amp; (t10_loc = 1) &amp; (rin = 0) -&gt; (t10_val' = nrb) &amp; (t10_loc' = 0) &amp; (t10_com' = 0);
+
+[t10_l_copy]   (flag = 0) &amp; (t10_loc = 0) &amp; (t10_val &lt; nlb) -&gt;  (t10_val' = nlb) &amp; (t10_loc' = 1);
+[t10_r_copy]   (flag = 0) &amp; (t10_loc = 1) &amp; (t10_val &lt; nrb) -&gt;  (t10_val' = nrb) &amp; (t10_loc' = 0); 
+
+[t10_enter_l]  (flag = 0) &amp; (t10_loc = 0) &amp; (lin = 0) &amp; (t10_val &gt; nlb)  -&gt; (t10_loc' = 2);
+[t10_enter_r]  (flag = 0) &amp; (t10_loc = 1) &amp; (rin = 0) &amp; (t10_val &gt; nrb)  -&gt; (t10_loc' = 2);
+
+[t10_must_l]   (flag = 0) &amp; (t10_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t10_loc' = 2);
+[t10_must_r]   (flag = 0) &amp; (t10_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t10_loc' = 2);
+
+[t10_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t10_loc = 2) -&gt; (t10_val' = t10_val) ;
+[t10_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t10_loc = 2) -&gt; (t10_val' = t10_val) ;
+
+endmodule
+
+rewards "rounds"
+
+lin != N &amp; rin != N : 1; 
+
+endrewards</content>
+    </model>
+    <model name="rabin_choice9" type="rml">
+      <content>//Rabin's choice coordination problem
+//Amended 03/10/2010
+//Ensure all tourists' do not start from same location
+
+mdp 
+
+const N = 9; //Number of tourists
+
+const t1 = 1; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t2 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t3 = 1; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t4 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t5 = 1; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t6 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t7 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t8 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t9 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+
+const int BOUND = 100;//set to manage model size
+
+
+//======== Records update of the left noticeboard ==================
+
+module leftboard
+
+nlb : [0..BOUND] init 0;//number on  left board
+lbm : [0..1] init 0; //mode of nlb 0 --&gt; 'even', 1 --&gt; 'odd'
+
+[t1_nlb_up] (lbm = 0) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t1_nlb_up] (lbm = 1) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t2_nlb_up] (lbm = 0) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t2_nlb_up] (lbm = 1) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t3_nlb_up] (lbm = 0) &amp; (t3_loc = 0) &amp; (lin = 0) &amp; (t3_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t3_nlb_up] (lbm = 1) &amp; (t3_loc = 0) &amp; (lin = 0) &amp; (t3_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t4_nlb_up] (lbm = 0) &amp; (t4_loc = 0) &amp; (lin = 0) &amp; (t4_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t4_nlb_up] (lbm = 1) &amp; (t4_loc = 0) &amp; (lin = 0) &amp; (t4_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t5_nlb_up] (lbm = 0) &amp; (t5_loc = 0) &amp; (lin = 0) &amp; (t5_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t5_nlb_up] (lbm = 1) &amp; (t5_loc = 0) &amp; (lin = 0) &amp; (t5_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t6_nlb_up] (lbm = 0) &amp; (t6_loc = 0) &amp; (lin = 0) &amp; (t6_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t6_nlb_up] (lbm = 1) &amp; (t6_loc = 0) &amp; (lin = 0) &amp; (t6_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t7_nlb_up] (lbm = 0) &amp; (t7_loc = 0) &amp; (lin = 0) &amp; (t7_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t7_nlb_up] (lbm = 1) &amp; (t7_loc = 0) &amp; (lin = 0) &amp; (t7_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t8_nlb_up] (lbm = 0) &amp; (t8_loc = 0) &amp; (lin = 0) &amp; (t8_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t8_nlb_up] (lbm = 1) &amp; (t8_loc = 0) &amp; (lin = 0) &amp; (t8_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t9_nlb_up] (lbm = 0) &amp; (t9_loc = 0) &amp; (lin = 0) &amp; (t9_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t9_nlb_up] (lbm = 1) &amp; (t9_loc = 0) &amp; (lin = 0) &amp; (t9_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+endmodule
+
+//======== Records update of the right noticeboard ==================
+
+module rightboard
+
+nrb : [0..BOUND] init 0;//number on right board
+rbm : [0..1] init 0; //mode of nrb 0 --&gt; 'even', 1 --&gt; 'odd'
+
+[t1_nrb_up] (rbm = 0) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t1_nrb_up] (rbm = 1) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t2_nrb_up] (rbm = 0) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t2_nrb_up] (rbm = 1) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t3_nrb_up] (rbm = 0) &amp; (t3_loc = 1) &amp; (rin = 0) &amp; (t3_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t3_nrb_up] (rbm = 1) &amp; (t3_loc = 1) &amp; (rin = 0) &amp; (t3_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t4_nrb_up] (rbm = 0) &amp; (t4_loc = 1) &amp; (rin = 0) &amp; (t4_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t4_nrb_up] (rbm = 1) &amp; (t4_loc = 1) &amp; (rin = 0) &amp; (t4_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t5_nrb_up] (rbm = 0) &amp; (t5_loc = 1) &amp; (rin = 0) &amp; (t5_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t5_nrb_up] (rbm = 1) &amp; (t5_loc = 1) &amp; (rin = 0) &amp; (t5_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t6_nrb_up] (rbm = 0) &amp; (t6_loc = 1) &amp; (rin = 0) &amp; (t6_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t6_nrb_up] (rbm = 1) &amp; (t6_loc = 1) &amp; (rin = 0) &amp; (t6_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t7_nrb_up] (rbm = 0) &amp; (t7_loc = 1) &amp; (rin = 0) &amp; (t7_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t7_nrb_up] (rbm = 1) &amp; (t7_loc = 1) &amp; (rin = 0) &amp; (t7_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t8_nrb_up] (rbm = 0) &amp; (t8_loc = 1) &amp; (rin = 0) &amp; (t8_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t8_nrb_up] (rbm = 1) &amp; (t8_loc = 1) &amp; (rin = 0) &amp; (t8_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t9_nrb_up] (rbm = 0) &amp; (t9_loc = 1) &amp; (rin = 0) &amp; (t9_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t9_nrb_up] (rbm = 1) &amp; (t9_loc = 1) &amp; (rin = 0) &amp; (t9_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+endmodule
+
+//======== Counts the number of tourists entering the left/right meeting place ==================
+
+module counter
+
+rin : [0..N] init 0;//number of tourists inside the 'right' meeting place
+lin : [0..N] init 0;//number of tourists inside the 'left' meeting place
+
+[t1_enter_l]  (t1_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t1_enter_r]  (t1_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t1_must_l]   (t1_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t1_must_r]   (t1_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t2_enter_l]  (t2_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t2_enter_r]  (t2_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t2_must_l]   (t2_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t2_must_r]   (t2_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t3_enter_l]  (t3_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t3_enter_r]  (t3_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t3_must_l]   (t3_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t3_must_r]   (t3_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t4_enter_l]  (t4_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t4_enter_r]  (t4_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t4_must_l]   (t4_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t4_must_r]   (t4_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t5_enter_l]  (t5_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t5_enter_r]  (t5_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t5_must_l]   (t5_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t5_must_r]   (t5_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t6_enter_l]  (t6_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t6_enter_r]  (t6_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t6_must_l]   (t6_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t6_must_r]   (t6_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t7_enter_l]  (t7_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t7_enter_r]  (t7_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t7_must_l]   (t7_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t7_must_r]   (t7_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t8_enter_l]  (t8_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t8_enter_r]  (t8_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t8_must_l]   (t8_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t8_must_r]   (t8_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t9_enter_l]  (t9_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t9_enter_r]  (t9_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t9_must_l]   (t9_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t9_must_r]   (t9_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+endmodule
+
+//======== controls sequence of actions for tourists' at left/right location ==================
+
+module semaphore
+
+flag : [0..1] init 0;
+
+[t1_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t1_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t1_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t1_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t2_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t2_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t2_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t2_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t3_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t3_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t3_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t3_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t4_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t4_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t4_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t4_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t5_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t5_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t5_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t5_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t6_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t6_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t6_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t6_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t7_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t7_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t7_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t7_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t8_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t8_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t8_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t8_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t9_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t9_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t9_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t9_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+endmodule
+
+
+
+//======== Models the activity of a single tourist ==================
+
+module tourist1
+
+t1_loc : [0..2] init t1;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t1_val : [0..BOUND] init 0;//value on a tourist's notepad
+t1_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t1_nlb_up]   (t1_com = 0) &amp; (t1_loc = 0) &amp; (lin = 0) -&gt; (t1_com' = 1);
+[t1_nrb_up]   (t1_com = 0) &amp; (t1_loc = 1) &amp; (rin = 0) -&gt; (t1_com' = 1);
+
+[t1_l_up]     (t1_com = 1) &amp; (t1_loc = 0) &amp; (lin = 0) -&gt; (t1_val' = nlb) &amp; (t1_loc' = 1) &amp; (t1_com' = 0);
+[t1_r_up]     (t1_com = 1) &amp; (t1_loc = 1) &amp; (rin = 0) -&gt; (t1_val' = nrb) &amp; (t1_loc' = 0) &amp; (t1_com' = 0);
+
+[t1_l_copy]   (flag = 0) &amp; (t1_loc = 0) &amp; (t1_val &lt; nlb) -&gt;  (t1_val' = nlb) &amp; (t1_loc' = 1);
+[t1_r_copy]   (flag = 0) &amp; (t1_loc = 1) &amp; (t1_val &lt; nrb) -&gt;  (t1_val' = nrb) &amp; (t1_loc' = 0); 
+
+[t1_enter_l]  (flag = 0) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val &gt; nlb)  -&gt; (t1_loc' = 2);
+[t1_enter_r]  (flag = 0) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val &gt; nrb)  -&gt; (t1_loc' = 2);
+
+[t1_must_l]   (flag = 0) &amp; (t1_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t1_loc' = 2);
+[t1_must_r]   (flag = 0) &amp; (t1_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t1_loc' = 2);
+
+[t1_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t1_loc = 2) -&gt; (t1_val' = t1_val) ;
+[t1_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t1_loc = 2) -&gt; (t1_val' = t1_val) ;
+
+endmodule
+
+module tourist2
+
+t2_loc : [0..2] init t2;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t2_val : [0..BOUND] init 0;//value on a tourist's notepad
+t2_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t2_nlb_up]   (t2_com = 0) &amp; (t2_loc = 0) &amp; (lin = 0) -&gt; (t2_com' = 1);
+[t2_nrb_up]   (t2_com = 0) &amp; (t2_loc = 1) &amp; (rin = 0) -&gt; (t2_com' = 1);
+
+[t2_l_up]     (t2_com = 1) &amp; (t2_loc = 0) &amp; (lin = 0) -&gt; (t2_val' = nlb) &amp; (t2_loc' = 1) &amp; (t2_com' = 0);
+[t2_r_up]     (t2_com = 1) &amp; (t2_loc = 1) &amp; (rin = 0) -&gt; (t2_val' = nrb) &amp; (t2_loc' = 0) &amp; (t2_com' = 0);
+
+[t2_l_copy]   (flag = 0) &amp; (t2_loc = 0) &amp; (t2_val &lt; nlb) -&gt;  (t2_val' = nlb) &amp; (t2_loc' = 1);
+[t2_r_copy]   (flag = 0) &amp; (t2_loc = 1) &amp; (t2_val &lt; nrb) -&gt;  (t2_val' = nrb) &amp; (t2_loc' = 0); 
+
+[t2_enter_l]  (flag = 0) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val &gt; nlb)  -&gt; (t2_loc' = 2);
+[t2_enter_r]  (flag = 0) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val &gt; nrb)  -&gt; (t2_loc' = 2);
+
+[t2_must_l]   (flag = 0) &amp; (t2_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t2_loc' = 2);
+[t2_must_r]   (flag = 0) &amp; (t2_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t2_loc' = 2);
+
+[t2_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t2_loc = 2) -&gt; (t2_val' = t2_val) ;
+[t2_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t2_loc = 2) -&gt; (t2_val' = t2_val) ;
+
+endmodule
+
+module tourist3
+
+t3_loc : [0..2] init t3;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t3_val : [0..BOUND] init 0;//value on a tourist's notepad
+t3_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t3_nlb_up]   (t3_com = 0) &amp; (t3_loc = 0) &amp; (lin = 0) -&gt; (t3_com' = 1);
+[t3_nrb_up]   (t3_com = 0) &amp; (t3_loc = 1) &amp; (rin = 0) -&gt; (t3_com' = 1);
+
+[t3_l_up]     (t3_com = 1) &amp; (t3_loc = 0) &amp; (lin = 0) -&gt; (t3_val' = nlb) &amp; (t3_loc' = 1) &amp; (t3_com' = 0);
+[t3_r_up]     (t3_com = 1) &amp; (t3_loc = 1) &amp; (rin = 0) -&gt; (t3_val' = nrb) &amp; (t3_loc' = 0) &amp; (t3_com' = 0);
+
+[t3_l_copy]   (flag = 0) &amp; (t3_loc = 0) &amp; (t3_val &lt; nlb) -&gt;  (t3_val' = nlb) &amp; (t3_loc' = 1);
+[t3_r_copy]   (flag = 0) &amp; (t3_loc = 1) &amp; (t3_val &lt; nrb) -&gt;  (t3_val' = nrb) &amp; (t3_loc' = 0); 
+
+[t3_enter_l]  (flag = 0) &amp; (t3_loc = 0) &amp; (lin = 0) &amp; (t3_val &gt; nlb)  -&gt; (t3_loc' = 2);
+[t3_enter_r]  (flag = 0) &amp; (t3_loc = 1) &amp; (rin = 0) &amp; (t3_val &gt; nrb)  -&gt; (t3_loc' = 2);
+
+[t3_must_l]   (flag = 0) &amp; (t3_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t3_loc' = 2);
+[t3_must_r]   (flag = 0) &amp; (t3_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t3_loc' = 2);
+
+[t3_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t3_loc = 2) -&gt; (t3_val' = t3_val) ;
+[t3_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t3_loc = 2) -&gt; (t3_val' = t3_val) ;
+
+endmodule
+
+module tourist4
+
+t4_loc : [0..2] init t4;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t4_val : [0..BOUND] init 0;//value on a tourist's notepad
+t4_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t4_nlb_up]   (t4_com = 0) &amp; (t4_loc = 0) &amp; (lin = 0) -&gt; (t4_com' = 1);
+[t4_nrb_up]   (t4_com = 0) &amp; (t4_loc = 1) &amp; (rin = 0) -&gt; (t4_com' = 1);
+
+[t4_l_up]     (t4_com = 1) &amp; (t4_loc = 0) &amp; (lin = 0) -&gt; (t4_val' = nlb) &amp; (t4_loc' = 1) &amp; (t4_com' = 0);
+[t4_r_up]     (t4_com = 1) &amp; (t4_loc = 1) &amp; (rin = 0) -&gt; (t4_val' = nrb) &amp; (t4_loc' = 0) &amp; (t4_com' = 0);
+
+[t4_l_copy]   (flag = 0) &amp; (t4_loc = 0) &amp; (t4_val &lt; nlb) -&gt;  (t4_val' = nlb) &amp; (t4_loc' = 1);
+[t4_r_copy]   (flag = 0) &amp; (t4_loc = 1) &amp; (t4_val &lt; nrb) -&gt;  (t4_val' = nrb) &amp; (t4_loc' = 0); 
+
+[t4_enter_l]  (flag = 0) &amp; (t4_loc = 0) &amp; (lin = 0) &amp; (t4_val &gt; nlb)  -&gt; (t4_loc' = 2);
+[t4_enter_r]  (flag = 0) &amp; (t4_loc = 1) &amp; (rin = 0) &amp; (t4_val &gt; nrb)  -&gt; (t4_loc' = 2);
+
+[t4_must_l]   (flag = 0) &amp; (t4_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t4_loc' = 2);
+[t4_must_r]   (flag = 0) &amp; (t4_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t4_loc' = 2);
+
+[t4_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t4_loc = 2) -&gt; (t4_val' = t4_val) ;
+[t4_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t4_loc = 2) -&gt; (t4_val' = t4_val) ;
+
+endmodule
+
+module tourist5
+
+t5_loc : [0..2] init t5;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t5_val : [0..BOUND] init 0;//value on a tourist's notepad
+t5_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t5_nlb_up]   (t5_com = 0) &amp; (t5_loc = 0) &amp; (lin = 0) -&gt; (t5_com' = 1);
+[t5_nrb_up]   (t5_com = 0) &amp; (t5_loc = 1) &amp; (rin = 0) -&gt; (t5_com' = 1);
+
+[t5_l_up]     (t5_com = 1) &amp; (t5_loc = 0) &amp; (lin = 0) -&gt; (t5_val' = nlb) &amp; (t5_loc' = 1) &amp; (t5_com' = 0);
+[t5_r_up]     (t5_com = 1) &amp; (t5_loc = 1) &amp; (rin = 0) -&gt; (t5_val' = nrb) &amp; (t5_loc' = 0) &amp; (t5_com' = 0);
+
+[t5_l_copy]   (flag = 0) &amp; (t5_loc = 0) &amp; (t5_val &lt; nlb) -&gt;  (t5_val' = nlb) &amp; (t5_loc' = 1);
+[t5_r_copy]   (flag = 0) &amp; (t5_loc = 1) &amp; (t5_val &lt; nrb) -&gt;  (t5_val' = nrb) &amp; (t5_loc' = 0); 
+
+[t5_enter_l]  (flag = 0) &amp; (t5_loc = 0) &amp; (lin = 0) &amp; (t5_val &gt; nlb)  -&gt; (t5_loc' = 2);
+[t5_enter_r]  (flag = 0) &amp; (t5_loc = 1) &amp; (rin = 0) &amp; (t5_val &gt; nrb)  -&gt; (t5_loc' = 2);
+
+[t5_must_l]   (flag = 0) &amp; (t5_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t5_loc' = 2);
+[t5_must_r]   (flag = 0) &amp; (t5_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t5_loc' = 2);
+
+[t5_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t5_loc = 2) -&gt; (t5_val' = t5_val) ;
+[t5_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t5_loc = 2) -&gt; (t5_val' = t5_val) ;
+
+endmodule
+
+module tourist6
+
+t6_loc : [0..2] init t6;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t6_val : [0..BOUND] init 0;//value on a tourist's notepad
+t6_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t6_nlb_up]   (t6_com = 0) &amp; (t6_loc = 0) &amp; (lin = 0) -&gt; (t6_com' = 1);
+[t6_nrb_up]   (t6_com = 0) &amp; (t6_loc = 1) &amp; (rin = 0) -&gt; (t6_com' = 1);
+
+[t6_l_up]     (t6_com = 1) &amp; (t6_loc = 0) &amp; (lin = 0) -&gt; (t6_val' = nlb) &amp; (t6_loc' = 1) &amp; (t6_com' = 0);
+[t6_r_up]     (t6_com = 1) &amp; (t6_loc = 1) &amp; (rin = 0) -&gt; (t6_val' = nrb) &amp; (t6_loc' = 0) &amp; (t6_com' = 0);
+
+[t6_l_copy]   (flag = 0) &amp; (t6_loc = 0) &amp; (t6_val &lt; nlb) -&gt;  (t6_val' = nlb) &amp; (t6_loc' = 1);
+[t6_r_copy]   (flag = 0) &amp; (t6_loc = 1) &amp; (t6_val &lt; nrb) -&gt;  (t6_val' = nrb) &amp; (t6_loc' = 0); 
+
+[t6_enter_l]  (flag = 0) &amp; (t6_loc = 0) &amp; (lin = 0) &amp; (t6_val &gt; nlb)  -&gt; (t6_loc' = 2);
+[t6_enter_r]  (flag = 0) &amp; (t6_loc = 1) &amp; (rin = 0) &amp; (t6_val &gt; nrb)  -&gt; (t6_loc' = 2);
+
+[t6_must_l]   (flag = 0) &amp; (t6_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t6_loc' = 2);
+[t6_must_r]   (flag = 0) &amp; (t6_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t6_loc' = 2);
+
+[t6_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t6_loc = 2) -&gt; (t6_val' = t6_val) ;
+[t6_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t6_loc = 2) -&gt; (t6_val' = t6_val) ;
+
+endmodule
+
+module tourist7
+
+t7_loc : [0..2] init t7;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t7_val : [0..BOUND] init 0;//value on a tourist's notepad
+t7_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t7_nlb_up]   (t7_com = 0) &amp; (t7_loc = 0) &amp; (lin = 0) -&gt; (t7_com' = 1);
+[t7_nrb_up]   (t7_com = 0) &amp; (t7_loc = 1) &amp; (rin = 0) -&gt; (t7_com' = 1);
+
+[t7_l_up]     (t7_com = 1) &amp; (t7_loc = 0) &amp; (lin = 0) -&gt; (t7_val' = nlb) &amp; (t7_loc' = 1) &amp; (t7_com' = 0);
+[t7_r_up]     (t7_com = 1) &amp; (t7_loc = 1) &amp; (rin = 0) -&gt; (t7_val' = nrb) &amp; (t7_loc' = 0) &amp; (t7_com' = 0);
+
+[t7_l_copy]   (flag = 0) &amp; (t7_loc = 0) &amp; (t7_val &lt; nlb) -&gt;  (t7_val' = nlb) &amp; (t7_loc' = 1);
+[t7_r_copy]   (flag = 0) &amp; (t7_loc = 1) &amp; (t7_val &lt; nrb) -&gt;  (t7_val' = nrb) &amp; (t7_loc' = 0); 
+
+[t7_enter_l]  (flag = 0) &amp; (t7_loc = 0) &amp; (lin = 0) &amp; (t7_val &gt; nlb)  -&gt; (t7_loc' = 2);
+[t7_enter_r]  (flag = 0) &amp; (t7_loc = 1) &amp; (rin = 0) &amp; (t7_val &gt; nrb)  -&gt; (t7_loc' = 2);
+
+[t7_must_l]   (flag = 0) &amp; (t7_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t7_loc' = 2);
+[t7_must_r]   (flag = 0) &amp; (t7_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t7_loc' = 2);
+
+[t7_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t7_loc = 2) -&gt; (t7_val' = t7_val) ;
+[t7_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t7_loc = 2) -&gt; (t7_val' = t7_val) ;
+
+endmodule
+
+module tourist8
+
+t8_loc : [0..2] init t8;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t8_val : [0..BOUND] init 0;//value on a tourist's notepad
+t8_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t8_nlb_up]   (t8_com = 0) &amp; (t8_loc = 0) &amp; (lin = 0) -&gt; (t8_com' = 1);
+[t8_nrb_up]   (t8_com = 0) &amp; (t8_loc = 1) &amp; (rin = 0) -&gt; (t8_com' = 1);
+
+[t8_l_up]     (t8_com = 1) &amp; (t8_loc = 0) &amp; (lin = 0) -&gt; (t8_val' = nlb) &amp; (t8_loc' = 1) &amp; (t8_com' = 0);
+[t8_r_up]     (t8_com = 1) &amp; (t8_loc = 1) &amp; (rin = 0) -&gt; (t8_val' = nrb) &amp; (t8_loc' = 0) &amp; (t8_com' = 0);
+
+[t8_l_copy]   (flag = 0) &amp; (t8_loc = 0) &amp; (t8_val &lt; nlb) -&gt;  (t8_val' = nlb) &amp; (t8_loc' = 1);
+[t8_r_copy]   (flag = 0) &amp; (t8_loc = 1) &amp; (t8_val &lt; nrb) -&gt;  (t8_val' = nrb) &amp; (t8_loc' = 0); 
+
+[t8_enter_l]  (flag = 0) &amp; (t8_loc = 0) &amp; (lin = 0) &amp; (t8_val &gt; nlb)  -&gt; (t8_loc' = 2);
+[t8_enter_r]  (flag = 0) &amp; (t8_loc = 1) &amp; (rin = 0) &amp; (t8_val &gt; nrb)  -&gt; (t8_loc' = 2);
+
+[t8_must_l]   (flag = 0) &amp; (t8_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t8_loc' = 2);
+[t8_must_r]   (flag = 0) &amp; (t8_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t8_loc' = 2);
+
+[t8_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t8_loc = 2) -&gt; (t8_val' = t8_val) ;
+[t8_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t8_loc = 2) -&gt; (t8_val' = t8_val) ;
+
+endmodule
+
+module tourist9
+
+t9_loc : [0..2] init t9;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t9_val : [0..BOUND] init 0;//value on a tourist's notepad
+t9_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t9_nlb_up]   (t9_com = 0) &amp; (t9_loc = 0) &amp; (lin = 0) -&gt; (t9_com' = 1);
+[t9_nrb_up]   (t9_com = 0) &amp; (t9_loc = 1) &amp; (rin = 0) -&gt; (t9_com' = 1);
+
+[t9_l_up]     (t9_com = 1) &amp; (t9_loc = 0) &amp; (lin = 0) -&gt; (t9_val' = nlb) &amp; (t9_loc' = 1) &amp; (t9_com' = 0);
+[t9_r_up]     (t9_com = 1) &amp; (t9_loc = 1) &amp; (rin = 0) -&gt; (t9_val' = nrb) &amp; (t9_loc' = 0) &amp; (t9_com' = 0);
+
+[t9_l_copy]   (flag = 0) &amp; (t9_loc = 0) &amp; (t9_val &lt; nlb) -&gt;  (t9_val' = nlb) &amp; (t9_loc' = 1);
+[t9_r_copy]   (flag = 0) &amp; (t9_loc = 1) &amp; (t9_val &lt; nrb) -&gt;  (t9_val' = nrb) &amp; (t9_loc' = 0); 
+
+[t9_enter_l]  (flag = 0) &amp; (t9_loc = 0) &amp; (lin = 0) &amp; (t9_val &gt; nlb)  -&gt; (t9_loc' = 2);
+[t9_enter_r]  (flag = 0) &amp; (t9_loc = 1) &amp; (rin = 0) &amp; (t9_val &gt; nrb)  -&gt; (t9_loc' = 2);
+
+[t9_must_l]   (flag = 0) &amp; (t9_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t9_loc' = 2);
+[t9_must_r]   (flag = 0) &amp; (t9_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t9_loc' = 2);
+
+[t9_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t9_loc = 2) -&gt; (t9_val' = t9_val) ;
+[t9_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t9_loc = 2) -&gt; (t9_val' = t9_val) ;
+
+endmodule
+
+rewards "rounds"
+
+lin != N &amp; rin != N : 1; 
+
+endrewards</content>
+    </model>
+    <model name="rabin_choice8" type="rml">
+      <content>//Rabin's choice coordination problem
+//Amended 03/10/2010
+//Ensure all tourists' do not start from same location
+
+mdp 
+
+const N = 8; //Number of tourists
+
+const t1 = 1; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t2 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t3 = 1; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t4 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t5 = 1; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t6 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t7 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t8 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+
+const int BOUND = 100;//set to manage model size
+
+
+//======== Records update of the left noticeboard ==================
+
+module leftboard
+
+nlb : [0..BOUND] init 0;//number on  left board
+lbm : [0..1] init 0; //mode of nlb 0 --&gt; 'even', 1 --&gt; 'odd'
+
+[t1_nlb_up] (lbm = 0) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t1_nlb_up] (lbm = 1) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t2_nlb_up] (lbm = 0) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t2_nlb_up] (lbm = 1) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t3_nlb_up] (lbm = 0) &amp; (t3_loc = 0) &amp; (lin = 0) &amp; (t3_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t3_nlb_up] (lbm = 1) &amp; (t3_loc = 0) &amp; (lin = 0) &amp; (t3_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t4_nlb_up] (lbm = 0) &amp; (t4_loc = 0) &amp; (lin = 0) &amp; (t4_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t4_nlb_up] (lbm = 1) &amp; (t4_loc = 0) &amp; (lin = 0) &amp; (t4_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t5_nlb_up] (lbm = 0) &amp; (t5_loc = 0) &amp; (lin = 0) &amp; (t5_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t5_nlb_up] (lbm = 1) &amp; (t5_loc = 0) &amp; (lin = 0) &amp; (t5_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t6_nlb_up] (lbm = 0) &amp; (t6_loc = 0) &amp; (lin = 0) &amp; (t6_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t6_nlb_up] (lbm = 1) &amp; (t6_loc = 0) &amp; (lin = 0) &amp; (t6_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t7_nlb_up] (lbm = 0) &amp; (t7_loc = 0) &amp; (lin = 0) &amp; (t7_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t7_nlb_up] (lbm = 1) &amp; (t7_loc = 0) &amp; (lin = 0) &amp; (t7_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t8_nlb_up] (lbm = 0) &amp; (t8_loc = 0) &amp; (lin = 0) &amp; (t8_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t8_nlb_up] (lbm = 1) &amp; (t8_loc = 0) &amp; (lin = 0) &amp; (t8_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+endmodule
+
+//======== Records update of the right noticeboard ==================
+
+module rightboard
+
+nrb : [0..BOUND] init 0;//number on right board
+rbm : [0..1] init 0; //mode of nrb 0 --&gt; 'even', 1 --&gt; 'odd'
+
+[t1_nrb_up] (rbm = 0) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t1_nrb_up] (rbm = 1) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t2_nrb_up] (rbm = 0) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t2_nrb_up] (rbm = 1) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t3_nrb_up] (rbm = 0) &amp; (t3_loc = 1) &amp; (rin = 0) &amp; (t3_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t3_nrb_up] (rbm = 1) &amp; (t3_loc = 1) &amp; (rin = 0) &amp; (t3_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t4_nrb_up] (rbm = 0) &amp; (t4_loc = 1) &amp; (rin = 0) &amp; (t4_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t4_nrb_up] (rbm = 1) &amp; (t4_loc = 1) &amp; (rin = 0) &amp; (t4_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t5_nrb_up] (rbm = 0) &amp; (t5_loc = 1) &amp; (rin = 0) &amp; (t5_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t5_nrb_up] (rbm = 1) &amp; (t5_loc = 1) &amp; (rin = 0) &amp; (t5_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t6_nrb_up] (rbm = 0) &amp; (t6_loc = 1) &amp; (rin = 0) &amp; (t6_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t6_nrb_up] (rbm = 1) &amp; (t6_loc = 1) &amp; (rin = 0) &amp; (t6_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t7_nrb_up] (rbm = 0) &amp; (t7_loc = 1) &amp; (rin = 0) &amp; (t7_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t7_nrb_up] (rbm = 1) &amp; (t7_loc = 1) &amp; (rin = 0) &amp; (t7_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t8_nrb_up] (rbm = 0) &amp; (t8_loc = 1) &amp; (rin = 0) &amp; (t8_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t8_nrb_up] (rbm = 1) &amp; (t8_loc = 1) &amp; (rin = 0) &amp; (t8_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+endmodule
+
+//======== Counts the number of tourists entering the left/right meeting place ==================
+
+module counter
+
+rin : [0..N] init 0;//number of tourists inside the 'right' meeting place
+lin : [0..N] init 0;//number of tourists inside the 'left' meeting place
+
+[t1_enter_l]  (t1_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t1_enter_r]  (t1_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t1_must_l]   (t1_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t1_must_r]   (t1_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t2_enter_l]  (t2_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t2_enter_r]  (t2_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t2_must_l]   (t2_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t2_must_r]   (t2_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t3_enter_l]  (t3_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t3_enter_r]  (t3_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t3_must_l]   (t3_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t3_must_r]   (t3_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t4_enter_l]  (t4_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t4_enter_r]  (t4_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t4_must_l]   (t4_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t4_must_r]   (t4_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t5_enter_l]  (t5_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t5_enter_r]  (t5_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t5_must_l]   (t5_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t5_must_r]   (t5_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t6_enter_l]  (t6_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t6_enter_r]  (t6_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t6_must_l]   (t6_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t6_must_r]   (t6_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t7_enter_l]  (t7_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t7_enter_r]  (t7_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t7_must_l]   (t7_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t7_must_r]   (t7_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t8_enter_l]  (t8_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t8_enter_r]  (t8_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t8_must_l]   (t8_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t8_must_r]   (t8_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+endmodule
+
+//======== controls sequence of actions for tourists' at left/right location ==================
+
+module semaphore
+
+flag : [0..1] init 0;
+
+[t1_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t1_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t1_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t1_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t2_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t2_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t2_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t2_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t3_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t3_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t3_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t3_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t4_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t4_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t4_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t4_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t5_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t5_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t5_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t5_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t6_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t6_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t6_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t6_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t7_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t7_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t7_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t7_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t8_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t8_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t8_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t8_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+endmodule
+
+
+
+//======== Models the activity of a single tourist ==================
+
+module tourist1
+
+t1_loc : [0..2] init t1;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t1_val : [0..BOUND] init 0;//value on a tourist's notepad
+t1_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t1_nlb_up]   (t1_com = 0) &amp; (t1_loc = 0) &amp; (lin = 0) -&gt; (t1_com' = 1);
+[t1_nrb_up]   (t1_com = 0) &amp; (t1_loc = 1) &amp; (rin = 0) -&gt; (t1_com' = 1);
+
+[t1_l_up]     (t1_com = 1) &amp; (t1_loc = 0) &amp; (lin = 0) -&gt; (t1_val' = nlb) &amp; (t1_loc' = 1) &amp; (t1_com' = 0);
+[t1_r_up]     (t1_com = 1) &amp; (t1_loc = 1) &amp; (rin = 0) -&gt; (t1_val' = nrb) &amp; (t1_loc' = 0) &amp; (t1_com' = 0);
+
+[t1_l_copy]   (flag = 0) &amp; (t1_loc = 0) &amp; (t1_val &lt; nlb) -&gt;  (t1_val' = nlb) &amp; (t1_loc' = 1);
+[t1_r_copy]   (flag = 0) &amp; (t1_loc = 1) &amp; (t1_val &lt; nrb) -&gt;  (t1_val' = nrb) &amp; (t1_loc' = 0); 
+
+[t1_enter_l]  (flag = 0) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val &gt; nlb)  -&gt; (t1_loc' = 2);
+[t1_enter_r]  (flag = 0) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val &gt; nrb)  -&gt; (t1_loc' = 2);
+
+[t1_must_l]   (flag = 0) &amp; (t1_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t1_loc' = 2);
+[t1_must_r]   (flag = 0) &amp; (t1_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t1_loc' = 2);
+
+[t1_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t1_loc = 2) -&gt; (t1_val' = t1_val) ;
+[t1_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t1_loc = 2) -&gt; (t1_val' = t1_val) ;
+
+endmodule
+
+module tourist2
+
+t2_loc : [0..2] init t2;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t2_val : [0..BOUND] init 0;//value on a tourist's notepad
+t2_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t2_nlb_up]   (t2_com = 0) &amp; (t2_loc = 0) &amp; (lin = 0) -&gt; (t2_com' = 1);
+[t2_nrb_up]   (t2_com = 0) &amp; (t2_loc = 1) &amp; (rin = 0) -&gt; (t2_com' = 1);
+
+[t2_l_up]     (t2_com = 1) &amp; (t2_loc = 0) &amp; (lin = 0) -&gt; (t2_val' = nlb) &amp; (t2_loc' = 1) &amp; (t2_com' = 0);
+[t2_r_up]     (t2_com = 1) &amp; (t2_loc = 1) &amp; (rin = 0) -&gt; (t2_val' = nrb) &amp; (t2_loc' = 0) &amp; (t2_com' = 0);
+
+[t2_l_copy]   (flag = 0) &amp; (t2_loc = 0) &amp; (t2_val &lt; nlb) -&gt;  (t2_val' = nlb) &amp; (t2_loc' = 1);
+[t2_r_copy]   (flag = 0) &amp; (t2_loc = 1) &amp; (t2_val &lt; nrb) -&gt;  (t2_val' = nrb) &amp; (t2_loc' = 0); 
+
+[t2_enter_l]  (flag = 0) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val &gt; nlb)  -&gt; (t2_loc' = 2);
+[t2_enter_r]  (flag = 0) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val &gt; nrb)  -&gt; (t2_loc' = 2);
+
+[t2_must_l]   (flag = 0) &amp; (t2_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t2_loc' = 2);
+[t2_must_r]   (flag = 0) &amp; (t2_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t2_loc' = 2);
+
+[t2_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t2_loc = 2) -&gt; (t2_val' = t2_val) ;
+[t2_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t2_loc = 2) -&gt; (t2_val' = t2_val) ;
+
+endmodule
+
+module tourist3
+
+t3_loc : [0..2] init t3;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t3_val : [0..BOUND] init 0;//value on a tourist's notepad
+t3_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t3_nlb_up]   (t3_com = 0) &amp; (t3_loc = 0) &amp; (lin = 0) -&gt; (t3_com' = 1);
+[t3_nrb_up]   (t3_com = 0) &amp; (t3_loc = 1) &amp; (rin = 0) -&gt; (t3_com' = 1);
+
+[t3_l_up]     (t3_com = 1) &amp; (t3_loc = 0) &amp; (lin = 0) -&gt; (t3_val' = nlb) &amp; (t3_loc' = 1) &amp; (t3_com' = 0);
+[t3_r_up]     (t3_com = 1) &amp; (t3_loc = 1) &amp; (rin = 0) -&gt; (t3_val' = nrb) &amp; (t3_loc' = 0) &amp; (t3_com' = 0);
+
+[t3_l_copy]   (flag = 0) &amp; (t3_loc = 0) &amp; (t3_val &lt; nlb) -&gt;  (t3_val' = nlb) &amp; (t3_loc' = 1);
+[t3_r_copy]   (flag = 0) &amp; (t3_loc = 1) &amp; (t3_val &lt; nrb) -&gt;  (t3_val' = nrb) &amp; (t3_loc' = 0); 
+
+[t3_enter_l]  (flag = 0) &amp; (t3_loc = 0) &amp; (lin = 0) &amp; (t3_val &gt; nlb)  -&gt; (t3_loc' = 2);
+[t3_enter_r]  (flag = 0) &amp; (t3_loc = 1) &amp; (rin = 0) &amp; (t3_val &gt; nrb)  -&gt; (t3_loc' = 2);
+
+[t3_must_l]   (flag = 0) &amp; (t3_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t3_loc' = 2);
+[t3_must_r]   (flag = 0) &amp; (t3_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t3_loc' = 2);
+
+[t3_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t3_loc = 2) -&gt; (t3_val' = t3_val) ;
+[t3_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t3_loc = 2) -&gt; (t3_val' = t3_val) ;
+
+endmodule
+
+module tourist4
+
+t4_loc : [0..2] init t4;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t4_val : [0..BOUND] init 0;//value on a tourist's notepad
+t4_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t4_nlb_up]   (t4_com = 0) &amp; (t4_loc = 0) &amp; (lin = 0) -&gt; (t4_com' = 1);
+[t4_nrb_up]   (t4_com = 0) &amp; (t4_loc = 1) &amp; (rin = 0) -&gt; (t4_com' = 1);
+
+[t4_l_up]     (t4_com = 1) &amp; (t4_loc = 0) &amp; (lin = 0) -&gt; (t4_val' = nlb) &amp; (t4_loc' = 1) &amp; (t4_com' = 0);
+[t4_r_up]     (t4_com = 1) &amp; (t4_loc = 1) &amp; (rin = 0) -&gt; (t4_val' = nrb) &amp; (t4_loc' = 0) &amp; (t4_com' = 0);
+
+[t4_l_copy]   (flag = 0) &amp; (t4_loc = 0) &amp; (t4_val &lt; nlb) -&gt;  (t4_val' = nlb) &amp; (t4_loc' = 1);
+[t4_r_copy]   (flag = 0) &amp; (t4_loc = 1) &amp; (t4_val &lt; nrb) -&gt;  (t4_val' = nrb) &amp; (t4_loc' = 0); 
+
+[t4_enter_l]  (flag = 0) &amp; (t4_loc = 0) &amp; (lin = 0) &amp; (t4_val &gt; nlb)  -&gt; (t4_loc' = 2);
+[t4_enter_r]  (flag = 0) &amp; (t4_loc = 1) &amp; (rin = 0) &amp; (t4_val &gt; nrb)  -&gt; (t4_loc' = 2);
+
+[t4_must_l]   (flag = 0) &amp; (t4_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t4_loc' = 2);
+[t4_must_r]   (flag = 0) &amp; (t4_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t4_loc' = 2);
+
+[t4_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t4_loc = 2) -&gt; (t4_val' = t4_val) ;
+[t4_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t4_loc = 2) -&gt; (t4_val' = t4_val) ;
+
+endmodule
+
+module tourist5
+
+t5_loc : [0..2] init t5;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t5_val : [0..BOUND] init 0;//value on a tourist's notepad
+t5_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t5_nlb_up]   (t5_com = 0) &amp; (t5_loc = 0) &amp; (lin = 0) -&gt; (t5_com' = 1);
+[t5_nrb_up]   (t5_com = 0) &amp; (t5_loc = 1) &amp; (rin = 0) -&gt; (t5_com' = 1);
+
+[t5_l_up]     (t5_com = 1) &amp; (t5_loc = 0) &amp; (lin = 0) -&gt; (t5_val' = nlb) &amp; (t5_loc' = 1) &amp; (t5_com' = 0);
+[t5_r_up]     (t5_com = 1) &amp; (t5_loc = 1) &amp; (rin = 0) -&gt; (t5_val' = nrb) &amp; (t5_loc' = 0) &amp; (t5_com' = 0);
+
+[t5_l_copy]   (flag = 0) &amp; (t5_loc = 0) &amp; (t5_val &lt; nlb) -&gt;  (t5_val' = nlb) &amp; (t5_loc' = 1);
+[t5_r_copy]   (flag = 0) &amp; (t5_loc = 1) &amp; (t5_val &lt; nrb) -&gt;  (t5_val' = nrb) &amp; (t5_loc' = 0); 
+
+[t5_enter_l]  (flag = 0) &amp; (t5_loc = 0) &amp; (lin = 0) &amp; (t5_val &gt; nlb)  -&gt; (t5_loc' = 2);
+[t5_enter_r]  (flag = 0) &amp; (t5_loc = 1) &amp; (rin = 0) &amp; (t5_val &gt; nrb)  -&gt; (t5_loc' = 2);
+
+[t5_must_l]   (flag = 0) &amp; (t5_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t5_loc' = 2);
+[t5_must_r]   (flag = 0) &amp; (t5_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t5_loc' = 2);
+
+[t5_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t5_loc = 2) -&gt; (t5_val' = t5_val) ;
+[t5_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t5_loc = 2) -&gt; (t5_val' = t5_val) ;
+
+endmodule
+
+module tourist6
+
+t6_loc : [0..2] init t6;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t6_val : [0..BOUND] init 0;//value on a tourist's notepad
+t6_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t6_nlb_up]   (t6_com = 0) &amp; (t6_loc = 0) &amp; (lin = 0) -&gt; (t6_com' = 1);
+[t6_nrb_up]   (t6_com = 0) &amp; (t6_loc = 1) &amp; (rin = 0) -&gt; (t6_com' = 1);
+
+[t6_l_up]     (t6_com = 1) &amp; (t6_loc = 0) &amp; (lin = 0) -&gt; (t6_val' = nlb) &amp; (t6_loc' = 1) &amp; (t6_com' = 0);
+[t6_r_up]     (t6_com = 1) &amp; (t6_loc = 1) &amp; (rin = 0) -&gt; (t6_val' = nrb) &amp; (t6_loc' = 0) &amp; (t6_com' = 0);
+
+[t6_l_copy]   (flag = 0) &amp; (t6_loc = 0) &amp; (t6_val &lt; nlb) -&gt;  (t6_val' = nlb) &amp; (t6_loc' = 1);
+[t6_r_copy]   (flag = 0) &amp; (t6_loc = 1) &amp; (t6_val &lt; nrb) -&gt;  (t6_val' = nrb) &amp; (t6_loc' = 0); 
+
+[t6_enter_l]  (flag = 0) &amp; (t6_loc = 0) &amp; (lin = 0) &amp; (t6_val &gt; nlb)  -&gt; (t6_loc' = 2);
+[t6_enter_r]  (flag = 0) &amp; (t6_loc = 1) &amp; (rin = 0) &amp; (t6_val &gt; nrb)  -&gt; (t6_loc' = 2);
+
+[t6_must_l]   (flag = 0) &amp; (t6_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t6_loc' = 2);
+[t6_must_r]   (flag = 0) &amp; (t6_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t6_loc' = 2);
+
+[t6_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t6_loc = 2) -&gt; (t6_val' = t6_val) ;
+[t6_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t6_loc = 2) -&gt; (t6_val' = t6_val) ;
+
+endmodule
+
+module tourist7
+
+t7_loc : [0..2] init t7;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t7_val : [0..BOUND] init 0;//value on a tourist's notepad
+t7_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t7_nlb_up]   (t7_com = 0) &amp; (t7_loc = 0) &amp; (lin = 0) -&gt; (t7_com' = 1);
+[t7_nrb_up]   (t7_com = 0) &amp; (t7_loc = 1) &amp; (rin = 0) -&gt; (t7_com' = 1);
+
+[t7_l_up]     (t7_com = 1) &amp; (t7_loc = 0) &amp; (lin = 0) -&gt; (t7_val' = nlb) &amp; (t7_loc' = 1) &amp; (t7_com' = 0);
+[t7_r_up]     (t7_com = 1) &amp; (t7_loc = 1) &amp; (rin = 0) -&gt; (t7_val' = nrb) &amp; (t7_loc' = 0) &amp; (t7_com' = 0);
+
+[t7_l_copy]   (flag = 0) &amp; (t7_loc = 0) &amp; (t7_val &lt; nlb) -&gt;  (t7_val' = nlb) &amp; (t7_loc' = 1);
+[t7_r_copy]   (flag = 0) &amp; (t7_loc = 1) &amp; (t7_val &lt; nrb) -&gt;  (t7_val' = nrb) &amp; (t7_loc' = 0); 
+
+[t7_enter_l]  (flag = 0) &amp; (t7_loc = 0) &amp; (lin = 0) &amp; (t7_val &gt; nlb)  -&gt; (t7_loc' = 2);
+[t7_enter_r]  (flag = 0) &amp; (t7_loc = 1) &amp; (rin = 0) &amp; (t7_val &gt; nrb)  -&gt; (t7_loc' = 2);
+
+[t7_must_l]   (flag = 0) &amp; (t7_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t7_loc' = 2);
+[t7_must_r]   (flag = 0) &amp; (t7_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t7_loc' = 2);
+
+[t7_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t7_loc = 2) -&gt; (t7_val' = t7_val) ;
+[t7_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t7_loc = 2) -&gt; (t7_val' = t7_val) ;
+
+endmodule
+
+module tourist8
+
+t8_loc : [0..2] init t8;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t8_val : [0..BOUND] init 0;//value on a tourist's notepad
+t8_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t8_nlb_up]   (t8_com = 0) &amp; (t8_loc = 0) &amp; (lin = 0) -&gt; (t8_com' = 1);
+[t8_nrb_up]   (t8_com = 0) &amp; (t8_loc = 1) &amp; (rin = 0) -&gt; (t8_com' = 1);
+
+[t8_l_up]     (t8_com = 1) &amp; (t8_loc = 0) &amp; (lin = 0) -&gt; (t8_val' = nlb) &amp; (t8_loc' = 1) &amp; (t8_com' = 0);
+[t8_r_up]     (t8_com = 1) &amp; (t8_loc = 1) &amp; (rin = 0) -&gt; (t8_val' = nrb) &amp; (t8_loc' = 0) &amp; (t8_com' = 0);
+
+[t8_l_copy]   (flag = 0) &amp; (t8_loc = 0) &amp; (t8_val &lt; nlb) -&gt;  (t8_val' = nlb) &amp; (t8_loc' = 1);
+[t8_r_copy]   (flag = 0) &amp; (t8_loc = 1) &amp; (t8_val &lt; nrb) -&gt;  (t8_val' = nrb) &amp; (t8_loc' = 0); 
+
+[t8_enter_l]  (flag = 0) &amp; (t8_loc = 0) &amp; (lin = 0) &amp; (t8_val &gt; nlb)  -&gt; (t8_loc' = 2);
+[t8_enter_r]  (flag = 0) &amp; (t8_loc = 1) &amp; (rin = 0) &amp; (t8_val &gt; nrb)  -&gt; (t8_loc' = 2);
+
+[t8_must_l]   (flag = 0) &amp; (t8_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t8_loc' = 2);
+[t8_must_r]   (flag = 0) &amp; (t8_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t8_loc' = 2);
+
+[t8_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t8_loc = 2) -&gt; (t8_val' = t8_val) ;
+[t8_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t8_loc = 2) -&gt; (t8_val' = t8_val) ;
+
+endmodule
+
+rewards "rounds"
+
+lin != N &amp; rin != N : 1; 
+
+endrewards</content>
+    </model>
+    <model name="rabin_choice7" type="rml">
+      <content>//Rabin's choice coordination problem
+//Amended 03/10/2010
+//Ensure all tourists' do not start from same location
+
+mdp 
+
+const N = 7; //Number of tourists
+
+const t1 = 1; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t2 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t3 = 1; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t4 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t5 = 1; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t6 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+const t7 = 0; //preset configuration for tourists, 0 --&gt; 'left', 1--&gt; 'right'
+
+const int BOUND = 100;//set to manage model size
+
+
+//======== Records update of the left noticeboard ==================
+
+module leftboard
+
+nlb : [0..BOUND] init 0;//number on  left board
+lbm : [0..1] init 0; //mode of nlb 0 --&gt; 'even', 1 --&gt; 'odd'
+
+[t1_nlb_up] (lbm = 0) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t1_nlb_up] (lbm = 1) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t2_nlb_up] (lbm = 0) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t2_nlb_up] (lbm = 1) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t3_nlb_up] (lbm = 0) &amp; (t3_loc = 0) &amp; (lin = 0) &amp; (t3_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t3_nlb_up] (lbm = 1) &amp; (t3_loc = 0) &amp; (lin = 0) &amp; (t3_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t4_nlb_up] (lbm = 0) &amp; (t4_loc = 0) &amp; (lin = 0) &amp; (t4_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t4_nlb_up] (lbm = 1) &amp; (t4_loc = 0) &amp; (lin = 0) &amp; (t4_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t5_nlb_up] (lbm = 0) &amp; (t5_loc = 0) &amp; (lin = 0) &amp; (t5_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t5_nlb_up] (lbm = 1) &amp; (t5_loc = 0) &amp; (lin = 0) &amp; (t5_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t6_nlb_up] (lbm = 0) &amp; (t6_loc = 0) &amp; (lin = 0) &amp; (t6_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t6_nlb_up] (lbm = 1) &amp; (t6_loc = 0) &amp; (lin = 0) &amp; (t6_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+[t7_nlb_up] (lbm = 0) &amp; (t7_loc = 0) &amp; (lin = 0) &amp; (t7_val = nlb) &amp; (nlb + 3 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 0) + 0.5 : (nlb' = nlb + 3) &amp; (lbm' = 1);
+[t7_nlb_up] (lbm = 1) &amp; (t7_loc = 0) &amp; (lin = 0) &amp; (t7_val = nlb) &amp; (nlb + 2 &lt;= BOUND) -&gt; 0.5 : (nlb' = nlb + 2) &amp; (lbm' = 1) + 0.5 : (nlb' = nlb + 1) &amp; (lbm' = 0);
+
+endmodule
+
+//======== Records update of the right noticeboard ==================
+
+module rightboard
+
+nrb : [0..BOUND] init 0;//number on right board
+rbm : [0..1] init 0; //mode of nrb 0 --&gt; 'even', 1 --&gt; 'odd'
+
+[t1_nrb_up] (rbm = 0) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t1_nrb_up] (rbm = 1) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t2_nrb_up] (rbm = 0) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t2_nrb_up] (rbm = 1) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t3_nrb_up] (rbm = 0) &amp; (t3_loc = 1) &amp; (rin = 0) &amp; (t3_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t3_nrb_up] (rbm = 1) &amp; (t3_loc = 1) &amp; (rin = 0) &amp; (t3_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t4_nrb_up] (rbm = 0) &amp; (t4_loc = 1) &amp; (rin = 0) &amp; (t4_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t4_nrb_up] (rbm = 1) &amp; (t4_loc = 1) &amp; (rin = 0) &amp; (t4_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t5_nrb_up] (rbm = 0) &amp; (t5_loc = 1) &amp; (rin = 0) &amp; (t5_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t5_nrb_up] (rbm = 1) &amp; (t5_loc = 1) &amp; (rin = 0) &amp; (t5_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t6_nrb_up] (rbm = 0) &amp; (t6_loc = 1) &amp; (rin = 0) &amp; (t6_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t6_nrb_up] (rbm = 1) &amp; (t6_loc = 1) &amp; (rin = 0) &amp; (t6_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+[t7_nrb_up] (rbm = 0) &amp; (t7_loc = 1) &amp; (rin = 0) &amp; (t7_val = nrb) &amp; (nrb + 3 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 0) + 0.5 : (nrb' = nrb + 3) &amp; (rbm' = 1);
+[t7_nrb_up] (rbm = 1) &amp; (t7_loc = 1) &amp; (rin = 0) &amp; (t7_val = nrb) &amp; (nrb + 2 &lt;= BOUND) -&gt; 0.5 : (nrb' = nrb + 2) &amp; (rbm' = 1) + 0.5 : (nrb' = nrb + 1) &amp; (rbm' = 0);
+
+endmodule
+
+//======== Counts the number of tourists entering the left/right meeting place ==================
+
+module counter
+
+rin : [0..N] init 0;//number of tourists inside the 'right' meeting place
+lin : [0..N] init 0;//number of tourists inside the 'left' meeting place
+
+[t1_enter_l]  (t1_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t1_enter_r]  (t1_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t1_must_l]   (t1_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t1_must_r]   (t1_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t2_enter_l]  (t2_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t2_enter_r]  (t2_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t2_must_l]   (t2_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t2_must_r]   (t2_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t3_enter_l]  (t3_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t3_enter_r]  (t3_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t3_must_l]   (t3_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t3_must_r]   (t3_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t4_enter_l]  (t4_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t4_enter_r]  (t4_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t4_must_l]   (t4_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t4_must_r]   (t4_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t5_enter_l]  (t5_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t5_enter_r]  (t5_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t5_must_l]   (t5_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t5_must_r]   (t5_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t6_enter_l]  (t6_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t6_enter_r]  (t6_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t6_must_l]   (t6_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t6_must_r]   (t6_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+[t7_enter_l]  (t7_loc = 0) &amp; (flag = 0) &amp; (lin = 0) -&gt; (lin' = lin + 1);
+[t7_enter_r]  (t7_loc = 1) &amp; (flag = 0) &amp; (rin = 0) -&gt; (rin' = rin + 1);
+
+[t7_must_l]   (t7_loc = 0) &amp; (flag = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (lin' = lin + 1);
+[t7_must_r]   (t7_loc = 1) &amp; (flag = 0) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (rin' = rin + 1);
+
+endmodule
+
+//======== controls sequence of actions for tourists' at left/right location ==================
+
+module semaphore
+
+flag : [0..1] init 0;
+
+[t1_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t1_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t1_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t1_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t2_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t2_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t2_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t2_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t3_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t3_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t3_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t3_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t4_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t4_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t4_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t4_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t5_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t5_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t5_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t5_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t6_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t6_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t6_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t6_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+[t7_nlb_up] (flag = 0) -&gt; (flag' = 1);
+[t7_nrb_up] (flag = 0) -&gt; (flag' = 1);
+
+[t7_l_up]   (flag = 1) -&gt; (flag' = 0);
+[t7_r_up]   (flag = 1) -&gt; (flag' = 0);
+
+endmodule
+
+
+
+//======== Models the activity of a single tourist ==================
+
+module tourist1
+
+t1_loc : [0..2] init t1;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t1_val : [0..BOUND] init 0;//value on a tourist's notepad
+t1_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t1_nlb_up]   (t1_com = 0) &amp; (t1_loc = 0) &amp; (lin = 0) -&gt; (t1_com' = 1);
+[t1_nrb_up]   (t1_com = 0) &amp; (t1_loc = 1) &amp; (rin = 0) -&gt; (t1_com' = 1);
+
+[t1_l_up]     (t1_com = 1) &amp; (t1_loc = 0) &amp; (lin = 0) -&gt; (t1_val' = nlb) &amp; (t1_loc' = 1) &amp; (t1_com' = 0);
+[t1_r_up]     (t1_com = 1) &amp; (t1_loc = 1) &amp; (rin = 0) -&gt; (t1_val' = nrb) &amp; (t1_loc' = 0) &amp; (t1_com' = 0);
+
+[t1_l_copy]   (flag = 0) &amp; (t1_loc = 0) &amp; (t1_val &lt; nlb) -&gt;  (t1_val' = nlb) &amp; (t1_loc' = 1);
+[t1_r_copy]   (flag = 0) &amp; (t1_loc = 1) &amp; (t1_val &lt; nrb) -&gt;  (t1_val' = nrb) &amp; (t1_loc' = 0); 
+
+[t1_enter_l]  (flag = 0) &amp; (t1_loc = 0) &amp; (lin = 0) &amp; (t1_val &gt; nlb)  -&gt; (t1_loc' = 2);
+[t1_enter_r]  (flag = 0) &amp; (t1_loc = 1) &amp; (rin = 0) &amp; (t1_val &gt; nrb)  -&gt; (t1_loc' = 2);
+
+[t1_must_l]   (flag = 0) &amp; (t1_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t1_loc' = 2);
+[t1_must_r]   (flag = 0) &amp; (t1_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t1_loc' = 2);
+
+[t1_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t1_loc = 2) -&gt; (t1_val' = t1_val) ;
+[t1_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t1_loc = 2) -&gt; (t1_val' = t1_val) ;
+
+endmodule
+
+module tourist2
+
+t2_loc : [0..2] init t2;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t2_val : [0..BOUND] init 0;//value on a tourist's notepad
+t2_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t2_nlb_up]   (t2_com = 0) &amp; (t2_loc = 0) &amp; (lin = 0) -&gt; (t2_com' = 1);
+[t2_nrb_up]   (t2_com = 0) &amp; (t2_loc = 1) &amp; (rin = 0) -&gt; (t2_com' = 1);
+
+[t2_l_up]     (t2_com = 1) &amp; (t2_loc = 0) &amp; (lin = 0) -&gt; (t2_val' = nlb) &amp; (t2_loc' = 1) &amp; (t2_com' = 0);
+[t2_r_up]     (t2_com = 1) &amp; (t2_loc = 1) &amp; (rin = 0) -&gt; (t2_val' = nrb) &amp; (t2_loc' = 0) &amp; (t2_com' = 0);
+
+[t2_l_copy]   (flag = 0) &amp; (t2_loc = 0) &amp; (t2_val &lt; nlb) -&gt;  (t2_val' = nlb) &amp; (t2_loc' = 1);
+[t2_r_copy]   (flag = 0) &amp; (t2_loc = 1) &amp; (t2_val &lt; nrb) -&gt;  (t2_val' = nrb) &amp; (t2_loc' = 0); 
+
+[t2_enter_l]  (flag = 0) &amp; (t2_loc = 0) &amp; (lin = 0) &amp; (t2_val &gt; nlb)  -&gt; (t2_loc' = 2);
+[t2_enter_r]  (flag = 0) &amp; (t2_loc = 1) &amp; (rin = 0) &amp; (t2_val &gt; nrb)  -&gt; (t2_loc' = 2);
+
+[t2_must_l]   (flag = 0) &amp; (t2_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t2_loc' = 2);
+[t2_must_r]   (flag = 0) &amp; (t2_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t2_loc' = 2);
+
+[t2_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t2_loc = 2) -&gt; (t2_val' = t2_val) ;
+[t2_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t2_loc = 2) -&gt; (t2_val' = t2_val) ;
+
+endmodule
+
+module tourist3
+
+t3_loc : [0..2] init t3;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t3_val : [0..BOUND] init 0;//value on a tourist's notepad
+t3_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t3_nlb_up]   (t3_com = 0) &amp; (t3_loc = 0) &amp; (lin = 0) -&gt; (t3_com' = 1);
+[t3_nrb_up]   (t3_com = 0) &amp; (t3_loc = 1) &amp; (rin = 0) -&gt; (t3_com' = 1);
+
+[t3_l_up]     (t3_com = 1) &amp; (t3_loc = 0) &amp; (lin = 0) -&gt; (t3_val' = nlb) &amp; (t3_loc' = 1) &amp; (t3_com' = 0);
+[t3_r_up]     (t3_com = 1) &amp; (t3_loc = 1) &amp; (rin = 0) -&gt; (t3_val' = nrb) &amp; (t3_loc' = 0) &amp; (t3_com' = 0);
+
+[t3_l_copy]   (flag = 0) &amp; (t3_loc = 0) &amp; (t3_val &lt; nlb) -&gt;  (t3_val' = nlb) &amp; (t3_loc' = 1);
+[t3_r_copy]   (flag = 0) &amp; (t3_loc = 1) &amp; (t3_val &lt; nrb) -&gt;  (t3_val' = nrb) &amp; (t3_loc' = 0); 
+
+[t3_enter_l]  (flag = 0) &amp; (t3_loc = 0) &amp; (lin = 0) &amp; (t3_val &gt; nlb)  -&gt; (t3_loc' = 2);
+[t3_enter_r]  (flag = 0) &amp; (t3_loc = 1) &amp; (rin = 0) &amp; (t3_val &gt; nrb)  -&gt; (t3_loc' = 2);
+
+[t3_must_l]   (flag = 0) &amp; (t3_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t3_loc' = 2);
+[t3_must_r]   (flag = 0) &amp; (t3_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t3_loc' = 2);
+
+[t3_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t3_loc = 2) -&gt; (t3_val' = t3_val) ;
+[t3_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t3_loc = 2) -&gt; (t3_val' = t3_val) ;
+
+endmodule
+
+module tourist4
+
+t4_loc : [0..2] init t4;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t4_val : [0..BOUND] init 0;//value on a tourist's notepad
+t4_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t4_nlb_up]   (t4_com = 0) &amp; (t4_loc = 0) &amp; (lin = 0) -&gt; (t4_com' = 1);
+[t4_nrb_up]   (t4_com = 0) &amp; (t4_loc = 1) &amp; (rin = 0) -&gt; (t4_com' = 1);
+
+[t4_l_up]     (t4_com = 1) &amp; (t4_loc = 0) &amp; (lin = 0) -&gt; (t4_val' = nlb) &amp; (t4_loc' = 1) &amp; (t4_com' = 0);
+[t4_r_up]     (t4_com = 1) &amp; (t4_loc = 1) &amp; (rin = 0) -&gt; (t4_val' = nrb) &amp; (t4_loc' = 0) &amp; (t4_com' = 0);
+
+[t4_l_copy]   (flag = 0) &amp; (t4_loc = 0) &amp; (t4_val &lt; nlb) -&gt;  (t4_val' = nlb) &amp; (t4_loc' = 1);
+[t4_r_copy]   (flag = 0) &amp; (t4_loc = 1) &amp; (t4_val &lt; nrb) -&gt;  (t4_val' = nrb) &amp; (t4_loc' = 0); 
+
+[t4_enter_l]  (flag = 0) &amp; (t4_loc = 0) &amp; (lin = 0) &amp; (t4_val &gt; nlb)  -&gt; (t4_loc' = 2);
+[t4_enter_r]  (flag = 0) &amp; (t4_loc = 1) &amp; (rin = 0) &amp; (t4_val &gt; nrb)  -&gt; (t4_loc' = 2);
+
+[t4_must_l]   (flag = 0) &amp; (t4_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t4_loc' = 2);
+[t4_must_r]   (flag = 0) &amp; (t4_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t4_loc' = 2);
+
+[t4_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t4_loc = 2) -&gt; (t4_val' = t4_val) ;
+[t4_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t4_loc = 2) -&gt; (t4_val' = t4_val) ;
+
+endmodule
+
+module tourist5
+
+t5_loc : [0..2] init t5;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t5_val : [0..BOUND] init 0;//value on a tourist's notepad
+t5_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t5_nlb_up]   (t5_com = 0) &amp; (t5_loc = 0) &amp; (lin = 0) -&gt; (t5_com' = 1);
+[t5_nrb_up]   (t5_com = 0) &amp; (t5_loc = 1) &amp; (rin = 0) -&gt; (t5_com' = 1);
+
+[t5_l_up]     (t5_com = 1) &amp; (t5_loc = 0) &amp; (lin = 0) -&gt; (t5_val' = nlb) &amp; (t5_loc' = 1) &amp; (t5_com' = 0);
+[t5_r_up]     (t5_com = 1) &amp; (t5_loc = 1) &amp; (rin = 0) -&gt; (t5_val' = nrb) &amp; (t5_loc' = 0) &amp; (t5_com' = 0);
+
+[t5_l_copy]   (flag = 0) &amp; (t5_loc = 0) &amp; (t5_val &lt; nlb) -&gt;  (t5_val' = nlb) &amp; (t5_loc' = 1);
+[t5_r_copy]   (flag = 0) &amp; (t5_loc = 1) &amp; (t5_val &lt; nrb) -&gt;  (t5_val' = nrb) &amp; (t5_loc' = 0); 
+
+[t5_enter_l]  (flag = 0) &amp; (t5_loc = 0) &amp; (lin = 0) &amp; (t5_val &gt; nlb)  -&gt; (t5_loc' = 2);
+[t5_enter_r]  (flag = 0) &amp; (t5_loc = 1) &amp; (rin = 0) &amp; (t5_val &gt; nrb)  -&gt; (t5_loc' = 2);
+
+[t5_must_l]   (flag = 0) &amp; (t5_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t5_loc' = 2);
+[t5_must_r]   (flag = 0) &amp; (t5_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t5_loc' = 2);
+
+[t5_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t5_loc = 2) -&gt; (t5_val' = t5_val) ;
+[t5_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t5_loc = 2) -&gt; (t5_val' = t5_val) ;
+
+endmodule
+
+module tourist6
+
+t6_loc : [0..2] init t6;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t6_val : [0..BOUND] init 0;//value on a tourist's notepad
+t6_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t6_nlb_up]   (t6_com = 0) &amp; (t6_loc = 0) &amp; (lin = 0) -&gt; (t6_com' = 1);
+[t6_nrb_up]   (t6_com = 0) &amp; (t6_loc = 1) &amp; (rin = 0) -&gt; (t6_com' = 1);
+
+[t6_l_up]     (t6_com = 1) &amp; (t6_loc = 0) &amp; (lin = 0) -&gt; (t6_val' = nlb) &amp; (t6_loc' = 1) &amp; (t6_com' = 0);
+[t6_r_up]     (t6_com = 1) &amp; (t6_loc = 1) &amp; (rin = 0) -&gt; (t6_val' = nrb) &amp; (t6_loc' = 0) &amp; (t6_com' = 0);
+
+[t6_l_copy]   (flag = 0) &amp; (t6_loc = 0) &amp; (t6_val &lt; nlb) -&gt;  (t6_val' = nlb) &amp; (t6_loc' = 1);
+[t6_r_copy]   (flag = 0) &amp; (t6_loc = 1) &amp; (t6_val &lt; nrb) -&gt;  (t6_val' = nrb) &amp; (t6_loc' = 0); 
+
+[t6_enter_l]  (flag = 0) &amp; (t6_loc = 0) &amp; (lin = 0) &amp; (t6_val &gt; nlb)  -&gt; (t6_loc' = 2);
+[t6_enter_r]  (flag = 0) &amp; (t6_loc = 1) &amp; (rin = 0) &amp; (t6_val &gt; nrb)  -&gt; (t6_loc' = 2);
+
+[t6_must_l]   (flag = 0) &amp; (t6_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t6_loc' = 2);
+[t6_must_r]   (flag = 0) &amp; (t6_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t6_loc' = 2);
+
+[t6_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t6_loc = 2) -&gt; (t6_val' = t6_val) ;
+[t6_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t6_loc = 2) -&gt; (t6_val' = t6_val) ;
+
+endmodule
+
+module tourist7
+
+t7_loc : [0..2] init t7;// location of tourist 0 --&gt; 'left', 1--&gt; 'right', 2 --&gt;'tourist already in'
+t7_val : [0..BOUND] init 0;//value on a tourist's notepad
+t7_com : [0..1] init 0;//tourist's command 0 --&gt; 'idle', 1--&gt; 'active'
+
+[t7_nlb_up]   (t7_com = 0) &amp; (t7_loc = 0) &amp; (lin = 0) -&gt; (t7_com' = 1);
+[t7_nrb_up]   (t7_com = 0) &amp; (t7_loc = 1) &amp; (rin = 0) -&gt; (t7_com' = 1);
+
+[t7_l_up]     (t7_com = 1) &amp; (t7_loc = 0) &amp; (lin = 0) -&gt; (t7_val' = nlb) &amp; (t7_loc' = 1) &amp; (t7_com' = 0);
+[t7_r_up]     (t7_com = 1) &amp; (t7_loc = 1) &amp; (rin = 0) -&gt; (t7_val' = nrb) &amp; (t7_loc' = 0) &amp; (t7_com' = 0);
+
+[t7_l_copy]   (flag = 0) &amp; (t7_loc = 0) &amp; (t7_val &lt; nlb) -&gt;  (t7_val' = nlb) &amp; (t7_loc' = 1);
+[t7_r_copy]   (flag = 0) &amp; (t7_loc = 1) &amp; (t7_val &lt; nrb) -&gt;  (t7_val' = nrb) &amp; (t7_loc' = 0); 
+
+[t7_enter_l]  (flag = 0) &amp; (t7_loc = 0) &amp; (lin = 0) &amp; (t7_val &gt; nlb)  -&gt; (t7_loc' = 2);
+[t7_enter_r]  (flag = 0) &amp; (t7_loc = 1) &amp; (rin = 0) &amp; (t7_val &gt; nrb)  -&gt; (t7_loc' = 2);
+
+[t7_must_l]   (flag = 0) &amp; (t7_loc = 0) &amp; (lin &gt; 0) &amp; (lin + 1 &lt;= N) -&gt; (t7_loc' = 2);
+[t7_must_r]   (flag = 0) &amp; (t7_loc = 1) &amp; (rin &gt; 0) &amp; (rin + 1 &lt;= N) -&gt; (t7_loc' = 2);
+
+[t7_l_exit]   (flag = 0) &amp; (lin = N) &amp; (t7_loc = 2) -&gt; (t7_val' = t7_val) ;
+[t7_r_exit]   (flag = 0) &amp; (rin = N) &amp; (t7_loc = 2) -&gt; (t7_val' = t7_val) ;
+
+endmodule
+
+rewards "rounds"
+
+lin != N &amp; rin != N : 1; 
+
+endrewards</content>
+    </model>
+  </models>
+  <requirements>
+    <requirement name="prop1" type="bltl">
+      <content>F&lt;=#100 (lin= N | rin = N)</content>
+    </requirement>
+    <requirement name="TimeReward" type="bltl">
+      <content>G&lt;=#10 true</content>
+    </requirement>
+  </requirements>
+  <resources />
+</PlasmaProject>

@@ -1,0 +1,37 @@
+requirement = Requirement
+requirements = Requirements
+resources = Resources
+requireEdit = Requirement Editor
+contract = Contract
+contracts = Contracts
+model = Model
+models = Models
+modelEdit = Model Editor
+project = Project
+projects = Projects
+experiments = Experiments
+new = New
+open = Open
+save = Save
+saveAs = Save as
+export = Export
+import = Import
+close = Close
+exit = Exit
+package = Package : 
+contract = Contract
+content = Content
+cancel = Cancel
+ok = Ok
+
+new_path = New Path
+simulate = Simulate
+backtrack = Backtrack
+steps = Steps
+up_to_step = Up to step
+
+plot = Plot
+plot2 = 2D Plots
+plot3 = 3D Plots
+edit_plot = Edit plots
+new_plot = New plot

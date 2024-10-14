@@ -1,0 +1,2 @@
+// Probability, from the inital state, that station 1 is served before station 2
+!(s=2 & a=1) U<=100 (s=1 & a=1)

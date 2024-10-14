@@ -1,0 +1,16 @@
+gspn [generated_cosmos] {
+constants:
+places:
+	A1 = 2;
+	A2 = 1;
+	A3 = 1;
+
+transitions:
+	stochastic:
+	t1_2 :  : [A2 + 2] & [A1 - 2] & [A2 - 1] : 6e-05 ;
+	t1_3 :  : [A3 + 2] & [A1 - 2] & [A3 - 1] : 3e-06 ;
+	t2_1 :  : [A1 + 2] & [A2 - 2] & [A1 - 1] : 0.00018 ;
+	t2_3 :  : [A3 + 2] & [A2 - 2] & [A3 - 1] : 1.8e-05 ;
+	tloop3 :  : [A3 + 2] & [A3 - 2] : 1e-09 ;
+	immediate:
+}

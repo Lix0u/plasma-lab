@@ -1,0 +1,5 @@
+optimize
+psend := [0;1;0.2]
+end
+
+F<=#1000 active0=0

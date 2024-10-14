@@ -1,0 +1,2 @@
+// probability of using fresh ip address within time T
+G <=# 5 l!=4 | ip!=2

@@ -1,0 +1,2 @@
+sim -S -X -C --poptions procs:3
+./fib_32.ll

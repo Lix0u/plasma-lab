@@ -1,0 +1,80 @@
+
+
+INDEX:
+
+control.pm 			This is the 8 anchorage track in a straight line. Walker starts on anchorage 1, anchorage 8 adsorbing. (fig. 9 journal version)
+controlMissing1.pm 		control.pm without anchorage 4
+controlMissing2.pm		control.pm without anchorage 4,5
+controlMissing7.pm		control.pm without anchorage 7
+
+track12Block1.pm		Single-junction with 12 anchorages, single blockade on the left, so anchorage 5 is blocked. (so path R Fig 10 journal version)
+track12Block2.pm		As track12Block1.pm but this time around a blockade on both anchorage 5 and 6. (path R-squared)
+track12BlockBoth.pm		Single-junction with 12 anchorages, blockades on left and right so that anchorages 5 and 9 are blocked. (path L/R)
+
+track28LLDouble.pm		Double-junction with 28 anchorages.  corresponds to path/input RR, so that L and L' labbelled anchorages are blocked. The blockades are double, hence the name.
+track28LRDouble.pm		Double-junction with 28 anchorage.   corresponds to path/input RL
+track28RLDouble.pm		Double-junction with 28 anchorage.   corresponds to path/input LR
+track28RRDouble.pm		Double-junction with 28 anchorage.   corresponds to path/input LL
+
+
+
+
+For reference the function calls for the last 4 tracks
+
+
+
+	private void loadTrack28LLDouble()
+	{
+
+		this.loadTrack28();
+
+		blocked.add(5);
+		blocked.add(6);
+		blocked.add(15);
+		blocked.add(16);
+		blocked.add(23);
+		blocked.add(24);
+
+	}
+
+	private void loadTrack28LRDouble()
+	{
+
+		this.loadTrack28();
+
+		blocked.add(5);
+		blocked.add(6);
+		blocked.add(18);
+		blocked.add(19);
+		blocked.add(26);
+		blocked.add(27);
+
+	}
+
+	private void loadTrack28RRDouble()
+	{
+
+		this.loadTrack28();
+
+		blocked.add(9);
+		blocked.add(10);
+		blocked.add(18);
+		blocked.add(19);
+		blocked.add(26);
+		blocked.add(27);
+
+	}
+
+	private void loadTrack28RLDouble()
+	{
+
+		this.loadTrack28();
+
+		blocked.add(9);
+		blocked.add(10);
+		blocked.add(15);
+		blocked.add(16);
+		blocked.add(23);
+		blocked.add(24);
+
+	}

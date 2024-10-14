@@ -1,0 +1,98 @@
+// virus example
+// gxn/dxp 29/06/2007
+// network is grid of size N
+// model with only two path (one with the minimum of attacks and one with the maximum)
+
+mdp
+
+// probabilities
+const double infect=0.5; // probability virus infects a node
+const double detect1=0.5; // probability virus detected by firewall of high/low node
+const double detect2 = 0.9; // probability virus detected by firewall of barrier node
+
+// low nodes (those above the ceil(N/2) row)
+
+const double detect11=detect1; 
+const double detect12=detect1; 
+const double detect13=detect1;   
+
+// barrier nodes (those in the ceil(N/2) row)
+
+const double detect21=detect2;
+const double detect22=detect2;
+const double detect23=detect2;
+
+// high nodes (those below the ceil(N/2) row)
+
+const double detect31=detect1; 
+const double detect32=detect1; 
+const double detect33=detect1;  
+
+// first column (1..N)
+module n11
+
+	s11 : [0..2]; // node uninfected
+	// 0 - node uninfected
+	// 1 - node uninfected but firewall breached
+	// 2 - node infected 
+
+	// firewall attacked (from an infected neighbour)
+	[attack11_21] (s11=0) ->  detect11 : true + (1-detect11) : (s11'=1);
+	[attack11_22] (s11=0) ->  detect11 : true + (1-detect11) : (s11'=1);
+	// if the firewall has been breached tries to infect the node	
+	[] (s11=1) -> infect : (s11'=2) + (1-infect) : (s11'=0);
+endmodule
+
+module n21
+
+	s21 : [0..2]; // node uninfected
+	// 0 - node uninfected
+	// 1 - node uninfected but firewall breached
+	// 2 - node infected 
+
+	// firewall attacked (from an infected neighbour)
+	[attack21_33] (s21=0) -> detect21 : true + (1-detect21) : (s21'=1);
+	// if the firewall has been breached tries to infect the node	
+	[] (s21=1) -> infect : (s21'=2) + (1-infect) : (s21'=0);
+	// if the node is infected, then it tries to attack its neighbouring nodes
+	[attack22_21] (s21=2) -> true;
+	[attack11_21] (s21=2) -> true;
+endmodule
+
+module n22
+
+	s22 : [0..2]; // node uninfected
+	// 0 - node uninfected
+	// 1 - node uninfected but firewall breached
+	// 2 - node infected 
+
+	// firewall attacked (from an infected neighbour)
+	[attack22_21] (s22=0) -> detect22 : true + (1-detect22) : (s22'=1);
+	// if the firewall has been breached tries to infect the node	
+	[] (s22=1) -> infect : (s22'=2) + (1-infect) : (s22'=0);
+	// if the node is infected, then it tries to attack its neighbouring nodes
+	[attack11_22] (s22=2) -> true;
+endmodule
+
+module n33
+
+	s33 : [0..2] init 2; // node infected;
+	// 0 - node uninfected
+	// 1 - node uninfected but firewall breached
+	// 2 - node infected 
+
+	// if the node is infected, then it tries to attack its neighbouring nodes
+	[attack21_33] (s33=2) -> true;
+	
+endmodule
+
+
+// reward structure (number of attacks)
+rewards "attacks"
+
+	[attack11_22] true : 1;
+	[attack22_21] true : 1;
+	[attack11_21] true : 1;
+	[attack21_33] true : 1;
+
+endrewards

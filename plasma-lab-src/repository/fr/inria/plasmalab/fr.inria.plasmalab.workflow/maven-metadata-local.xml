@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>fr.inria.plasmalab</groupId>
+  <artifactId>fr.inria.plasmalab.workflow</artifactId>
+  <versioning>
+    <versions>
+      <version>1.4.5-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20190822094313</lastUpdated>
+  </versioning>
+</metadata>

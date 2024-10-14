@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlasmaProject name="Philosophers">
+  <models>
+    <model name="philo3" type="rml">
+      <file>philo3.rml</file>
+    </model>
+    <model name="philo10" type="rml">
+      <file>philo10.rml</file>
+    </model>
+    <model name="philo20" type="rml">
+      <file>philo20.rml</file>
+    </model>
+    <model name="philo30" type="rml">
+      <file>philo30.rml</file>
+    </model>
+    <model name="philo100" type="rml">
+      <file>philo100.rml</file>
+    </model>
+    <model name="philo150" type="rml">
+      <file>philo150.rml</file>
+    </model>
+    <model name="philo300" type="rml">
+      <file>philo300.rml</file>
+    </model>
+  </models>
+  <requirements>
+    <requirement name="eat_p2" type="bltl">
+      <file>eat_p2.bltl</file>
+    </requirement>
+    <requirement name="eat_optim" type="bltl">
+      <file>eat_optim.bltl</file>
+    </requirement>
+    <requirement name="liveness" type="bltl">
+      <file>liveness.bltl</file>
+    </requirement>
+    <requirement name="obs_simple" type="rmlobserver">
+      <file>obs_simple.obs</file>
+    </requirement>
+    <requirement name="obs_timed" type="rmlobserver">
+      <file>obs_timed.obs</file>
+    </requirement>
+  </requirements>
+  <resources />
+</PlasmaProject>

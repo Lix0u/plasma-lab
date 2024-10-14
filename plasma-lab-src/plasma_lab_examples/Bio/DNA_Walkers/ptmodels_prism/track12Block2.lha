@@ -1,0 +1,44 @@
+
+const double maxtime=12000;
+VariablesList = { vc0, vc1, DISC vd0 , DISC vd1, DISC vd2, DISC vd3, DISC timefinishcorrect, DISC timefinish, DISC useblocked, DISC corrblock, DISC lasttranstime, DISC deadlocktime};
+LocationsList = {lii, li, li2, lfc,lf,lnf1,ldl,lnf2};
+FinishCorrect=AVG(Last(vd0));
+Finish=AVG(Last(vd1));
+DeadLock=AVG(Last(vd2));
+Step=AVG(Last(vd3));
+Blockade=AVG(Last(vc1));
+%DeadLockTime=CDF(Last(deadlocktime),100.0,0.0,maxtime);
+%FinishTime=CDF(Last(timefinishcorrect),100.0,0.0,maxtime);
+uB=AVG(Last(corrblock))/AVG(Last(vd0));
+InitialLocations = { lii };
+FinalLocations = {lfc,lf,ldl,lnf2};
+Locations = {
+(lii,TRUE,(vc0:1.));
+(li,((   TRUE  & (A8<2) & (A12<2)) & !(   FALSE  | (A5=2) | (A6=2))),(vc0:1.));
+(li2,((   TRUE  & (A8<2) & (A12<2)) & (   FALSE  | (A5=2) | (A6=2))),(vc0:1., vc1:1.));
+(lfc,(A12=2));
+(lf,( !(   TRUE  & (A8<2) & (A12<2)) & !(A12=2) ));
+(lnf1,TRUE,(vc0:1.));
+(ldl,TRUE);
+(lnf2,TRUE);
+};
+Edges = {
+((lii,lii),ALL,vc0=0,#);
+((lii,li),ALL,vc0>=0.000000000001,{vd3=vd3+1,timefinish=maxtime,timefinishcorrect=maxtime,deadlocktime=maxtime});
+((lii,li2),ALL,vc0>=0.000000000001,{vd3=vd3+1,timefinish=maxtime,timefinishcorrect=maxtime,deadlocktime=maxtime,useblocked=1});
+((li,li),ALL,#,{lasttranstime=vc0,vd3=vd3+1});
+((li2,li2),ALL,#,{lasttranstime=vc0,vd3=vd3+1});
+((li,li2),ALL,#,{lasttranstime=vc0,vd3=vd3+1,useblocked=1});
+((li2,li),ALL,#,{lasttranstime=vc0,vd3=vd3+1});
+((li,lfc),ALL,#, {vd0=1,vd1=1,vd3=vd3+1, timefinishcorrect=vc0,corrblock=useblocked });
+((li2,lfc),ALL,#,{vd0=1,vd1=1,vd3=vd3+1, timefinishcorrect=vc0,corrblock=useblocked });
+((li,lf),ALL,#,{vd1=1,vd3=vd3+1, timefinish=vc0});
+((li2,lf),ALL,#,{vd1=1,vd3=vd3+1, timefinish=vc0});
+((li,lnf1),#,vc0=maxtime,#);
+((li2,lnf1),#,vc0=maxtime,#);
+((lii,lfc),ALL,#,{vd0=1,vd1=1,vd3=vd3+1, timefinishcorrect=vc0});
+((lii,lf),ALL,#,{vd1=1,vd3=vd3+1, timefinish=vc0});
+((lii,lnf1),#,vc0=maxtime,#);
+((lnf1,lnf2),ALL,#,#);
+((lnf1,ldl),#,vc0=1000000000,{deadlocktime=lasttranstime,vd2=1});
+};

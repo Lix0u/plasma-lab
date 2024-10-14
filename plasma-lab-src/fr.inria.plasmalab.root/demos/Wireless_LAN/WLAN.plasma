@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlasmaProject name="WLAN">
+  <models>
+    <model name="wlan_0" type="rml">
+      <file>wlan_0.rml</file>
+    </model>
+    <model name="wlan_1" type="rml">
+      <file>wlan_1.rml</file>
+    </model>
+    <model name="wlan_2" type="rml">
+      <file>wlan_2.rml</file>
+    </model>
+    <model name="wlan_3" type="rml">
+      <file>wlan_3.rml</file>
+    </model>
+    <model name="wlan_4" type="rml">
+      <file>wlan_4.rml</file>
+    </model>
+    <model name="wlan_5" type="rml">
+      <file>wlan_5.rml</file>
+    </model>
+    <model name="wlan_6" type="rml">
+      <file>wlan_6.rml</file>
+    </model>
+  </models>
+  <requirements>
+    <requirement name="collisions" type="bltl">
+      <file>collisions.bltl</file>
+    </requirement>
+    <requirement name="mean" type="bltl">
+      <file>mean.bltl</file>
+    </requirement>
+  </requirements>
+  <resources />
+</PlasmaProject>

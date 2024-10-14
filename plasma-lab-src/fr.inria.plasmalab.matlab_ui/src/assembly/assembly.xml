@@ -1,0 +1,72 @@
+<!--
+
+    This file is part of fr.inria.plasmalab.matlab_ui.
+
+    fr.inria.plasmalab.matlab_ui is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    fr.inria.plasmalab.matlab_ui is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public License
+    along with fr.inria.plasmalab.matlab_ui.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<!--
+
+    This file is part of fr.inria.plasmalab.root.
+
+    fr.inria.plasmalab.root is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    fr.inria.plasmalab.root is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public License
+    along with fr.inria.plasmalab.root.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<assembly
+  xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
+  <id>distribution</id>
+  <formats>
+    <format>dir</format>
+  </formats>
+  <files>
+    <file>
+      <source>plasmalab2simulink/plasma2simulink.m</source>
+      <filtered>true</filtered>
+    </file>
+    <file>
+      <source>plasmalab2simulink/deploy.sh</source>
+      <filtered>true</filtered>
+    </file>
+    <file>
+      <source>plasmalab2simulink/PLASMA2Simulink.prj</source>
+      <filtered>true</filtered>
+    </file>
+    <file>
+      <source>target/${project.build.finalName}.jar</source>
+    </file>
+  </files>
+
+  <fileSets>
+    <fileSet>
+      <directory>plasmalab2simulink</directory>
+      <outputDirectory></outputDirectory>
+      <excludes>
+        <exclude>plasma2simulink.m</exclude>
+      </excludes>
+    </fileSet>
+  </fileSets>
+</assembly>

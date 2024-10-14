@@ -1,0 +1,23 @@
+// Hubble space telescope lifetime
+// Holger Hermanns, Christophe Joubert, Hubert Garavel, and Wendelin Serwe
+// Translated from ALDEBARAN to RML
+
+ctmc
+module M
+x:[0..8] init 0;
+[FAIL] x=0 -> 0.6 : (x'=1);
+[FAIL] x=1 -> 0.5 : (x'=2);
+[FAIL] x=2 -> 0.4 : (x'=3);
+[FAIL] x=3 -> 0.3 : (x'=4);
+[FAIL] x=4 -> 0.2 : (x'=5);
+[SLEEP] x=4 -> 100 : (x'=7);
+[FAIL] x=5 -> 0.1 : (x'=6);
+[SLEEP] x=5 -> 100 : (x'=8);
+[REPAIR] x=7 -> 6 : (x'=0);
+[FAIL] x=7 -> 0.2 : (x'=8);
+[REPAIR] x=8 -> 6 : (x'=0);
+[FAIL] x=8 -> 0.1 : (x'=6);
+endmodule
+
+label "crash" = x=6;
+label "sleep" = x=7 | x=8;

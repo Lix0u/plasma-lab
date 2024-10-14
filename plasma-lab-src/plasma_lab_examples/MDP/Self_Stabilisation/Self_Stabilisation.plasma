@@ -1,0 +1,806 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlasmaProject name="Self_Stabilisation">
+  <models>
+    <model name="israeli3" type="rml">
+      <content>// Israeli-Jalfon self stabilising algorithm
+// dxp/gxn 10/06/02
+
+mdp
+
+const k = 1;
+
+// variables to represent whether a process has a token or not
+// note they are global because they can be updated by other processes
+global q1  : [0..1];
+global q2  : [0..1];
+global q3  : [0..1];
+
+// module of process 1
+module process1
+	
+	[] (q1=1) -&gt; 0.5 : (q1'=0) &amp; (q3'=1) + 0.5 : (q1'=0) &amp; (q2'=1);
+	
+endmodule
+
+// add further processes through renaming
+module process2 = process1 [ q1=q2, q2=q3, q3=q1 ] endmodule
+module process3 = process1 [ q1=q3, q2=q1, q3=q2 ] endmodule
+
+// cost - 1 in each state (expected steps)
+rewards "steps"
+	true : 1;
+endrewards
+
+// formula, for use here and in properties: number of tokens
+formula num_tokens = q1+q2+q3;
+
+// initial states (at least one token)
+init
+	num_tokens =k
+endinit
+
+// label - stable configurations (1 token)
+label "stable" = num_tokens=1;</content>
+    </model>
+    <model name="israeli4" type="rml">
+      <content>// Israeli-Jalfon self stabilising algorithm
+// dxp/gxn 10/06/02
+
+mdp
+
+const k = 1;
+
+// variables to represent whether a process has a token or not
+// note they are global because they can be updated by other processes
+global q1  : [0..1];
+global q2  : [0..1];
+global q3  : [0..1];
+global q4  : [0..1];
+
+// module of process 1
+module process1
+	
+	[] (q1=1) -&gt; 0.5 : (q1'=0) &amp; (q4'=1) + 0.5 : (q1'=0) &amp; (q2'=1);
+	
+endmodule
+
+// add further processes through renaming
+module process2 = process1 [ q1=q2, q2=q3, q4=q1 ] endmodule
+module process3 = process1 [ q1=q3, q2=q4, q4=q2 ] endmodule
+module process4 = process1 [ q1=q4, q2=q1, q4=q3 ] endmodule
+
+// formula, for use here and in properties: number of tokens
+formula num_tokens = q1+q2+q3+q4;
+
+// label - stable configurations (1 token)
+label "stable" = num_tokens=1;
+
+// initial states (at least one token)
+init
+	num_tokens =k
+endinit
+
+rewards "steps"
+	true : 1;
+endrewards</content>
+    </model>
+    <model name="israeli20" type="rml">
+      <content>// Israeli-Jalfon self stabilising algorithm
+// dxp/gxn 10/06/02
+
+mdp
+
+// variables to represent whether a process has a token or not
+// note they are global because they can be updated by other processes
+global q1  : [0..1];
+global q2  : [0..1];
+global q3  : [0..1];
+global q4  : [0..1];
+global q5  : [0..1];
+global q6  : [0..1];
+global q7  : [0..1];
+global q8  : [0..1];
+global q9  : [0..1];
+global q10  : [0..1];
+global q11  : [0..1];
+global q12  : [0..1];
+global q13  : [0..1];
+global q14  : [0..1];
+global q15  : [0..1];
+global q16  : [0..1];
+global q17  : [0..1];
+global q18  : [0..1];
+global q19  : [0..1];
+global q20  : [0..1];
+
+// module of process 1
+module process1
+	
+	[] (q1=1) -&gt; 0.5 : (q1'=0) &amp; (q20'=1) + 0.5 : (q1'=0) &amp; (q2'=1);
+	
+endmodule
+
+// add further processes through renaming
+module process2 = process1 [ q1=q2, q2=q3, q20=q1 ] endmodule
+module process3 = process1 [ q1=q3, q2=q4, q20=q2 ] endmodule
+module process4 = process1 [ q1=q4, q2=q5, q20=q3 ] endmodule
+module process5 = process1 [ q1=q5, q2=q6, q20=q4 ] endmodule
+module process6 = process1 [ q1=q6, q2=q7, q20=q5 ] endmodule
+module process7 = process1 [ q1=q7, q2=q8, q20=q6 ] endmodule
+module process8 = process1 [ q1=q8, q2=q9, q20=q7 ] endmodule
+module process9 = process1 [ q1=q9, q2=q10, q20=q8 ] endmodule
+module process10 = process1 [ q1=q10, q2=q11, q20=q9 ] endmodule
+module process11 = process1 [ q1=q11, q2=q12, q20=q10 ] endmodule
+module process12 = process1 [ q1=q12, q2=q13, q20=q11 ] endmodule
+module process13 = process1 [ q1=q13, q2=q14, q20=q12 ] endmodule
+module process14 = process1 [ q1=q14, q2=q15, q20=q13 ] endmodule
+module process15 = process1 [ q1=q15, q2=q16, q20=q14 ] endmodule
+module process16 = process1 [ q1=q16, q2=q17, q20=q15 ] endmodule
+module process17 = process1 [ q1=q17, q2=q18, q20=q16 ] endmodule
+module process18 = process1 [ q1=q18, q2=q19, q20=q17 ] endmodule
+module process19 = process1 [ q1=q19, q2=q20, q20=q18 ] endmodule
+module process20 = process1 [ q1=q20, q2=q1, q20=q19 ] endmodule
+
+// cost - 1 in each state (expected steps)
+rewards "steps"
+	num_tokens &gt; 1 : 1;
+endrewards
+
+// formula, for use here and in properties: number of tokens
+formula num_tokens = q1+q2+q3+q4+q5+q6+q7+q8+q9+q10+q11+q12+q13+q14+q15+q16+q17+q18+q19+q20;
+
+// label - stable configurations (1 token)
+label "stable" = num_tokens=1;
+
+// initial states (at least one token)
+init
+	num_tokens &gt;= 1
+endinit</content>
+    </model>
+    <model name="israeli15" type="rml">
+      <content>// Israeli-Jalfon self stabilising algorithm
+// dxp/gxn 10/06/02
+
+mdp
+
+// variables to represent whether a process has a token or not
+// note they are global because they can be updated by other processes
+global q1  : [0..1];
+global q2  : [0..1];
+global q3  : [0..1];
+global q4  : [0..1];
+global q5  : [0..1];
+global q6  : [0..1];
+global q7  : [0..1];
+global q8  : [0..1];
+global q9  : [0..1];
+global q10  : [0..1];
+global q11  : [0..1];
+global q12  : [0..1];
+global q13  : [0..1];
+global q14  : [0..1];
+global q15  : [0..1];
+
+// module of process 1
+module process1
+	
+	[] (q1=1) -&gt; 0.5 : (q1'=0) &amp; (q15'=1) + 0.5 : (q1'=0) &amp; (q2'=1);
+	
+endmodule
+
+// add further processes through renaming
+module process2 = process1 [ q1=q2, q2=q3, q15=q1 ] endmodule
+module process3 = process1 [ q1=q3, q2=q4, q15=q2 ] endmodule
+module process4 = process1 [ q1=q4, q2=q5, q15=q3 ] endmodule
+module process5 = process1 [ q1=q5, q2=q6, q15=q4 ] endmodule
+module process6 = process1 [ q1=q6, q2=q7, q15=q5 ] endmodule
+module process7 = process1 [ q1=q7, q2=q8, q15=q6 ] endmodule
+module process8 = process1 [ q1=q8, q2=q9, q15=q7 ] endmodule
+module process9 = process1 [ q1=q9, q2=q10, q15=q8 ] endmodule
+module process10 = process1 [ q1=q10, q2=q11, q15=q9 ] endmodule
+module process11 = process1 [ q1=q11, q2=q12, q15=q10 ] endmodule
+module process12 = process1 [ q1=q12, q2=q13, q15=q11 ] endmodule
+module process13 = process1 [ q1=q13, q2=q14, q15=q12 ] endmodule
+module process14 = process1 [ q1=q14, q2=q15, q15=q13 ] endmodule
+module process15 = process1 [ q1=q15, q2=q1, q15=q14 ] endmodule
+
+// cost - 1 in each state (expected steps)
+rewards "steps"
+	num_tokens &gt; 1 : 1;
+endrewards
+
+// formula, for use here and in properties: number of tokens
+formula num_tokens = q1+q2+q3+q4+q5+q6+q7+q8+q9+q10+q11+q12+q13+q14+q15;
+
+// label - stable configurations (1 token)
+label "stable" = num_tokens=1;
+
+// initial states (at least one token)
+init
+	num_tokens &gt;= 1
+endinit</content>
+    </model>
+    <model name="israeli10" type="rml">
+      <content>// Israeli-Jalfon self stabilising algorithm
+// dxp/gxn 10/06/02
+
+mdp
+
+const k=9;
+
+// variables to represent whether a process has a token or not
+// note they are global because they can be updated by other processes
+global q1  : [0..1];
+global q2  : [0..1];
+global q3  : [0..1];
+global q4  : [0..1];
+global q5  : [0..1];
+global q6  : [0..1];
+global q7  : [0..1];
+global q8  : [0..1];
+global q9  : [0..1];
+global q10  : [0..1];
+
+// module of process 1
+module process1
+	
+	[] (q1=1) -&gt; 0.5 : (q1'=0) &amp; (q10'=1) + 0.5 : (q1'=0) &amp; (q2'=1);
+	
+endmodule
+
+// add further processes through renaming
+module process2 = process1 [ q1=q2, q2=q3, q10=q1 ] endmodule
+module process3 = process1 [ q1=q3, q2=q4, q10=q2 ] endmodule
+module process4 = process1 [ q1=q4, q2=q5, q10=q3 ] endmodule
+module process5 = process1 [ q1=q5, q2=q6, q10=q4 ] endmodule
+module process6 = process1 [ q1=q6, q2=q7, q10=q5 ] endmodule
+module process7 = process1 [ q1=q7, q2=q8, q10=q6 ] endmodule
+module process8 = process1 [ q1=q8, q2=q9, q10=q7 ] endmodule
+module process9 = process1 [ q1=q9, q2=q10, q10=q8 ] endmodule
+module process10 = process1 [ q1=q10, q2=q1, q10=q9 ] endmodule
+
+// formula, for use here and in properties: number of tokens
+formula num_tokens = q1+q2+q3+q4+q5+q6+q7+q8+q9+q10;
+
+// label - stable configurations (1 token)
+label "stable" = num_tokens=1;
+
+// initial states (at least one token)
+init
+	num_tokens = k
+endinit
+
+rewards "steps"
+	true : 1;
+endrewards</content>
+    </model>
+    <model name="beauquier3" type="rml">
+      <content>// self stabilisation algorithm Beauquier, Gradinariu and Johnen
+// gxn/dxp 18/07/02
+
+mdp
+
+// module of process 1
+module process1
+	
+	d1 : bool; // probabilistic variable
+	p1 : bool; // deterministic variable
+	
+	[] d1=d3 &amp;  p1=p3 -&gt; 0.5 : (d1'=!d1) &amp; (p1'=p1) + 0.5 : (d1'=!d1) &amp; (p1'=!p1);
+	[] d1=d3 &amp; !p1=p3 -&gt; (d1'=!d1);
+	
+endmodule
+
+// add further processes through renaming
+module process2 = process1 [ p1=p2, p3=p1, d1=d2, d3=d1 ] endmodule
+module process3 = process1 [ p1=p3, p3=p2, d1=d3, d3=d2 ] endmodule
+
+// cost - 1 in each state (expected steps)
+rewards "steps"
+	true : 1;
+endrewards
+
+// initial states - any state with more than 1 token, that is all states
+init
+	true
+endinit
+
+// formula, for use in properties: number of tokens
+formula num_tokens = (p1=p2?1:0)+(p2=p3?1:0)+(p3=p1?1:0);
+
+// label - stable configurations (1 token)
+label "stable" = num_tokens=1;</content>
+    </model>
+    <model name="beauquier11" type="rml">
+      <content>// self stabilisation algorithm Beauquier, Gradinariu and Johnen
+// gxn/dxp 18/07/02
+
+mdp
+
+// module of process 1
+module process1
+	
+	d1 : bool; // probabilistic variable
+	p1 : bool; // deterministic variable
+	
+	[] d1=d11 &amp;  p1=p11 -&gt; 0.5 : (d1'=!d1) &amp; (p1'=p1) + 0.5 : (d1'=!d1) &amp; (p1'=!p1);
+	[] d1=d11 &amp; !p1=p11 -&gt; (d1'=!d1);
+	
+endmodule
+
+// add further processes through renaming
+module process2 = process1 [ p1=p2, p11=p1, d1=d2, d11=d1 ] endmodule
+module process3 = process1 [ p1=p3, p11=p2, d1=d3, d11=d2 ] endmodule
+module process4 = process1 [ p1=p4, p11=p3, d1=d4, d11=d3 ] endmodule
+module process5 = process1 [ p1=p5, p11=p4, d1=d5, d11=d4 ] endmodule
+module process6 = process1 [ p1=p6, p11=p5, d1=d6, d11=d5 ] endmodule
+module process7 = process1 [ p1=p7, p11=p6, d1=d7, d11=d6 ] endmodule
+module process8 = process1 [ p1=p8, p11=p7, d1=d8, d11=d7 ] endmodule
+module process9 = process1 [ p1=p9, p11=p8, d1=d9, d11=d8 ] endmodule
+module process10 = process1 [ p1=p10, p11=p9, d1=d10, d11=d9 ] endmodule
+module process11 = process1 [ p1=p11, p11=p10, d1=d11, d11=d10 ] endmodule
+
+// cost - 1 in each state (expected steps)
+rewards "steps"
+	true : 1;
+endrewards
+
+// initial states - any state with more than 1 token, that is all states
+init
+	true
+endinit
+
+// formula, for use in properties: number of tokens
+formula num_tokens = (p1=p2?1:0)+(p2=p3?1:0)+(p3=p4?1:0)+(p4=p5?1:0)+(p5=p6?1:0)+(p6=p7?1:0)+(p7=p8?1:0)+(p8=p9?1:0)+(p9=p10?1:0)+(p10=p11?1:0)+(p11=p1?1:0);
+
+// label - stable configurations (1 token)
+label "stable" = num_tokens=1;</content>
+    </model>
+    <model name="beauquier5" type="rml">
+      <content>// self stabilisation algorithm Beauquier, Gradinariu and Johnen
+// gxn/dxp 18/07/02
+
+mdp
+
+// module of process 1
+module process1
+	
+	d1 : bool; // probabilistic variable
+	p1 : bool; // deterministic variable
+	
+	[] d1=d5 &amp;  p1=p5 -&gt; 0.5 : (d1'=!d1) &amp; (p1'=p1) + 0.5 : (d1'=!d1) &amp; (p1'=!p1);
+	[] d1=d5 &amp; !p1=p5 -&gt; (d1'=!d1);
+	
+endmodule
+
+// add further processes through renaming
+module process2 = process1 [ p1=p2, p5=p1, d1=d2, d5=d1 ] endmodule
+module process3 = process1 [ p1=p3, p5=p2, d1=d3, d5=d2 ] endmodule
+module process4 = process1 [ p1=p4, p5=p3, d1=d4, d5=d3 ] endmodule
+module process5 = process1 [ p1=p5, p5=p4, d1=d5, d5=d4 ] endmodule
+
+// initial states - any state with more than 1 token, that is all states
+init
+	true
+endinit
+
+// formula, for use in properties: number of tokens
+formula num_tokens = ((p1=p2)?1:0)+((p2=p3)?1:0)+((p3=p4)?1:0)+((p4=p5)?1:0)+((p5=p1)?1:0);
+
+// label - stable configurations (1 token)
+label "stable" = num_tokens=1;</content>
+    </model>
+    <model name="beauquier7" type="rml">
+      <content>// self stabilisation algorithm Beauquier, Gradinariu and Johnen
+// gxn/dxp 18/07/02
+
+mdp
+
+// module of process 1
+module process1
+	
+	d1 : bool; // probabilistic variable
+	p1 : bool; // deterministic variable
+	
+	[] d1=d7 &amp;  p1=p7 -&gt; 0.5 : (d1'=!d1) &amp; (p1'=p1) + 0.5 : (d1'=!d1) &amp; (p1'=!p1);
+	[] d1=d7 &amp; !p1=p7 -&gt; (d1'=!d1);
+	
+endmodule
+
+// add further processes through renaming
+module process2 = process1 [ p1=p2, p7=p1, d1=d2, d7=d1 ] endmodule
+module process3 = process1 [ p1=p3, p7=p2, d1=d3, d7=d2 ] endmodule
+module process4 = process1 [ p1=p4, p7=p3, d1=d4, d7=d3 ] endmodule
+module process5 = process1 [ p1=p5, p7=p4, d1=d5, d7=d4 ] endmodule
+module process6 = process1 [ p1=p6, p7=p5, d1=d6, d7=d5 ] endmodule
+module process7 = process1 [ p1=p7, p7=p6, d1=d7, d7=d6 ] endmodule
+
+// cost - 1 in each state (expected steps)
+rewards "steps"
+	true : 1;
+endrewards
+
+// initial states - any state with more than 1 token, that is all states
+init
+	true
+endinit
+
+// formula, for use in properties: number of tokens
+formula num_tokens = (p1=p2?1:0)+(p2=p3?1:0)+(p3=p4?1:0)+(p4=p5?1:0)+(p5=p6?1:0)+(p6=p7?1:0)+(p7=p1?1:0);
+
+// label - stable configurations (1 token)
+label "stable" = num_tokens=1;</content>
+    </model>
+    <model name="Israeli5" type="rml">
+      <content>// Israeli-Jalfon self stabilising algorithm
+// dxp/gxn 10/06/02
+
+mdp
+
+const k = 1;
+
+// variables to represent whether a process has a token or not
+// note they are global because they can be updated by other processes
+global q1  : [0..1];
+global q2  : [0..1];
+global q3  : [0..1];
+global q4  : [0..1];
+global q5  : [0..1];
+
+// module of process 1
+module process1
+	
+	[] (q1=1) -&gt; 0.5 : (q1'=0) &amp; (q5'=1) + 0.5 : (q1'=0) &amp; (q2'=1);
+	
+endmodule
+
+// add further processes through renaming
+module process2 = process1 [ q1=q2, q2=q3, q5=q1 ] endmodule
+module process3 = process1 [ q1=q3, q2=q4, q5=q2 ] endmodule
+module process4 = process1 [ q1=q4, q2=q5, q5=q3 ] endmodule
+module process5 = process1 [ q1=q5, q2=q1, q5=q4 ] endmodule
+
+// formula, for use here and in properties: number of tokens
+formula num_tokens = q1+q2+q3+q4+q5;
+
+// label - stable configurations (1 token)
+label "stable" = num_tokens=1;
+
+// initial states (at least one token)
+init
+	num_tokens = k
+endinit
+
+rewards "steps"
+	true : 1;
+endrewards</content>
+    </model>
+    <model name="Israeli6" type="rml">
+      <content>// Israeli-Jalfon self stabilising algorithm
+// dxp/gxn 10/06/02
+
+mdp
+
+const k = 1;
+
+// variables to represent whether a process has a token or not
+// note they are global because they can be updated by other processes
+global q1  : [0..1];
+global q2  : [0..1];
+global q3  : [0..1];
+global q4  : [0..1];
+global q5  : [0..1];
+global q6  : [0..1];
+
+// module of process 1
+module process1
+	
+	[] (q1=1) -&gt; 0.5 : (q1'=0) &amp; (q6'=1) + 0.5 : (q1'=0) &amp; (q2'=1);
+	
+endmodule
+
+// add further processes through renaming
+module process2 = process1 [ q1=q2, q2=q3, q6=q1 ] endmodule
+module process3 = process1 [ q1=q3, q2=q4, q6=q2 ] endmodule
+module process4 = process1 [ q1=q4, q2=q5, q6=q3 ] endmodule
+module process5 = process1 [ q1=q5, q2=q6, q6=q4 ] endmodule
+module process6 = process1 [ q1=q6, q2=q1, q6=q5 ] endmodule
+
+// formula, for use here and in properties: number of tokens
+formula num_tokens = q1+q2+q3+q4+q5+q6;
+
+// label - stable configurations (1 token)
+label "stable" = num_tokens=1;
+
+// initial states (at least one token)
+init
+	num_tokens = k
+endinit
+
+rewards "steps"
+	true : 1;
+endrewards</content>
+    </model>
+    <model name="Israeli7" type="rml">
+      <content>// Israeli-Jalfon self stabilising algorithm
+// dxp/gxn 10/06/02
+
+mdp
+
+const k = 1;
+
+// variables to represent whether a process has a token or not
+// note they are global because they can be updated by other processes
+global q1  : [0..1];
+global q2  : [0..1];
+global q3  : [0..1];
+global q4  : [0..1];
+global q5  : [0..1];
+global q6  : [0..1];
+global q7  : [0..1];
+
+// module of process 1
+module process1
+	
+	[] (q1=1) -&gt; 0.5 : (q1'=0) &amp; (q7'=1) + 0.5 : (q1'=0) &amp; (q2'=1);
+	
+endmodule
+
+// add further processes through renaming
+module process2 = process1 [ q1=q2, q2=q3, q7=q1 ] endmodule
+module process3 = process1 [ q1=q3, q2=q4, q7=q2 ] endmodule
+module process4 = process1 [ q1=q4, q2=q5, q7=q3 ] endmodule
+module process5 = process1 [ q1=q5, q2=q6, q7=q4 ] endmodule
+module process6 = process1 [ q1=q6, q2=q7, q7=q5 ] endmodule
+module process7 = process1 [ q1=q7, q2=q1, q7=q6 ] endmodule
+
+// formula, for use here and in properties: number of tokens
+formula num_tokens = q1+q2+q3+q4+q5+q6+q7;
+
+// label - stable configurations (1 token)
+label "stable" = num_tokens=1;
+
+// initial states (at least one token)
+init
+	num_tokens = k
+endinit
+
+rewards "steps"
+	true : 1;
+endrewards</content>
+    </model>
+    <model name="Israeli8" type="rml">
+      <content>// Israeli-Jalfon self stabilising algorithm
+// dxp/gxn 10/06/02
+
+mdp
+
+const k = 1;
+
+// variables to represent whether a process has a token or not
+// note they are global because they can be updated by other processes
+global q1  : [0..1];
+global q2  : [0..1];
+global q3  : [0..1];
+global q4  : [0..1];
+global q5  : [0..1];
+global q6  : [0..1];
+global q7  : [0..1];
+global q8  : [0..1];
+
+// module of process 1
+module process1
+	
+	[] (q1=1) -&gt; 0.5 : (q1'=0) &amp; (q8'=1) + 0.5 : (q1'=0) &amp; (q2'=1);
+	
+endmodule
+
+// add further processes through renaming
+module process2 = process1 [ q1=q2, q2=q3, q8=q1 ] endmodule
+module process3 = process1 [ q1=q3, q2=q4, q8=q2 ] endmodule
+module process4 = process1 [ q1=q4, q2=q5, q8=q3 ] endmodule
+module process5 = process1 [ q1=q5, q2=q6, q8=q4 ] endmodule
+module process6 = process1 [ q1=q6, q2=q7, q8=q5 ] endmodule
+module process7 = process1 [ q1=q7, q2=q8, q8=q6 ] endmodule
+module process8 = process1 [ q1=q8, q2=q1, q8=q7 ] endmodule
+
+// formula, for use here and in properties: number of tokens
+formula num_tokens = q1+q2+q3+q4+q5+q6+q7+q8;
+
+// label - stable configurations (1 token)
+label "stable" = num_tokens=1;
+
+// initial states (at least one token)
+init
+	num_tokens = k
+endinit
+
+rewards "steps"
+	true : 1;
+endrewards</content>
+    </model>
+    <model name="Israeli9" type="rml">
+      <content>// Israeli-Jalfon self stabilising algorithm
+// dxp/gxn 10/06/02
+
+mdp
+
+const k = 1;
+
+// variables to represent whether a process has a token or not
+// note they are global because they can be updated by other processes
+global q1  : [0..1];
+global q2  : [0..1];
+global q3  : [0..1];
+global q4  : [0..1];
+global q5  : [0..1];
+global q6  : [0..1];
+global q7  : [0..1];
+global q8  : [0..1];
+global q9  : [0..1];
+
+// module of process 1
+module process1
+	
+	[] (q1=1) -&gt; 0.5 : (q1'=0) &amp; (q9'=1) + 0.5 : (q1'=0) &amp; (q2'=1);
+	
+endmodule
+
+// add further processes through renaming
+module process2 = process1 [ q1=q2, q2=q3, q9=q1 ] endmodule
+module process3 = process1 [ q1=q3, q2=q4, q9=q2 ] endmodule
+module process4 = process1 [ q1=q4, q2=q5, q9=q3 ] endmodule
+module process5 = process1 [ q1=q5, q2=q6, q9=q4 ] endmodule
+module process6 = process1 [ q1=q6, q2=q7, q9=q5 ] endmodule
+module process7 = process1 [ q1=q7, q2=q8, q9=q6 ] endmodule
+module process8 = process1 [ q1=q8, q2=q9, q9=q7 ] endmodule
+module process9 = process1 [ q1=q9, q2=q1, q9=q8 ] endmodule
+
+// formula, for use here and in properties: number of tokens
+formula num_tokens = q1+q2+q3+q4+q5+q6+q7+q8+q9;
+
+// label - stable configurations (1 token)
+label "stable" = num_tokens=1;
+
+// initial states (at least one token)
+init
+	num_tokens = k
+endinit
+
+rewards "steps"
+	true : 1;
+endrewards</content>
+    </model>
+    <model name="Israeli11" type="rml">
+      <content>// Israeli-Jalfon self stabilising algorithm
+// dxp/gxn 10/06/02
+
+mdp
+
+const k=2;
+
+// variables to represent whether a process has a token or not
+// note they are global because they can be updated by other processes
+global q1  : [0..1];
+global q2  : [0..1];
+global q3  : [0..1];
+global q4  : [0..1];
+global q5  : [0..1];
+global q6  : [0..1];
+global q7  : [0..1];
+global q8  : [0..1];
+global q9  : [0..1];
+global q10  : [0..1];
+global q11  : [0..1];
+
+// module of process 1
+module process1
+	
+	[] (q1=1) -&gt; 0.5 : (q1'=0) &amp; (q11'=1) + 0.5 : (q1'=0) &amp; (q2'=1);
+	
+endmodule
+
+// add further processes through renaming
+module process2 = process1 [ q1=q2, q2=q3, q11=q1 ] endmodule
+module process3 = process1 [ q1=q3, q2=q4, q11=q2 ] endmodule
+module process4 = process1 [ q1=q4, q2=q5, q11=q3 ] endmodule
+module process5 = process1 [ q1=q5, q2=q6, q11=q4 ] endmodule
+module process6 = process1 [ q1=q6, q2=q7, q11=q5 ] endmodule
+module process7 = process1 [ q1=q7, q2=q8, q11=q6 ] endmodule
+module process8 = process1 [ q1=q8, q2=q9, q11=q7 ] endmodule
+module process9 = process1 [ q1=q9, q2=q10, q11=q8 ] endmodule
+module process10 = process1 [ q1=q10, q2=q11, q11=q9 ] endmodule
+module process11 = process1 [ q1=q11, q2=q1, q11=q10 ] endmodule
+
+// formula, for use here and in properties: number of tokens
+formula num_tokens = q1+q2+q3+q4+q5+q6+q7+q8+q9+q10+q11;
+
+// label - stable configurations (1 token)
+label "stable" = num_tokens=1;
+
+// initial states (at least one token)
+init
+	num_tokens = k
+endinit
+
+rewards "steps"
+	true : 1;
+endrewards</content>
+    </model>
+    <model name="Israeli12" type="rml">
+      <content>// Israeli-Jalfon self stabilising algorithm
+// dxp/gxn 10/06/02
+
+mdp
+
+const k=10;
+
+// variables to represent whether a process has a token or not
+// note they are global because they can be updated by other processes
+global q1  : [0..1];
+global q2  : [0..1];
+global q3  : [0..1];
+global q4  : [0..1];
+global q5  : [0..1];
+global q6  : [0..1];
+global q7  : [0..1];
+global q8  : [0..1];
+global q9  : [0..1];
+global q10  : [0..1];
+global q11  : [0..1];
+global q12  : [0..1];
+
+// module of process 1
+module process1
+	
+	[] (q1=1) -&gt; 0.5 : (q1'=0) &amp; (q12'=1) + 0.5 : (q1'=0) &amp; (q2'=1);
+	
+endmodule
+
+// add further processes through renaming
+module process2 = process1 [ q1=q2, q2=q3, q12=q1 ] endmodule
+module process3 = process1 [ q1=q3, q2=q4, q12=q2 ] endmodule
+module process4 = process1 [ q1=q4, q2=q5, q12=q3 ] endmodule
+module process5 = process1 [ q1=q5, q2=q6, q12=q4 ] endmodule
+module process6 = process1 [ q1=q6, q2=q7, q12=q5 ] endmodule
+module process7 = process1 [ q1=q7, q2=q8, q12=q6 ] endmodule
+module process8 = process1 [ q1=q8, q2=q9, q12=q7 ] endmodule
+module process9 = process1 [ q1=q9, q2=q10, q12=q8 ] endmodule
+module process10 = process1 [ q1=q10, q2=q11, q12=q9 ] endmodule
+module process11 = process1 [ q1=q11, q2=q12, q12=q10 ] endmodule
+module process12 = process1 [ q1=q12, q2=q1, q12=q11 ] endmodule
+
+// formula, for use here and in properties: number of tokens
+formula num_tokens = q1+q2+q3+q4+q5+q6+q7+q8+q9+q10+q11+q12;
+
+// label - stable configurations (1 token)
+label "stable" = num_tokens=1;
+
+// initial states (at least one token)
+init
+	num_tokens = k
+endinit
+
+rewards "steps"
+	true : 1;
+endrewards</content>
+    </model>
+  </models>
+  <requirements>
+    <requirement name="Fstable" type="bltl">
+      <content>F&lt;=#300 "stable"</content>
+    </requirement>
+    <requirement name="Fstable_optim_bound" type="bltl">
+      <content>declare
+	K := [20;100;10]
+end
+
+F&lt;=#(K) "stable"</content>
+    </requirement>
+    <requirement name="Fstable_optim_tokens" type="bltl">
+      <content>optimize k := [2;12;1] end
+F&lt;=#300 "stable"</content>
+    </requirement>
+  </requirements>
+  <resources />
+</PlasmaProject>

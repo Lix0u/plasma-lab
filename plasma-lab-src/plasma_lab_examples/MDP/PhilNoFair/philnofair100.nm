@@ -1,0 +1,133 @@
+// Randomised dining philosophers based on Lehmann & Rabin 1981
+// No fairness
+
+mdp
+
+formula lfree = p2>=0 & p2<=4 | p2=6 | p2=10;
+formula rfree = p100>=0 & p100<=3 | p100=5 | p100=7 | p100=11;
+
+module phil1
+	p1: [0..11];
+	[] p1=0 -> (p1'=1);
+	[] p1=1 -> 0.5 : (p1'=2) + 0.5 : (p1'=3);
+	[] p1=2 & lfree -> (p1'=4);
+	[] p1=3 & rfree -> (p1'=5);
+	[] p1=4 & rfree -> (p1'=8);
+	[] p1=4 & !rfree -> (p1'=6);
+	[] p1=5 & lfree -> (p1'=8);
+	[] p1=5 & !lfree -> (p1'=7);
+	[] p1=6 -> (p1'=1);
+	[] p1=7 -> (p1'=1);
+	[] p1=8 -> (p1'=9);
+	[] p1=9 -> (p1'=10);
+	[] p1=9 -> (p1'=11);
+	[] p1=10 -> (p1'=0);
+	[] p1=11 -> (p1'=0);
+endmodule
+
+module phil2  = phil1 [p1=p2,  p2=p3,  p100=p1]  endmodule
+module phil3  = phil1 [p1=p3,  p2=p4,  p100=p2]  endmodule
+module phil4  = phil1 [p1=p4,  p2=p5,  p100=p3]  endmodule
+module phil5  = phil1 [p1=p5,  p2=p6,  p100=p4]  endmodule
+module phil6  = phil1 [p1=p6,  p2=p7,  p100=p5]  endmodule
+module phil7  = phil1 [p1=p7,  p2=p8,  p100=p6]  endmodule
+module phil8  = phil1 [p1=p8,  p2=p9,  p100=p7]  endmodule
+module phil9  = phil1 [p1=p9,  p2=p10,  p100=p8]  endmodule
+module phil10  = phil1 [p1=p10,  p2=p11,  p100=p9]  endmodule
+module phil11  = phil1 [p1=p11,  p2=p12,  p100=p10]  endmodule
+module phil12  = phil1 [p1=p12,  p2=p13,  p100=p11]  endmodule
+module phil13  = phil1 [p1=p13,  p2=p14,  p100=p12]  endmodule
+module phil14  = phil1 [p1=p14,  p2=p15,  p100=p13]  endmodule
+module phil15  = phil1 [p1=p15,  p2=p16,  p100=p14]  endmodule
+module phil16  = phil1 [p1=p16,  p2=p17,  p100=p15]  endmodule
+module phil17  = phil1 [p1=p17,  p2=p18,  p100=p16]  endmodule
+module phil18  = phil1 [p1=p18,  p2=p19,  p100=p17]  endmodule
+module phil19  = phil1 [p1=p19,  p2=p20,  p100=p18]  endmodule
+module phil20  = phil1 [p1=p20,  p2=p21,  p100=p19]  endmodule
+module phil21  = phil1 [p1=p21,  p2=p22,  p100=p20]  endmodule
+module phil22  = phil1 [p1=p22,  p2=p23,  p100=p21]  endmodule
+module phil23  = phil1 [p1=p23,  p2=p24,  p100=p22]  endmodule
+module phil24  = phil1 [p1=p24,  p2=p25,  p100=p23]  endmodule
+module phil25  = phil1 [p1=p25,  p2=p26,  p100=p24]  endmodule
+module phil26  = phil1 [p1=p26,  p2=p27,  p100=p25]  endmodule
+module phil27  = phil1 [p1=p27,  p2=p28,  p100=p26]  endmodule
+module phil28  = phil1 [p1=p28,  p2=p29,  p100=p27]  endmodule
+module phil29  = phil1 [p1=p29,  p2=p30,  p100=p28]  endmodule
+module phil30  = phil1 [p1=p30,  p2=p31,  p100=p29]  endmodule
+module phil31  = phil1 [p1=p31,  p2=p32,  p100=p30]  endmodule
+module phil32  = phil1 [p1=p32,  p2=p33,  p100=p31]  endmodule
+module phil33  = phil1 [p1=p33,  p2=p34,  p100=p32]  endmodule
+module phil34  = phil1 [p1=p34,  p2=p35,  p100=p33]  endmodule
+module phil35  = phil1 [p1=p35,  p2=p36,  p100=p34]  endmodule
+module phil36  = phil1 [p1=p36,  p2=p37,  p100=p35]  endmodule
+module phil37  = phil1 [p1=p37,  p2=p38,  p100=p36]  endmodule
+module phil38  = phil1 [p1=p38,  p2=p39,  p100=p37]  endmodule
+module phil39  = phil1 [p1=p39,  p2=p40,  p100=p38]  endmodule
+module phil40  = phil1 [p1=p40,  p2=p41,  p100=p39]  endmodule
+module phil41  = phil1 [p1=p41,  p2=p42,  p100=p40]  endmodule
+module phil42  = phil1 [p1=p42,  p2=p43,  p100=p41]  endmodule
+module phil43  = phil1 [p1=p43,  p2=p44,  p100=p42]  endmodule
+module phil44  = phil1 [p1=p44,  p2=p45,  p100=p43]  endmodule
+module phil45  = phil1 [p1=p45,  p2=p46,  p100=p44]  endmodule
+module phil46  = phil1 [p1=p46,  p2=p47,  p100=p45]  endmodule
+module phil47  = phil1 [p1=p47,  p2=p48,  p100=p46]  endmodule
+module phil48  = phil1 [p1=p48,  p2=p49,  p100=p47]  endmodule
+module phil49  = phil1 [p1=p49,  p2=p50,  p100=p48]  endmodule
+module phil50  = phil1 [p1=p50,  p2=p51,  p100=p49]  endmodule
+module phil51  = phil1 [p1=p51,  p2=p52,  p100=p50]  endmodule
+module phil52  = phil1 [p1=p52,  p2=p53,  p100=p51]  endmodule
+module phil53  = phil1 [p1=p53,  p2=p54,  p100=p52]  endmodule
+module phil54  = phil1 [p1=p54,  p2=p55,  p100=p53]  endmodule
+module phil55  = phil1 [p1=p55,  p2=p56,  p100=p54]  endmodule
+module phil56  = phil1 [p1=p56,  p2=p57,  p100=p55]  endmodule
+module phil57  = phil1 [p1=p57,  p2=p58,  p100=p56]  endmodule
+module phil58  = phil1 [p1=p58,  p2=p59,  p100=p57]  endmodule
+module phil59  = phil1 [p1=p59,  p2=p60,  p100=p58]  endmodule
+module phil60  = phil1 [p1=p60,  p2=p61,  p100=p59]  endmodule
+module phil61  = phil1 [p1=p61,  p2=p62,  p100=p60]  endmodule
+module phil62  = phil1 [p1=p62,  p2=p63,  p100=p61]  endmodule
+module phil63  = phil1 [p1=p63,  p2=p64,  p100=p62]  endmodule
+module phil64  = phil1 [p1=p64,  p2=p65,  p100=p63]  endmodule
+module phil65  = phil1 [p1=p65,  p2=p66,  p100=p64]  endmodule
+module phil66  = phil1 [p1=p66,  p2=p67,  p100=p65]  endmodule
+module phil67  = phil1 [p1=p67,  p2=p68,  p100=p66]  endmodule
+module phil68  = phil1 [p1=p68,  p2=p69,  p100=p67]  endmodule
+module phil69  = phil1 [p1=p69,  p2=p70,  p100=p68]  endmodule
+module phil70  = phil1 [p1=p70,  p2=p71,  p100=p69]  endmodule
+module phil71  = phil1 [p1=p71,  p2=p72,  p100=p70]  endmodule
+module phil72  = phil1 [p1=p72,  p2=p73,  p100=p71]  endmodule
+module phil73  = phil1 [p1=p73,  p2=p74,  p100=p72]  endmodule
+module phil74  = phil1 [p1=p74,  p2=p75,  p100=p73]  endmodule
+module phil75  = phil1 [p1=p75,  p2=p76,  p100=p74]  endmodule
+module phil76  = phil1 [p1=p76,  p2=p77,  p100=p75]  endmodule
+module phil77  = phil1 [p1=p77,  p2=p78,  p100=p76]  endmodule
+module phil78  = phil1 [p1=p78,  p2=p79,  p100=p77]  endmodule
+module phil79  = phil1 [p1=p79,  p2=p80,  p100=p78]  endmodule
+module phil80  = phil1 [p1=p80,  p2=p81,  p100=p79]  endmodule
+module phil81  = phil1 [p1=p81,  p2=p82,  p100=p80]  endmodule
+module phil82  = phil1 [p1=p82,  p2=p83,  p100=p81]  endmodule
+module phil83  = phil1 [p1=p83,  p2=p84,  p100=p82]  endmodule
+module phil84  = phil1 [p1=p84,  p2=p85,  p100=p83]  endmodule
+module phil85  = phil1 [p1=p85,  p2=p86,  p100=p84]  endmodule
+module phil86  = phil1 [p1=p86,  p2=p87,  p100=p85]  endmodule
+module phil87  = phil1 [p1=p87,  p2=p88,  p100=p86]  endmodule
+module phil88  = phil1 [p1=p88,  p2=p89,  p100=p87]  endmodule
+module phil89  = phil1 [p1=p89,  p2=p90,  p100=p88]  endmodule
+module phil90  = phil1 [p1=p90,  p2=p91,  p100=p89]  endmodule
+module phil91  = phil1 [p1=p91,  p2=p92,  p100=p90]  endmodule
+module phil92  = phil1 [p1=p92,  p2=p93,  p100=p91]  endmodule
+module phil93  = phil1 [p1=p93,  p2=p94,  p100=p92]  endmodule
+module phil94  = phil1 [p1=p94,  p2=p95,  p100=p93]  endmodule
+module phil95  = phil1 [p1=p95,  p2=p96,  p100=p94]  endmodule
+module phil96  = phil1 [p1=p96,  p2=p97,  p100=p95]  endmodule
+module phil97  = phil1 [p1=p97,  p2=p98,  p100=p96]  endmodule
+module phil98  = phil1 [p1=p98,  p2=p99,  p100=p97]  endmodule
+module phil99  = phil1 [p1=p99,  p2=p100,  p100=p98]  endmodule
+module phil100 = phil1 [p1=p100, p2=p1,  p100=p99] endmodule
+
+rewards "num_steps"
+	[] true : 1;
+endrewards
+
+label "hungry" = p1>0 & p1<8 | p2>0 & p2<8 | p3>0 & p3<8 | p4>0 & p4<8 | p5>0 & p5<8 | p6>0 & p6<8 | p7>0 & p7<8 | p8>0 & p8<8 | p9>0 & p9<8 | p10>0 & p10<8 | p11>0 & p11<8 | p12>0 & p12<8 | p13>0 & p13<8 | p14>0 & p14<8 | p15>0 & p15<8 | p16>0 & p16<8 | p17>0 & p17<8 | p18>0 & p18<8 | p19>0 & p19<8 | p20>0 & p20<8 | p21>0 & p21<8 | p22>0 & p22<8 | p23>0 & p23<8 | p24>0 & p24<8 | p25>0 & p25<8 | p26>0 & p26<8 | p27>0 & p27<8 | p28>0 & p28<8 | p29>0 & p29<8 | p30>0 & p30<8 | p31>0 & p31<8 | p32>0 & p32<8 | p33>0 & p33<8 | p34>0 & p34<8 | p35>0 & p35<8 | p36>0 & p36<8 | p37>0 & p37<8 | p38>0 & p38<8 | p39>0 & p39<8 | p40>0 & p40<8 | p41>0 & p41<8 | p42>0 & p42<8 | p43>0 & p43<8 | p44>0 & p44<8 | p45>0 & p45<8 | p46>0 & p46<8 | p47>0 & p47<8 | p48>0 & p48<8 | p49>0 & p49<8 | p50>0 & p50<8 | p51>0 & p51<8 | p52>0 & p52<8 | p53>0 & p53<8 | p54>0 & p54<8 | p55>0 & p55<8 | p56>0 & p56<8 | p57>0 & p57<8 | p58>0 & p58<8 | p59>0 & p59<8 | p60>0 & p60<8 | p61>0 & p61<8 | p62>0 & p62<8 | p63>0 & p63<8 | p64>0 & p64<8 | p65>0 & p65<8 | p66>0 & p66<8 | p67>0 & p67<8 | p68>0 & p68<8 | p69>0 & p69<8 | p70>0 & p70<8 | p71>0 & p71<8 | p72>0 & p72<8 | p73>0 & p73<8 | p74>0 & p74<8 | p75>0 & p75<8 | p76>0 & p76<8 | p77>0 & p77<8 | p78>0 & p78<8 | p79>0 & p79<8 | p80>0 & p80<8 | p81>0 & p81<8 | p82>0 & p82<8 | p83>0 & p83<8 | p84>0 & p84<8 | p85>0 & p85<8 | p86>0 & p86<8 | p87>0 & p87<8 | p88>0 & p88<8 | p89>0 & p89<8 | p90>0 & p90<8 | p91>0 & p91<8 | p92>0 & p92<8 | p93>0 & p93<8 | p94>0 & p94<8 | p95>0 & p95<8 | p96>0 & p96<8 | p97>0 & p97<8 | p98>0 & p98<8 | p99>0 & p99<8 | p100>0 & p100<8;
+label "eat" = p1>=8 & p1<=9 | p2>=8 & p2<=9 | p3>=8 & p3<=9 | p4>=8 & p4<=9 | p5>=8 & p5<=9 | p6>=8 & p6<=9 | p7>=8 & p7<=9 | p8>=8 & p8<=9 | p9>=8 & p9<=9 | p10>=8 & p10<=9 | p11>=8 & p11<=9 | p12>=8 & p12<=9 | p13>=8 & p13<=9 | p14>=8 & p14<=9 | p15>=8 & p15<=9 | p16>=8 & p16<=9 | p17>=8 & p17<=9 | p18>=8 & p18<=9 | p19>=8 & p19<=9 | p20>=8 & p20<=9 | p21>=8 & p21<=9 | p22>=8 & p22<=9 | p23>=8 & p23<=9 | p24>=8 & p24<=9 | p25>=8 & p25<=9 | p26>=8 & p26<=9 | p27>=8 & p27<=9 | p28>=8 & p28<=9 | p29>=8 & p29<=9 | p30>=8 & p30<=9 | p31>=8 & p31<=9 | p32>=8 & p32<=9 | p33>=8 & p33<=9 | p34>=8 & p34<=9 | p35>=8 & p35<=9 | p36>=8 & p36<=9 | p37>=8 & p37<=9 | p38>=8 & p38<=9 | p39>=8 & p39<=9 | p40>=8 & p40<=9 | p41>=8 & p41<=9 | p42>=8 & p42<=9 | p43>=8 & p43<=9 | p44>=8 & p44<=9 | p45>=8 & p45<=9 | p46>=8 & p46<=9 | p47>=8 & p47<=9 | p48>=8 & p48<=9 | p49>=8 & p49<=9 | p50>=8 & p50<=9 | p51>=8 & p51<=9 | p52>=8 & p52<=9 | p53>=8 & p53<=9 | p54>=8 & p54<=9 | p55>=8 & p55<=9 | p56>=8 & p56<=9 | p57>=8 & p57<=9 | p58>=8 & p58<=9 | p59>=8 & p59<=9 | p60>=8 & p60<=9 | p61>=8 & p61<=9 | p62>=8 & p62<=9 | p63>=8 & p63<=9 | p64>=8 & p64<=9 | p65>=8 & p65<=9 | p66>=8 & p66<=9 | p67>=8 & p67<=9 | p68>=8 & p68<=9 | p69>=8 & p69<=9 | p70>=8 & p70<=9 | p71>=8 & p71<=9 | p72>=8 & p72<=9 | p73>=8 & p73<=9 | p74>=8 & p74<=9 | p75>=8 & p75<=9 | p76>=8 & p76<=9 | p77>=8 & p77<=9 | p78>=8 & p78<=9 | p79>=8 & p79<=9 | p80>=8 & p80<=9 | p81>=8 & p81<=9 | p82>=8 & p82<=9 | p83>=8 & p83<=9 | p84>=8 & p84<=9 | p85>=8 & p85<=9 | p86>=8 & p86<=9 | p87>=8 & p87<=9 | p88>=8 & p88<=9 | p89>=8 & p89<=9 | p90>=8 & p90<=9 | p91>=8 & p91<=9 | p92>=8 & p92<=9 | p93>=8 & p93<=9 | p94>=8 & p94<=9 | p95>=8 & p95<=9 | p96>=8 & p96<=9 | p97>=8 & p97<=9 | p98>=8 & p98<=9 | p99>=8 & p99<=9 | p100>=8 & p100<=9;

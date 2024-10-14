@@ -1,0 +1,30 @@
+To run PLASMA Lab on IGRIDA you must copy some scripts and a PLASMA Lab version on the frontend.
+
+
+CONFIGURATION
+
+To run properly, the plasma lab directory should be as:
+- fr.inria.plasmalab.plasmalab-VERSION.jar
+- plasmalab.conf
+- perso_log4j.xml
+- plugins
+- * PLUGIN NEEDED FOR THE EXPERIMENTi
+
+Alternatively you can specify plugin location using the plasmalab.conf file. As you would on your own PLASMA Lab installation directory.
+
+============================================================================================
+
+USAGE
+
+To launch a PLASMA Lab experiment using IGRIDA you need to be connected to the oarfrontend USER@igrida-oar-frontend. Here you can launch a script, like the plasma_script.sh example.
+This script will then submit a job to the OAR scheduler using the command oarsub. The job is described in the file plasma_script.job. 
+
+To test your installation, launch an interactive session using:
+- oarsub -I
+
+Once you are in the interactive session you can launch PLASMA directly using 
+- java -jar fr.inria.plasmalab.plasmalab-VERSION.jar
+
+============================================================================================
+
+More details, information, tutorial on http://igrida.gforge.inria.fr/

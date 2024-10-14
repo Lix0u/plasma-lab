@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlasmaProject name="Network_with_unknowns">
+  <models>
+    <model name="model1_7unknowns.rml" type="rml">
+      <file>model1_7unknowns.rml</file>
+    </model>
+    <model name="model2_4unknowns.rml" type="rml">
+      <file>model2_4unknowns.rml</file>
+    </model>
+    <model name="model3_2unknowns.rml" type="rml">
+      <file>model3_2unknowns.rml</file>
+    </model>
+    <model name="model4_2unknowns.rml" type="rml">
+      <file>model4_2unknowns.rml</file>
+    </model>
+  </models>
+  <requirements>
+    <requirement name="isalive.bltlu" type="bltlu">
+      <file>isalive.bltlu</file>
+    </requirement>
+  </requirements>
+  <resources />
+</PlasmaProject>

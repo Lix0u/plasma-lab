@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlasmaProject name="Synchronous Leader Election Protocol">
+  <models>
+    <model name="leader_sync3_2" type="rml">
+      <file>leader_sync3_2.rml</file>
+    </model>
+    <model name="leader_sync3_3" type="rml">
+      <file>leader_sync3_3.rml</file>
+    </model>
+    <model name="leader_sync3_4" type="rml">
+      <file>leader_sync3_4.rml</file>
+    </model>
+    <model name="leader_sync3_5" type="rml">
+      <file>leader_sync3_5.rml</file>
+    </model>
+    <model name="leader_sync3_6" type="rml">
+      <file>leader_sync3_6.rml</file>
+    </model>
+    <model name="leader_sync3_8" type="rml">
+      <file>leader_sync3_8.rml</file>
+    </model>
+    <model name="leader_sync4_2" type="rml">
+      <file>leader_sync4_2.rml</file>
+    </model>
+    <model name="leader_sync4_3" type="rml">
+      <file>leader_sync4_3.rml</file>
+    </model>
+    <model name="leader_sync4_4" type="rml">
+      <file>leader_sync4_4.rml</file>
+    </model>
+    <model name="leader_sync4_5" type="rml">
+      <file>leader_sync4_5.rml</file>
+    </model>
+    <model name="leader_sync4_6" type="rml">
+      <file>leader_sync4_6.rml</file>
+    </model>
+    <model name="leader_sync4_8" type="rml">
+      <file>leader_sync4_8.rml</file>
+    </model>
+    <model name="leader_sync5_2" type="rml">
+      <file>leader_sync5_2.rml</file>
+    </model>
+    <model name="leader_sync5_3" type="rml">
+      <file>leader_sync5_3.rml</file>
+    </model>
+    <model name="leader_sync5_4" type="rml">
+      <file>leader_sync5_4.rml</file>
+    </model>
+    <model name="leader_sync5_5" type="rml">
+      <file>leader_sync5_5.rml</file>
+    </model>
+    <model name="leader_sync5_6" type="rml">
+      <file>leader_sync5_6.rml</file>
+    </model>
+    <model name="leader_sync5_8" type="rml">
+      <file>leader_sync5_8.rml</file>
+    </model>
+        <model name="leader_sync6_2" type="rml">
+      <file>leader_sync6_2.rml</file>
+    </model>
+    <model name="leader_sync6_3" type="rml">
+      <file>leader_sync6_3.rml</file>
+    </model>
+    <model name="leader_sync6_4" type="rml">
+      <file>leader_sync6_4.rml</file>
+    </model>
+    <model name="leader_sync6_5" type="rml">
+      <file>leader_sync6_5.rml</file>
+    </model>
+    <model name="leader_sync6_6" type="rml">
+      <file>leader_sync6_6.rml</file>
+    </model>
+    <model name="leader_sync6_8" type="rml">
+      <file>leader_sync6_8.rml</file>
+    </model>
+  </models>
+  <requirements>
+    <requirement name="elected" type="bltl">
+      <file>elected.bltl</file>
+    </requirement>
+  </requirements>
+</PlasmaProject>

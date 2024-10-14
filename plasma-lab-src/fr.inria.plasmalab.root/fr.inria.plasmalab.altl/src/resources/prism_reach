@@ -1,0 +1,4 @@
+#!/bin/bash
+
+PRISM=/home/ltraonou/Logiciels/prism-4.1.beta2-linux64/bin/prism
+$PRISM $1 $2 -fixdl > results.txt

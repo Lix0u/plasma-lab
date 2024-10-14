@@ -1,0 +1,5 @@
+declare
+	K := [20;100;10]
+end
+
+F<=#(K) "stable"

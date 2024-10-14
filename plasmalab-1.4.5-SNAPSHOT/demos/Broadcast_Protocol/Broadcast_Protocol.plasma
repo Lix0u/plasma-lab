@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlasmaProject name="Broadcast_Protocol">
+  <models>
+    <model name="SyncWoCollisions" type="rml">
+      <file>SyncWoCollisions.rml</file>
+    </model>
+    <model name="SyncWCollisions" type="rml">
+      <file>SyncWCollisions.rml</file>
+    </model>
+    <model name="LossyChannel" type="rml">
+      <file>LossyChannel.rml</file>
+    </model>
+    <model name="Asynchronous" type="rml">
+      <file>Asynchronous.rml</file>
+    </model>
+  </models>
+  <requirements>
+    <requirement name="active_0" type="bltl">
+      <file>active_0.bltl</file>
+    </requirement>
+    <requirement name="active_1" type="bltl">
+      <file>active_1.bltl</file>
+    </requirement>
+    <requirement name="active_2" type="bltl">
+      <file>active_2.bltl</file>
+    </requirement>
+    <requirement name="active_3" type="bltl">
+      <file>active_3.bltl</file>
+    </requirement>
+    <requirement name="active_4" type="bltl">
+      <file>active_4.bltl</file>
+    </requirement>
+    <requirement name="active_5" type="bltl">
+      <file>active_5.bltl</file>
+    </requirement>
+    <requirement name="active_6" type="bltl">
+      <file>active_6.bltl</file>
+    </requirement>
+    <requirement name="active_7" type="bltl">
+      <file>active_7.bltl</file>
+    </requirement>
+    <requirement name="active_8" type="bltl">
+      <file>active_8.bltl</file>
+    </requirement>
+  </requirements>
+  <resources />
+</PlasmaProject>

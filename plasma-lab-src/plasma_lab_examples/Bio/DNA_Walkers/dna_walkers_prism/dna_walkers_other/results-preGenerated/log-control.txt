@@ -1,0 +1,598 @@
+Welcome control
+PRISM
+=====
+
+Version: 4.1.dev
+Date: Sun Apr 27 17:08:03 BST 2014
+Hostname: localhost.localdomain
+Command line: prism models/control.pm properties/control.pctl -transientmethod unif -exportresults 'results/control.txt,matrix,csv'
+
+Parsing model file "models/control.pm"...
+
+Parsing properties file "properties/control.pctl"...
+
+4 properties:
+(1) P=? [ F[12000,12000] (w1=2) ]
+(2) P=? [ F[12000,12000] (w1=8) ]
+(3) P=? [ F[12000,12000] "deadlockUser" ]
+(4) R{"steps"}=? [ C<=200*60 ]
+
+Type:        CTMC
+Modules:     walker 
+Variables:   stator1 stator2 stator3 stator4 stator5 stator6 stator7 stator8 w1 
+
+---------------------------------------------------------------------
+
+Model checking: P=? [ F[12000,12000] (w1=2) ]
+
+Building model...
+
+Computing reachable states...
+
+Reachability (BFS): 8 iterations in 0.00 seconds (average 0.000125, setup 0.00)
+
+Time for model construction: 0.025 seconds.
+
+Type:        CTMC
+States:      172 (1 initial)
+Transitions: 458
+
+Rate matrix: 1068 nodes (11 terminal), 458 minterms, vars: 12r/12c
+
+Computing probabilities...
+Engine: Hybrid
+
+Number of non-absorbing states: 172 of 172 (100.0%)
+
+Building hybrid MTBDD matrix... [levels=12, nodes=1808] [84.8 KB]
+Adding explicit sparse matrices... [levels=12, num=1, compact] [2.0 KB]
+Creating vector for diagonals... [dist=49, compact] [0.7 KB]
+Allocating iteration vectors... [3 x 1.3 KB]
+TOTAL: [91.5 KB]
+
+Uniformisation: q.t = 0.018819 x 12000.000000 = 225.828012
+Fox-Glynn: left = 0, right = 310
+
+Starting iterations...
+
+Iterative method: 310 iterations in 0.00 seconds (average 0.000003, setup 0.00)
+
+Value in the initial state: 0.0026150564535500315
+
+Time for model checking: 0.005 seconds.
+
+Result: 0.0026150564535500315 (value in the initial state)
+
+---------------------------------------------------------------------
+
+Model checking: P=? [ F[12000,12000] (w1=8) ]
+
+Computing probabilities...
+Engine: Hybrid
+
+Number of non-absorbing states: 172 of 172 (100.0%)
+
+Building hybrid MTBDD matrix... [levels=12, nodes=1808] [84.8 KB]
+Adding explicit sparse matrices... [levels=12, num=1, compact] [2.0 KB]
+Creating vector for diagonals... [dist=49, compact] [0.7 KB]
+Allocating iteration vectors... [3 x 1.3 KB]
+TOTAL: [91.5 KB]
+
+Uniformisation: q.t = 0.018819 x 12000.000000 = 225.828012
+Fox-Glynn: left = 0, right = 310
+
+Starting iterations...
+
+Iterative method: 310 iterations in 0.00 seconds (average 0.000006, setup 0.00)
+
+Value in the initial state: 0.9618342117230124
+
+Time for model checking: 0.003 seconds.
+
+Result: 0.9618342117230124 (value in the initial state)
+
+---------------------------------------------------------------------
+
+Model checking: P=? [ F[12000,12000] "deadlockUser" ]
+
+Computing probabilities...
+Engine: Hybrid
+
+Number of non-absorbing states: 172 of 172 (100.0%)
+
+Building hybrid MTBDD matrix... [levels=12, nodes=1808] [84.8 KB]
+Adding explicit sparse matrices... [levels=12, num=1, compact] [2.0 KB]
+Creating vector for diagonals... [dist=49, compact] [0.7 KB]
+Allocating iteration vectors... [3 x 1.3 KB]
+TOTAL: [91.5 KB]
+
+Uniformisation: q.t = 0.018819 x 12000.000000 = 225.828012
+Fox-Glynn: left = 0, right = 310
+
+Starting iterations...
+
+Iterative method: 310 iterations in 0.00 seconds (average 0.000003, setup 0.00)
+
+Value in the initial state: 0.0032234893894260647
+
+Time for model checking: 0.005 seconds.
+
+Result: 0.0032234893894260647 (value in the initial state)
+
+---------------------------------------------------------------------
+
+Model checking: R{"steps"}=? [ C<=200*60 ]
+
+Computing rewards...
+Engine: Hybrid
+
+Building hybrid MTBDD matrix... [levels=12, nodes=1808] [84.8 KB]
+Adding explicit sparse matrices... [levels=12, num=1, compact] [2.0 KB]
+Creating vector for diagonals... [dist=49, compact] [0.7 KB]
+Allocating iteration vectors... [3 x 1.3 KB]
+TOTAL: [91.5 KB]
+
+Uniformisation: q.t = 0.018819 x 12000.000000 = 225.828012
+Fox-Glynn: left = 0, right = 310
+
+Starting iterations...
+
+Iterative method: 310 iterations in 0.00 seconds (average 0.000006, setup 0.00)
+
+Value in the initial state: 6.8755113929386935
+
+Time for model checking: 0.005 seconds.
+
+Result: 6.8755113929386935 (value in the initial state)
+
+Exporting results in matrix form to file "results/control.txt"...
+
+Welcome controlMissing1
+PRISM
+=====
+
+Version: 4.1.dev
+Date: Sun Apr 27 17:08:05 BST 2014
+Hostname: localhost.localdomain
+Command line: prism models/controlMissing1.pm properties/controlMissing1.pctl -transientmethod unif -exportresults 'results/controlMissing1.txt,matrix,csv'
+
+Parsing model file "models/controlMissing1.pm"...
+
+Parsing properties file "properties/controlMissing1.pctl"...
+
+4 properties:
+(1) P=? [ F[12000,12000] (w1=2) ]
+(2) P=? [ F[12000,12000] (w1=7) ]
+(3) P=? [ F[12000,12000] "deadlockUser" ]
+(4) R{"steps"}=? [ C<=200*60 ]
+
+Type:        CTMC
+Modules:     walker 
+Variables:   stator1 stator2 stator3 stator4 stator5 stator6 stator7 w1 
+
+---------------------------------------------------------------------
+
+Model checking: P=? [ F[12000,12000] (w1=2) ]
+
+Building model...
+
+Computing reachable states...
+
+Reachability (BFS): 7 iterations in 0.00 seconds (average 0.000143, setup 0.00)
+
+Time for model construction: 0.019 seconds.
+
+Type:        CTMC
+States:      50 (1 initial)
+Transitions: 110
+
+Rate matrix: 367 nodes (10 terminal), 110 minterms, vars: 10r/10c
+
+Computing probabilities...
+Engine: Hybrid
+
+Number of non-absorbing states: 50 of 50 (100.0%)
+
+Building hybrid MTBDD matrix... [levels=10, nodes=484] [22.7 KB]
+Adding explicit sparse matrices... [levels=10, num=1, compact] [0.5 KB]
+Creating vector for diagonals... [dist=21, compact] [0.3 KB]
+Allocating iteration vectors... [3 x 0.4 KB]
+TOTAL: [24.7 KB]
+
+Uniformisation: q.t = 0.018378 x 12000.000000 = 220.540332
+Fox-Glynn: left = 0, right = 303
+
+Starting iterations...
+
+Iterative method: 303 iterations in 0.00 seconds (average 0.000000, setup 0.00)
+
+Value in the initial state: 0.006768448400837872
+
+Time for model checking: 0.002 seconds.
+
+Result: 0.006768448400837872 (value in the initial state)
+
+---------------------------------------------------------------------
+
+Model checking: P=? [ F[12000,12000] (w1=7) ]
+
+Computing probabilities...
+Engine: Hybrid
+
+Number of non-absorbing states: 50 of 50 (100.0%)
+
+Building hybrid MTBDD matrix... [levels=10, nodes=484] [22.7 KB]
+Adding explicit sparse matrices... [levels=10, num=1, compact] [0.5 KB]
+Creating vector for diagonals... [dist=21, compact] [0.3 KB]
+Allocating iteration vectors... [3 x 0.4 KB]
+TOTAL: [24.7 KB]
+
+Uniformisation: q.t = 0.018378 x 12000.000000 = 220.540332
+Fox-Glynn: left = 0, right = 303
+
+Starting iterations...
+
+Iterative method: 303 iterations in 0.00 seconds (average 0.000003, setup 0.00)
+
+Value in the initial state: 0.8528061611848406
+
+Time for model checking: 0.001 seconds.
+
+Result: 0.8528061611848406 (value in the initial state)
+
+---------------------------------------------------------------------
+
+Model checking: P=? [ F[12000,12000] "deadlockUser" ]
+
+Computing probabilities...
+Engine: Hybrid
+
+Number of non-absorbing states: 50 of 50 (100.0%)
+
+Building hybrid MTBDD matrix... [levels=10, nodes=484] [22.7 KB]
+Adding explicit sparse matrices... [levels=10, num=1, compact] [0.5 KB]
+Creating vector for diagonals... [dist=21, compact] [0.3 KB]
+Allocating iteration vectors... [3 x 0.4 KB]
+TOTAL: [24.7 KB]
+
+Uniformisation: q.t = 0.018378 x 12000.000000 = 220.540332
+Fox-Glynn: left = 0, right = 303
+
+Starting iterations...
+
+Iterative method: 303 iterations in 0.00 seconds (average 0.000003, setup 0.00)
+
+Value in the initial state: 2.34394228433192E-4
+
+Time for model checking: 0.002 seconds.
+
+Result: 2.34394228433192E-4 (value in the initial state)
+
+---------------------------------------------------------------------
+
+Model checking: R{"steps"}=? [ C<=200*60 ]
+
+Computing rewards...
+Engine: Hybrid
+
+Building hybrid MTBDD matrix... [levels=10, nodes=484] [22.7 KB]
+Adding explicit sparse matrices... [levels=10, num=1, compact] [0.5 KB]
+Creating vector for diagonals... [dist=21, compact] [0.3 KB]
+Allocating iteration vectors... [3 x 0.4 KB]
+TOTAL: [24.7 KB]
+
+Uniformisation: q.t = 0.018378 x 12000.000000 = 220.540332
+Fox-Glynn: left = 0, right = 303
+
+Starting iterations...
+
+Iterative method: 303 iterations in 0.00 seconds (average 0.000000, setup 0.00)
+
+Value in the initial state: 5.514222251733226
+
+Time for model checking: 0.001 seconds.
+
+Result: 5.514222251733226 (value in the initial state)
+
+Exporting results in matrix form to file "results/controlMissing1.txt"...
+
+Welcome controlMissing2
+PRISM
+=====
+
+Version: 4.1.dev
+Date: Sun Apr 27 17:08:06 BST 2014
+Hostname: localhost.localdomain
+Command line: prism models/controlMissing2.pm properties/controlMissing2.pctl -transientmethod unif -exportresults 'results/controlMissing2.txt,matrix,csv'
+
+Parsing model file "models/controlMissing2.pm"...
+
+Parsing properties file "properties/controlMissing2.pctl"...
+
+4 properties:
+(1) P=? [ F[12000,12000] (w1=2) ]
+(2) P=? [ F[12000,12000] (w1=6) ]
+(3) P=? [ F[12000,12000] "deadlockUser" ]
+(4) R{"steps"}=? [ C<=200*60 ]
+
+Type:        CTMC
+Modules:     walker 
+Variables:   stator1 stator2 stator3 stator4 stator5 stator6 w1 
+
+---------------------------------------------------------------------
+
+Model checking: P=? [ F[12000,12000] (w1=2) ]
+
+Building model...
+
+Computing reachable states...
+
+Reachability (BFS): 6 iterations in 0.00 seconds (average 0.000000, setup 0.00)
+
+Time for model construction: 0.017 seconds.
+
+Type:        CTMC
+States:      13 (1 initial)
+Transitions: 25
+
+Rate matrix: 160 nodes (8 terminal), 25 minterms, vars: 9r/9c
+
+Computing probabilities...
+Engine: Hybrid
+
+Number of non-absorbing states: 13 of 13 (100.0%)
+
+Building hybrid MTBDD matrix... [levels=9, nodes=175] [8.2 KB]
+Adding explicit sparse matrices... [levels=9, num=1, compact] [0.2 KB]
+Creating vector for diagonals... [dist=7, compact] [0.1 KB]
+Allocating iteration vectors... [3 x 0.1 KB]
+TOTAL: [8.8 KB]
+
+Uniformisation: q.t = 0.009272 x 12000.000000 = 111.261612
+Fox-Glynn: left = 0, right = 171
+
+Starting iterations...
+
+Iterative method: 171 iterations in 0.00 seconds (average 0.000000, setup 0.00)
+
+Value in the initial state: 0.019413704954731947
+
+Time for model checking: 0.002 seconds.
+
+Result: 0.019413704954731947 (value in the initial state)
+
+---------------------------------------------------------------------
+
+Model checking: P=? [ F[12000,12000] (w1=6) ]
+
+Computing probabilities...
+Engine: Hybrid
+
+Number of non-absorbing states: 13 of 13 (100.0%)
+
+Building hybrid MTBDD matrix... [levels=9, nodes=175] [8.2 KB]
+Adding explicit sparse matrices... [levels=9, num=1, compact] [0.2 KB]
+Creating vector for diagonals... [dist=7, compact] [0.1 KB]
+Allocating iteration vectors... [3 x 0.1 KB]
+TOTAL: [8.8 KB]
+
+Uniformisation: q.t = 0.009272 x 12000.000000 = 111.261612
+Fox-Glynn: left = 0, right = 171
+
+Starting iterations...
+
+Iterative method: 171 iterations in 0.00 seconds (average 0.000000, setup 0.00)
+
+Value in the initial state: 0.5917971391934244
+
+Time for model checking: 0.001 seconds.
+
+Result: 0.5917971391934244 (value in the initial state)
+
+---------------------------------------------------------------------
+
+Model checking: P=? [ F[12000,12000] "deadlockUser" ]
+
+Computing probabilities...
+Engine: Hybrid
+
+Number of non-absorbing states: 13 of 13 (100.0%)
+
+Building hybrid MTBDD matrix... [levels=9, nodes=175] [8.2 KB]
+Adding explicit sparse matrices... [levels=9, num=1, compact] [0.2 KB]
+Creating vector for diagonals... [dist=7, compact] [0.1 KB]
+Allocating iteration vectors... [3 x 0.1 KB]
+TOTAL: [8.8 KB]
+
+Uniformisation: q.t = 0.009272 x 12000.000000 = 111.261612
+Fox-Glynn: left = 0, right = 171
+
+Starting iterations...
+
+Steady state detected at iteration 39
+
+Iterative method: 39 iterations in 0.00 seconds (average 0.000000, setup 0.00)
+
+Value in the initial state: 0.019413700141476774
+
+Time for model checking: 0.001 seconds.
+
+Result: 0.019413700141476774 (value in the initial state)
+
+---------------------------------------------------------------------
+
+Model checking: R{"steps"}=? [ C<=200*60 ]
+
+Computing rewards...
+Engine: Hybrid
+
+Building hybrid MTBDD matrix... [levels=9, nodes=175] [8.2 KB]
+Adding explicit sparse matrices... [levels=9, num=1, compact] [0.2 KB]
+Creating vector for diagonals... [dist=7, compact] [0.1 KB]
+Allocating iteration vectors... [3 x 0.1 KB]
+TOTAL: [8.8 KB]
+
+Uniformisation: q.t = 0.009272 x 12000.000000 = 111.261612
+Fox-Glynn: left = 0, right = 171
+
+Starting iterations...
+
+Iterative method: 171 iterations in 0.00 seconds (average 0.000000, setup 0.00)
+
+Value in the initial state: 3.8550427153211304
+
+Time for model checking: 0.0 seconds.
+
+Result: 3.8550427153211304 (value in the initial state)
+
+Exporting results in matrix form to file "results/controlMissing2.txt"...
+
+Welcome controlMissing7
+PRISM
+=====
+
+Version: 4.1.dev
+Date: Sun Apr 27 17:08:08 BST 2014
+Hostname: localhost.localdomain
+Command line: prism models/controlMissing7.pm properties/controlMissing7.pctl -transientmethod unif -exportresults 'results/controlMissing7.txt,matrix,csv'
+
+Parsing model file "models/controlMissing7.pm"...
+
+Parsing properties file "properties/controlMissing7.pctl"...
+
+4 properties:
+(1) P=? [ F[12000,12000] (w1=2) ]
+(2) P=? [ F[12000,12000] (w1=7) ]
+(3) P=? [ F[12000,12000] "deadlockUser" ]
+(4) R{"steps"}=? [ C<=200*60 ]
+
+Type:        CTMC
+Modules:     walker 
+Variables:   stator1 stator2 stator3 stator4 stator5 stator6 stator7 w1 
+
+---------------------------------------------------------------------
+
+Model checking: P=? [ F[12000,12000] (w1=2) ]
+
+Building model...
+
+Computing reachable states...
+
+Reachability (BFS): 7 iterations in 0.00 seconds (average 0.000143, setup 0.00)
+
+Time for model construction: 0.021 seconds.
+
+Type:        CTMC
+States:      82 (1 initial)
+Transitions: 207
+
+Rate matrix: 533 nodes (10 terminal), 207 minterms, vars: 10r/10c
+
+Computing probabilities...
+Engine: Hybrid
+
+Number of non-absorbing states: 82 of 82 (100.0%)
+
+Building hybrid MTBDD matrix... [levels=10, nodes=786] [36.8 KB]
+Adding explicit sparse matrices... [levels=10, num=1, compact] [1.0 KB]
+Creating vector for diagonals... [dist=33, compact] [0.4 KB]
+Allocating iteration vectors... [3 x 0.6 KB]
+TOTAL: [40.1 KB]
+
+Uniformisation: q.t = 0.018727 x 12000.000000 = 224.726412
+Fox-Glynn: left = 0, right = 308
+
+Starting iterations...
+
+Iterative method: 308 iterations in 0.00 seconds (average 0.000000, setup 0.00)
+
+Value in the initial state: 0.005412544717907489
+
+Time for model checking: 0.004 seconds.
+
+Result: 0.005412544717907489 (value in the initial state)
+
+---------------------------------------------------------------------
+
+Model checking: P=? [ F[12000,12000] (w1=7) ]
+
+Computing probabilities...
+Engine: Hybrid
+
+Number of non-absorbing states: 82 of 82 (100.0%)
+
+Building hybrid MTBDD matrix... [levels=10, nodes=786] [36.8 KB]
+Adding explicit sparse matrices... [levels=10, num=1, compact] [1.0 KB]
+Creating vector for diagonals... [dist=33, compact] [0.4 KB]
+Allocating iteration vectors... [3 x 0.6 KB]
+TOTAL: [40.1 KB]
+
+Uniformisation: q.t = 0.018727 x 12000.000000 = 224.726412
+Fox-Glynn: left = 0, right = 308
+
+Starting iterations...
+
+Iterative method: 308 iterations in 0.00 seconds (average 0.000003, setup 0.00)
+
+Value in the initial state: 0.17510313955747228
+
+Time for model checking: 0.001 seconds.
+
+Result: 0.17510313955747228 (value in the initial state)
+
+---------------------------------------------------------------------
+
+Model checking: P=? [ F[12000,12000] "deadlockUser" ]
+
+Computing probabilities...
+Engine: Hybrid
+
+Number of non-absorbing states: 82 of 82 (100.0%)
+
+Building hybrid MTBDD matrix... [levels=10, nodes=786] [36.8 KB]
+Adding explicit sparse matrices... [levels=10, num=1, compact] [1.0 KB]
+Creating vector for diagonals... [dist=33, compact] [0.4 KB]
+Allocating iteration vectors... [3 x 0.6 KB]
+TOTAL: [40.1 KB]
+
+Uniformisation: q.t = 0.018727 x 12000.000000 = 224.726412
+Fox-Glynn: left = 0, right = 308
+
+Starting iterations...
+
+Iterative method: 308 iterations in 0.00 seconds (average 0.000003, setup 0.00)
+
+Value in the initial state: 0.030593416334810695
+
+Time for model checking: 0.003 seconds.
+
+Result: 0.030593416334810695 (value in the initial state)
+
+---------------------------------------------------------------------
+
+Model checking: R{"steps"}=? [ C<=200*60 ]
+
+Computing rewards...
+Engine: Hybrid
+
+Building hybrid MTBDD matrix... [levels=10, nodes=786] [36.8 KB]
+Adding explicit sparse matrices... [levels=10, num=1, compact] [1.0 KB]
+Creating vector for diagonals... [dist=33, compact] [0.4 KB]
+Allocating iteration vectors... [3 x 0.6 KB]
+TOTAL: [40.1 KB]
+
+Uniformisation: q.t = 0.018727 x 12000.000000 = 224.726412
+Fox-Glynn: left = 0, right = 308
+
+Starting iterations...
+
+Iterative method: 308 iterations in 0.00 seconds (average 0.000000, setup 0.00)
+
+Value in the initial state: 5.144863648134494
+
+Time for model checking: 0.002 seconds.
+
+Result: 5.144863648134494 (value in the initial state)
+
+Exporting results in matrix form to file "results/controlMissing7.txt"...
+

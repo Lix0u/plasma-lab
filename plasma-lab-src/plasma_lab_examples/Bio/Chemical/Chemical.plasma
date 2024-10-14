@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlasmaProject name="Chemical">
+  <models>
+    <model name="Chem.bio" type="bio">
+      <content>species A=1000,B=1000,C,D,E
+
+A + B -&gt; C
+C -&gt; D
+D -&gt; E</content>
+    </model>
+  </models>
+  <requirements>
+    <requirement name="Step" type="bltl">
+      <content>F&lt;=#2000 D&gt;400</content>
+    </requirement>
+    <requirement name="Time" type="bltl">
+      <content>F&lt;=1.2 D&gt;400</content>
+    </requirement>
+  </requirements>
+</PlasmaProject>

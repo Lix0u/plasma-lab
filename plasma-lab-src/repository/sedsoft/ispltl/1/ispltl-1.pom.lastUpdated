@@ -1,0 +1,10 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Jul 11 16:55:05 CEST 2019
+http\://maven.inria.fr/artifactory/public-release/.error=
+https\://repo.maven.apache.org/maven2/.lastUpdated=1562856905797
+http\://maven.inria.fr/artifactory/public-release/.lastUpdated=1562856904803
+http\://maven.restlet.org/.lastUpdated=1562856905607
+http\://plasma-lab.gforge.inria.fr/maven/releases/.error=
+http\://plasma-lab.gforge.inria.fr/maven/releases/.lastUpdated=1562856904754
+https\://repo.maven.apache.org/maven2/.error=
+http\://maven.restlet.org/.error=

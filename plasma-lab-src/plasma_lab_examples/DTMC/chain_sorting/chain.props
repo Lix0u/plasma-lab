@@ -1,0 +1,11 @@
+const int N;
+
+// partition 1
+P=? [F  (c=k) & (p0steps = N) ]
+
+// partition 2
+P=? [F  (c=k) & (p1steps = N) ]
+
+// partition 3
+P=? [F  (c=k) & (p2steps = N) ]
+

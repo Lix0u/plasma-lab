@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.algorithm/src" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.algorithm/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.altl/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.altl/src/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.bio/src" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.bio/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.bltl/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.bltl/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.common-cli/src/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.common-cli/src/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.comparison/src" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.comparison/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.controler/src/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.controler/src/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.csvsimulator/src" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.csvsimulator/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.cusum/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.cusum/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.gcsl/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.gcsl/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.importancesplitting/src" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.importancesplitting/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.llvm/src" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.llvm/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.montecarlo/src" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.montecarlo/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.plugin_bltl/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.plugin_bltl/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.rmlbis/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.rmlbis/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.sequential/src" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.sequential/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.systemc/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.systemc/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.text_data/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.text_data/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.ui/src/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.ui/src/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.uiterminal/src/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.uiterminal/src/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.workflow/src" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/fr.inria.plasmalab.workflow/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

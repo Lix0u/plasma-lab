@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlasmaProject name="Hubble">
+  <models>
+    <model name="Hubble" type="rml">
+      <content>// Hubble space telescope lifetime
+// Holger Hermanns, Christophe Joubert, Hubert Garavel, and Wendelin Serwe
+// Translated from ALDEBARAN to RML
+
+ctmc
+module M
+x:[0..8] init 0;
+[FAIL] x=0 -&gt; 0.6 : (x'=1);
+[FAIL] x=1 -&gt; 0.5 : (x'=2);
+[FAIL] x=2 -&gt; 0.4 : (x'=3);
+[FAIL] x=3 -&gt; 0.3 : (x'=4);
+[FAIL] x=4 -&gt; 0.2 : (x'=5);
+[SLEEP] x=4 -&gt; 100 : (x'=7);
+[FAIL] x=5 -&gt; 0.1 : (x'=6);
+[SLEEP] x=5 -&gt; 100 : (x'=8);
+[REPAIR] x=7 -&gt; 6 : (x'=0);
+[FAIL] x=7 -&gt; 0.2 : (x'=8);
+[REPAIR] x=8 -&gt; 6 : (x'=0);
+[FAIL] x=8 -&gt; 0.1 : (x'=6);
+endmodule
+
+label "crash" = x=6;
+label "sleep" = x=7 | x=8;</content>
+    </model>
+  </models>
+  <requirements>
+    <requirement name="Crash" type="bltl">
+      <content>//Liveness property.
+// A crash doesn't occurs for 1000 years.
+
+G&lt;=1000 !"crash"</content>
+    </requirement>
+  </requirements>
+  <resources />
+</PlasmaProject>

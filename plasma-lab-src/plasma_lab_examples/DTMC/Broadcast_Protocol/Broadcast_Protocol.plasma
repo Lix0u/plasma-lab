@@ -1,0 +1,586 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlasmaProject name="Broadcast_Protocol">
+  <models>
+    <model name="SyncWoCollisions" type="rml">
+      <content>dtmc
+
+global psend: double init 0.8;
+
+
+module node0
+active0:[0..1] init 1;
+send0:  [0..1] init 0;
+
+[tick] active0=1 &amp; send0=0 -&gt; psend:(active0'=1)&amp;(send0'=1)+(1-psend):(active0'=0)&amp;(send0'=0);
+[tick] active0=1 &amp; send0=1 -&gt; (send0'=0)&amp; (active0'=0);
+[tick] active0=0  -&gt; (send0'=0)&amp; (active0'=0);
+endmodule
+
+
+module node1
+active1:[0..1] init 1;
+send1:  [0..1] init 0;
+
+[tick] active1=1 &amp; send1=0 &amp; send0+send2+send4 &gt;=1 -&gt; psend:(active1'=1)&amp;(send1'=1)+(1-psend):(active1'=0)&amp;(send1'=0);
+[tick] active1=1 &amp; send1=0 &amp; send0+send2+send4 &lt;1 -&gt; (active1'=1)&amp; (send1'=0);
+[tick] active1=1 &amp; send1=1 -&gt; (send1'=0)&amp; (active1'=0);
+[tick] active1=0 -&gt; (send1'=0)&amp; (active1'=0);
+endmodule
+
+module node2
+active2:[0..1] init 1;
+send2:  [0..1] init 0;
+
+[tick] active2=1 &amp; send2=0 &amp; send1+send5 &gt;= 1 -&gt; psend:(active2'=1)&amp;(send2'=1)+(1-psend):(active2'=0)&amp;(send2'=0);
+[tick] active2=1 &amp; send2=0 &amp; send1+send5 &lt; 1 -&gt; (active2'=1)&amp; (send2'=0);
+[tick] active2=1 &amp; send2=1   -&gt; (send2'=0)&amp; (active2'=0);
+[tick] active2=0  -&gt; (send2'=0)&amp; (active2'=0);
+endmodule
+
+
+module node3
+active3:[0..1] init 1;
+send3:  [0..1] init 0;
+
+[tick] active3=1 &amp; send3=0 &amp; send0+send4+ send6 &gt;=1 -&gt; psend:(active3'=1)&amp;(send3'=1)+(1-psend):(active3'=0)&amp;(send3'=0);
+[tick] active3=1 &amp; send3=0 &amp; send0+send4+ send6 &lt;1 -&gt; (active3'=1)&amp; (send3'=0);
+[tick] active3=1 &amp; send3=1    -&gt; (send3'=0)&amp; (active3'=0);
+[tick] active3=0  -&gt; (send3'=0)&amp; (active3'=0);
+endmodule
+
+
+module node4
+active4:[0..1] init 1;
+send4:  [0..1] init 0;
+
+[tick] active4=1 &amp; send4=0 &amp; send1+send3+ send5 +send7 &gt;=1 -&gt; psend:(active4'=1)&amp;(send4'=1)+(1-psend):(active4'=0)&amp;(send4'=0);
+[tick] active4=1 &amp; send4=0 &amp; send1+send3+ send5 +send7 &lt;1 -&gt; (active4'=1) &amp; (send4'=0);
+[tick] active4=1 &amp; send4=1 -&gt; (send4'=0)&amp; (active4'=0);
+[tick] active4=0  -&gt; (send4'=0)&amp; (active4'=0);
+endmodule
+
+module node5
+active5:[0..1] init 1;
+send5:  [0..1] init 0;
+
+[tick] active5=1 &amp; send5=0 &amp; send2+send4+ send8 &gt;=1 -&gt; psend:(active5'=1)&amp;(send5'=1)+(1-psend):(active5'=0)&amp;(send5'=0);
+[tick] active5=1 &amp; send5=0 &amp; send2+send4+ send8 &lt; 1 -&gt; (active5'=1) &amp; (send5'=0);
+[tick] active5=1 &amp; send5=1 -&gt; (send5'=0)&amp; (active5'=0);
+[tick] active5=0  -&gt; (send5'=0)&amp; (active5'=0);
+endmodule
+
+module node6
+active6:[0..1] init 1;
+send6:  [0..1] init 0;
+
+[tick] active6=1 &amp; send6=0 &amp; send3+send7 &gt;=1 -&gt; psend:(active6'=1)&amp;(send6'=1)+(1-psend):(active6'=0)&amp;(send6'=0);
+[tick] active6=1 &amp; send6=0 &amp; send3+send7 &lt; 1 -&gt; (active6'=1) &amp; (send6'=0);
+[tick] active6=1 &amp; send6=1    -&gt; (send6'=0)&amp; (active6'=0);
+[tick] active6=0  -&gt; (send6'=0)&amp; (active6'=0);
+endmodule
+
+module node7
+active7:[0..1] init 1;
+send7:  [0..1] init 0;
+
+[tick] active7=1 &amp; send7=0 &amp; send4+send6+ send8 &gt;=1 -&gt; psend:(active7'=1)&amp;(send7'=1)+(1-psend):(active7'=0)&amp;(send7'=0);
+[tick] active7=1 &amp; send7=0 &amp; send4+send6+ send8 &lt; 1 -&gt; (active7'=1) &amp; (send7'=0);
+[tick] active7=1 &amp; send7=1    -&gt; (send7'=0)&amp; (active7'=0);
+[tick] active7=0  -&gt; (send7'=0)&amp; (active7'=0);
+endmodule
+
+module node8
+active8:[0..1] init 1;
+send8:  [0..1] init 0;
+
+[tick] active8=1 &amp; send8=0 &amp; send5+send7 &gt;=1 -&gt; psend:(active8'=1)&amp;(send8'=1)+(1-psend):(active8'=0)&amp;(send8'=0);
+[tick] active8=1 &amp; send8=0 &amp; send5+send7 &lt; 1 -&gt; (active8'=1) &amp; (send8'=0);
+[tick] active8=1 &amp; send8=1    -&gt; (send8'=0)&amp; (active8'=0);
+[tick] active8=0  -&gt; (send8'=0)&amp; (active8'=0);
+endmodule</content>
+    </model>
+    <model name="SyncWCollisions" type="rml">
+      <content>dtmc
+
+global psend: double init 0.8;
+
+module node0
+active0:[0..1] init 1;
+send0:  [0..1] init 0;
+
+[tick] active0=1 &amp; send0=0 -&gt; psend:(active0'=1)&amp;(send0'=1)+(1-psend):(active0'=0)&amp;(send0'=0);
+[tick] active0=1 &amp; send0=1 -&gt; (send0'=0)&amp; (active0'=0);
+[tick] active0=0  -&gt; (send0'=0)&amp; (active0'=0);
+endmodule
+
+
+module node1
+active1:[0..1] init 1;
+send1:  [0..1] init 0;
+
+[tick] active1=1 &amp; send1=0 &amp; send0+send2+send4 = 1 -&gt; psend:(active1'=1)&amp;(send1'=1)+(1-psend):(active1'=0)&amp;(send1'=0);
+[tick] active1=1 &amp; send1=0 &amp; send0+send2+send4 !=1 -&gt; (active1'=1)&amp; (send1'=0);
+[tick] active1=1 &amp; send1=1 -&gt; (send1'=0)&amp; (active1'=0);
+[tick] active1=0 -&gt; (send1'=0)&amp; (active1'=0);
+endmodule
+
+module node2
+active2:[0..1] init 1;
+send2:  [0..1] init 0;
+
+[tick] active2=1 &amp; send2=0 &amp; send1+send5 = 1 -&gt; psend:(active2'=1)&amp;(send2'=1)+(1-psend):(active2'=0)&amp;(send2'=0);
+[tick] active2=1 &amp; send2=0 &amp; send1+send5 !=1 -&gt; (active2'=1)&amp; (send2'=0);
+[tick] active2=1 &amp; send2=1    -&gt; (send2'=0)&amp; (active2'=0);
+[tick] active2=0  -&gt; (send2'=0)&amp; (active2'=0);
+endmodule
+
+
+module node3
+active3:[0..1] init 1;
+send3:  [0..1] init 0;
+
+[tick] active3=1 &amp; send3=0 &amp; send0+send4+ send6 = 1 -&gt; psend:(active3'=1)&amp;(send3'=1)+(1-psend):(active3'=0)&amp;(send3'=0);
+[tick] active3=1 &amp; send3=0 &amp; send0+send4+ send6 !=1 -&gt; (active3'=1)&amp; (send3'=0);
+[tick] active3=1 &amp; send3=1    -&gt; (send3'=0)&amp; (active3'=0);
+[tick] active3=0  -&gt; (send3'=0)&amp; (active3'=0);
+endmodule
+
+
+module node4
+active4:[0..1] init 1;
+send4:  [0..1] init 0;
+
+[tick] active4=1 &amp; send4=0 &amp; send1+send3+ send5 +send7 = 1 -&gt; psend:(active4'=1)&amp;(send4'=1)+(1-psend):(active4'=0)&amp;(send4'=0);
+[tick] active4=1 &amp; send4=0 &amp; send1+send3+ send5 +send7 !=1 -&gt; (active4'=1) &amp; (send4'=0);
+[tick] active4=1 &amp; send4=1 -&gt; (send4'=0)&amp; (active4'=0);
+[tick] active4=0  -&gt; (send4'=0)&amp; (active4'=0);
+endmodule
+
+module node5
+active5:[0..1] init 1;
+send5:  [0..1] init 0;
+
+[tick] active5=1 &amp; send5=0 &amp; send2+send4+ send8 = 1 -&gt; psend:(active5'=1)&amp;(send5'=1)+(1-psend):(active5'=0)&amp;(send5'=0);
+[tick] active5=1 &amp; send5=0 &amp; send2+send4+ send8 !=1 -&gt; (active5'=1) &amp; (send5'=0);
+[tick] active5=1 &amp; send5=1 -&gt; (send5'=0)&amp; (active5'=0);
+[tick] active5=0  -&gt; (send5'=0)&amp; (active5'=0);
+endmodule
+
+module node6
+active6:[0..1] init 1;
+send6:  [0..1] init 0;
+
+[tick] active6=1 &amp; send6=0 &amp; send3+send7 = 1 -&gt; psend:(active6'=1)&amp;(send6'=1)+(1-psend):(active6'=0)&amp;(send6'=0);
+[tick] active6=1 &amp; send6=0 &amp; send3+send7 !=1 -&gt; (active6'=1) &amp; (send6'=0);
+[tick] active6=1 &amp; send6=1    -&gt; (send6'=0)&amp; (active6'=0);
+[tick] active6=0  -&gt; (send6'=0)&amp; (active6'=0);
+endmodule
+
+module node7
+active7:[0..1] init 1;
+send7:  [0..1] init 0;
+
+[tick] active7=1 &amp; send7=0 &amp; send4+send6+ send8 = 1 -&gt; psend:(active7'=1)&amp;(send7'=1)+(1-psend):(active7'=0)&amp;(send7'=0);
+[tick] active7=1 &amp; send7=0 &amp; send4+send6+ send8 !=1 -&gt; (active7'=1) &amp; (send7'=0);
+[tick] active7=1 &amp; send7=1    -&gt; (send7'=0)&amp; (active7'=0);
+[tick] active7=0  -&gt; (send7'=0)&amp; (active7'=0);
+endmodule
+
+module node8
+active8:[0..1] init 1;
+send8:  [0..1] init 0;
+
+[tick] active8=1 &amp; send8=0 &amp; send5+send7 = 1 -&gt; psend:(active8'=1)&amp;(send8'=1)+(1-psend):(active8'=0)&amp;(send8'=0);
+[tick] active8=1 &amp; send8=0 &amp; send5+send7 !=1 -&gt; (active8'=1) &amp; (send8'=0);
+[tick] active8=1 &amp; send8=1    -&gt; (send8'=0)&amp; (active8'=0);
+[tick] active8=0  -&gt; (send8'=0)&amp; (active8'=0);
+endmodule</content>
+    </model>
+    <model name="LossyChannel" type="rml">
+      <content>dtmc
+
+const double psend =1;
+const double precv ;
+
+module scheduler
+turn: bool init true;
+
+[tick] !turn -&gt;(turn' = true);
+[tock] turn  -&gt; (turn'= false);
+endmodule
+
+// first horizontal
+module chan01
+buff01: [0..1] init 0;
+
+[tock] send0=1 | send1= 1 -&gt; precv:(buff01'=1)+ (1-precv):(buff01'=0);
+[tock] send0!=1 &amp; send1!=1 -&gt; (buff01'=0);
+endmodule
+
+module chan12
+buff12: [0..1] init 0;
+
+[tock] send1=1 | send2= 1 -&gt; precv:(buff12'=1)+ (1-precv):(buff12'=0);
+[tock] send1!=1 &amp; send2!=1 -&gt; (buff12'=0);
+endmodule
+
+// first vertical
+module chan03
+buff03: [0..1] init 0;
+
+[tock] send0=1 | send3= 1 -&gt; precv:(buff03'=1)+ (1-precv):(buff03'=0);
+[tock] send0!=1 &amp; send3!=1 -&gt; (buff03'=0);
+endmodule
+
+
+module chan14
+buff14: [0..1] init 0;
+
+[tock] send1=1 | send4= 1 -&gt; precv:(buff14'=1)+ (1-precv):(buff14'=0);
+[tock] send1!=1 &amp; send4!=1 -&gt; (buff14'=0);
+endmodule
+
+
+module chan25
+buff25: [0..1] init 0;
+
+[tock] send2=1 | send5= 1 -&gt; precv:(buff25'=1)+ (1-precv):(buff25'=0);
+[tock] send2!=1 &amp; send5!=1 -&gt; (buff25'=0);
+endmodule
+
+
+// second horizontal
+module chan34
+buff34: [0..1] init 0;
+
+[tock] send3=1 | send4= 1 -&gt; precv:(buff34'=1)+ (1-precv):(buff34'=0);
+[tock] send3!=1 &amp; send4!=1 -&gt; (buff34'=0);
+endmodule
+
+module chan45
+buff45: [0..1] init 0;
+
+[tock] send4=1 | send5= 1 -&gt; precv:(buff45'=1)+ (1-precv):(buff45'=0);
+[tock] send4!=1 &amp; send5!=1 -&gt; (buff45'=0);
+endmodule
+
+// second vertical
+module chan36
+buff36: [0..1] init 0;
+
+[tock] send3=1 | send6= 1 -&gt; precv:(buff36'=1)+ (1-precv):(buff36'=0);
+[tock] send3!=1 &amp; send6!=1 -&gt; (buff36'=0);
+endmodule
+
+
+module chan47
+buff47: [0..1] init 0;
+
+[tock] send4=1 | send7= 1 -&gt; precv:(buff47'=1)+ (1-precv):(buff47'=0);
+[tock] send4!=1 &amp; send7!=1 -&gt; (buff47'=0);
+endmodule
+
+
+module chan58
+buff58: [0..1] init 0;
+
+[tock] send5=1 | send8= 1 -&gt; precv:(buff58'=1)+ (1-precv):(buff58'=0);
+[tock] send5!=1 &amp; send8!=1 -&gt; (buff58'=0);
+endmodule
+
+
+// second horizontal
+module chan67
+buff67: [0..1] init 0;
+
+[tock] send6=1 | send7= 1 -&gt; precv:(buff67'=1)+ (1-precv):(buff67'=0);
+[tock] send6!=1 &amp; send7!=1 -&gt; (buff67'=0);
+endmodule
+
+module chan78
+buff78: [0..1] init 0;
+
+[tock] send7=1 | send8= 1 -&gt; precv:(buff78'=1)+ (1-precv):(buff78'=0);
+[tock] send7!=1 &amp; send8!=1 -&gt; (buff78'=0);
+endmodule
+
+
+// nodes
+
+
+module node0
+active0:[0..1] init 1;
+send0:  [0..1] init 0;
+
+[tick] active0=1 &amp; send0=0 -&gt; psend:(active0'=1)&amp;(send0'=1)+(1-psend):(active0'=0)&amp;(send0'=0);
+[tick] active0=1 &amp; send0=1 -&gt; (send0'=0)&amp; (active0'=0);
+[tick] active0=0  -&gt; (send0'=0)&amp; (active0'=0);
+endmodule
+
+
+module node1
+active1:[0..1] init 1;
+send1:  [0..1] init 0;
+
+[tick] active1=1 &amp; send1=0 &amp;  1=(buff01 +buff12 +buff14)-&gt; psend:(active1'=1)&amp;(send1'=1)+(1-psend):(active1'=0)&amp;(send1'=0);
+[tick] active1=1 &amp; send1=0 &amp;  1!=(buff01 +buff12 +buff14) -&gt; (active1'=1)&amp; (send1'=0);
+[tick] active1=1 &amp; send1=1 -&gt; (send1'=0)&amp; (active1'=0);
+[tick] active1=0 -&gt; (send1'=0)&amp; (active1'=0);
+endmodule
+
+module node2
+active2:[0..1] init 1;
+send2:  [0..1] init 0;
+
+[tick] active2=1 &amp; send2=0 &amp;  1=(buff12 +buff25) -&gt; psend:(active2'=1)&amp;(send2'=1)+(1-psend):(active2'=0)&amp;(send2'=0);
+[tick] active2=1 &amp; send2=0 &amp; 1!=(buff12 +buff25) -&gt; (active2'=1)&amp; (send2'=0);
+[tick] active2=1 &amp; send2=1    -&gt; (send2'=0)&amp; (active2'=0);
+[tick] active2=0  -&gt; (send2'=0)&amp; (active2'=0);
+endmodule
+
+module node3
+active3:[0..1] init 1;
+send3:  [0..1] init 0;
+
+[tick] active3=1 &amp; send3=0 &amp;  1=(buff03 +buff34 +buff36) -&gt; psend:(active3'=1)&amp;(send3'=1)+(1-psend):(active3'=0)&amp;(send3'=0);
+[tick] active3=1 &amp; send3=0 &amp; 1!=(buff03 +buff34 +buff36) -&gt; (active3'=1)&amp; (send3'=0);
+[tick] active3=1 &amp; send3=1    -&gt; (send3'=0)&amp; (active3'=0);
+[tick] active3=0  -&gt; (send3'=0)&amp; (active3'=0);
+endmodule
+
+module node4
+active4:[0..1] init 1;
+send4:  [0..1] init 0;
+
+[tick] active4=1 &amp; send4=0 &amp;  1=(buff14 +buff34 +buff45 +buff47) -&gt; psend:(active4'=1)&amp;(send4'=1)+(1-psend):(active4'=0)&amp;(send4'=0);
+[tick] active4=1 &amp; send4=0 &amp; 1!=(buff14 +buff34 +buff45 +buff47) -&gt; (active4'=1) &amp; (send4'=0);
+[tick] active4=1 &amp; send4=1 -&gt; (send4'=0)&amp; (active4'=0);
+[tick] active4=0  -&gt; (send4'=0)&amp; (active4'=0);
+endmodule
+
+
+module node5
+active5:[0..1] init 1;
+send5:  [0..1] init 0;
+
+[tick] active5=1 &amp; send5=0 &amp;  1=(buff25 +buff45 +buff58) -&gt; psend:(active5'=1)&amp;(send5'=1)+(1-psend):(active5'=0)&amp;(send5'=0);
+[tick] active5=1 &amp; send5=0 &amp; 1!=(buff25 +buff45 +buff58) -&gt; (active5'=1) &amp; (send5'=0);
+[tick] active5=1 &amp; send5=1 -&gt; (send5'=0)&amp; (active5'=0);
+[tick] active5=0  -&gt; (send5'=0)&amp; (active5'=0);
+endmodule
+
+
+module node6
+active6:[0..1] init 1;
+send6:  [0..1] init 0;
+
+[tick] active6=1 &amp; send6=0 &amp; 1=(buff36 +buff67) -&gt; psend:(active6'=1)&amp;(send6'=1)+(1-psend):(active6'=0)&amp;(send6'=0);
+[tick] active6=1 &amp; send6=0 &amp; 1!=(buff36 +buff67) -&gt; (active6'=1) &amp; (send6'=0);
+[tick] active6=1 &amp; send6=1    -&gt; (send6'=0)&amp; (active6'=0);
+[tick] active6=0  -&gt; (send6'=0)&amp; (active6'=0);
+endmodule
+
+module node7
+active7:[0..1] init 1;
+send7:  [0..1] init 0;
+
+[tick] active7=1 &amp; send7=0 &amp;  1=(buff67 +buff47 +buff78) -&gt; psend:(active7'=1)&amp;(send7'=1)+(1-psend):(active7'=0)&amp;(send7'=0);
+[tick] active7=1 &amp; send7=0 &amp; 1!=(buff67 +buff47 +buff78) -&gt; (active7'=1) &amp; (send7'=0);
+[tick] active7=1 &amp; send7=1    -&gt; (send7'=0)&amp; (active7'=0);
+[tick] active7=0  -&gt; (send7'=0)&amp; (active7'=0);
+endmodule
+
+module node8
+active8:[0..1] init 1;
+send8:  [0..1] init 0;
+
+[tick] active8=1 &amp; send8=0 &amp;  1=(buff58 +buff78) -&gt; psend:(active8'=1)&amp;(send8'=1)+(1-psend):(active8'=0)&amp;(send8'=0);
+[tick] active8=1 &amp; send8=0 &amp; 1!=(buff58 +buff78) -&gt; (active8'=1) &amp; (send8'=0);
+[tick] active8=1 &amp; send8=1    -&gt; (send8'=0)&amp; (active8'=0);
+[tick] active8=0  -&gt; (send8'=0)&amp; (active8'=0);
+endmodule</content>
+    </model>
+    <model name="Asynchronous" type="rml">
+      <content>mdp
+
+global psend: double init 0.8;
+
+module node0
+active0:[0..1] init 1;
+send0:  [0..1] init 0;
+
+[] active0=1 &amp; send0=0 -&gt; psend:(active0'=1)&amp;(send0'=1)+(1-psend):(active0'=0)&amp;(send0'=0);
+[msg0] active0=1 &amp; send0=1 -&gt; (send0'=0)&amp; (active0'=0);
+[msg1] active0=0 -&gt; (send0'=0)&amp; (active0'=0);
+[msg3] active0=0 -&gt; (send0'=0)&amp; (active0'=0);
+endmodule
+
+
+module node1
+active1:[0..1] init 1;
+send1:  [0..2] init 0;
+
+[msg0] active1=1 &amp; send1=0 -&gt; psend:(active1'=1)&amp;(send1'=1)+(1-psend):(active1'=0)&amp;(send1'=0);
+[msg2] active1=1 &amp; send1=0 -&gt; psend:(active1'=1)&amp;(send1'=1)+(1-psend):(active1'=0)&amp;(send1'=0);
+[msg4] active1=1 &amp; send1=0 -&gt; psend:(active1'=1)&amp;(send1'=1)+(1-psend):(active1'=0)&amp;(send1'=0);
+[msg0] active1=1 &amp; send1!=0  -&gt; (active1'=1) &amp; (send1'=2);
+[msg2] active1=1 &amp; send1!=0  -&gt; (active1'=1) &amp; (send1'=2);
+[msg4] active1=1 &amp; send1!=0  -&gt; (active1'=1) &amp; (send1'=2);
+[]     active1=1 &amp; send1 =2  -&gt; (active1'=1) &amp; (send1'=0);
+[msg1] active1=1 &amp; send1=1 -&gt; (send1'=0)&amp; (active1'=0);
+[msg0] active1=0 -&gt; (send1'=0)&amp; (active1'=0);
+[msg2] active1=0 -&gt; (send1'=0)&amp; (active1'=0);
+[msg4] active1=0 -&gt; (send1'=0)&amp; (active1'=0);
+endmodule
+
+module node2
+active2:[0..1] init 1;
+send2:  [0..2] init 0;
+
+[msg1] active2=1 &amp; send2=0  -&gt; psend:(active2'=1)&amp;(send2'=1)+(1-psend):(active2'=0)&amp;(send2'=0);
+[msg5] active2=1 &amp; send2=0  -&gt; psend:(active2'=1)&amp;(send2'=1)+(1-psend):(active2'=0)&amp;(send2'=0);
+[msg1] active2=1 &amp; send2!=0  -&gt; (active2'=1) &amp; (send2'=2);
+[msg5] active2=1 &amp; send2!=0  -&gt; (active2'=1) &amp; (send2'=2);
+[]     active2=1 &amp; send2 =2  -&gt; (active2'=1) &amp; (send2'=0);
+[msg2] active2=1 &amp; send2=1    -&gt; (send2'=0)&amp; (active2'=0);
+[msg1] active2=0 -&gt; (send2'=0)&amp; (active2'=0);
+[msg5] active2=0 -&gt; (send2'=0)&amp; (active2'=0);
+endmodule
+
+
+module node3
+active3:[0..1] init 1;
+send3:  [0..2] init 0;
+
+[msg0] active3=1 &amp; send3=0    -&gt; psend:(active3'=1)&amp;(send3'=1)+(1-psend):(active3'=0)&amp;(send3'=0);
+[msg4] active3=1 &amp; send3=0    -&gt; psend:(active3'=1)&amp;(send3'=1)+(1-psend):(active3'=0)&amp;(send3'=0);
+[msg6] active3=1 &amp; send3=0    -&gt; psend:(active3'=1)&amp;(send3'=1)+(1-psend):(active3'=0)&amp;(send3'=0);
+[msg0] active3=1 &amp; send3!=0  -&gt; (active3'=1) &amp; (send3'=2);
+[msg4] active3=1 &amp; send3!=0  -&gt; (active3'=1) &amp; (send3'=2);
+[msg6] active3=1 &amp; send3!=0  -&gt; (active3'=1) &amp; (send3'=2);
+[]     active3=1 &amp; send3 =2  -&gt; (active3'=1) &amp; (send3'=0);
+[msg3] active3=1 &amp; send3=1    -&gt; (send3'=0)&amp; (active3'=0);
+[msg0] active3=0 -&gt; (send3'=0)&amp; (active3'=0);
+[msg4] active3=0 -&gt; (send3'=0)&amp; (active3'=0);
+[msg6] active3=0 -&gt; (send3'=0)&amp; (active3'=0);
+endmodule
+
+
+module node4
+active4:[0..1] init 1;
+send4:  [0..2] init 0;
+
+[msg1] active4=1 &amp; send4=0 -&gt; psend:(active4'=1)&amp;(send4'=1)+(1-psend):(active4'=0)&amp;(send4'=0);
+[msg3] active4=1 &amp; send4=0 -&gt; psend:(active4'=1)&amp;(send4'=1)+(1-psend):(active4'=0)&amp;(send4'=0);
+[msg5] active4=1 &amp; send4=0 -&gt; psend:(active4'=1)&amp;(send4'=1)+(1-psend):(active4'=0)&amp;(send4'=0);
+[msg7] active4=1 &amp; send4=0 -&gt; psend:(active4'=1)&amp;(send4'=1)+(1-psend):(active4'=0)&amp;(send4'=0);
+[msg1] active4=1 &amp; send4!=0  -&gt; (active4'=1) &amp; (send4'=2);
+[msg3] active4=1 &amp; send4!=0  -&gt; (active4'=1) &amp; (send4'=2);
+[msg5] active4=1 &amp; send4!=0  -&gt; (active4'=1) &amp; (send4'=2);
+[msg7] active4=1 &amp; send4!=0  -&gt; (active4'=1) &amp; (send4'=2);
+[]     active4=1 &amp; send4 =2  -&gt; (active4'=1) &amp; (send4'=0);
+[msg4] active4=1 &amp; send4=1 -&gt; (send4'=0)&amp; (active4'=0);
+[msg1] active4=0 -&gt; (send4'=0)&amp; (active4'=0);
+[msg3] active4=0 -&gt; (send4'=0)&amp; (active4'=0);
+[msg5] active4=0 -&gt; (send4'=0)&amp; (active4'=0);
+[msg7] active4=0 -&gt; (send4'=0)&amp; (active4'=0);
+endmodule
+
+module node5
+active5:[0..1] init 1;
+send5:  [0..2] init 0;
+
+[msg2] active5=1 &amp; send5=0 -&gt; psend:(active5'=1)&amp;(send5'=1)+(1-psend):(active5'=0)&amp;(send5'=0);
+[msg4] active5=1 &amp; send5=0 -&gt; psend:(active5'=1)&amp;(send5'=1)+(1-psend):(active5'=0)&amp;(send5'=0);
+[msg8] active5=1 &amp; send5=0 -&gt; psend:(active5'=1)&amp;(send5'=1)+(1-psend):(active5'=0)&amp;(send5'=0);
+[msg2] active5=1 &amp; send5!=0  -&gt; (active5'=1) &amp; (send5'=2);
+[msg4] active5=1 &amp; send5!=0  -&gt; (active5'=1) &amp; (send5'=2);
+[msg8] active5=1 &amp; send5!=0  -&gt; (active5'=1) &amp; (send5'=2);
+[]     active5=1 &amp; send5 =2  -&gt; (active5'=1) &amp; (send5'=0);
+[msg5] active5=1 &amp; send5=1 -&gt; (send5'=0)&amp; (active5'=0);
+[msg2] active5=0 -&gt; (send5'=0)&amp; (active5'=0);
+[msg4] active5=0 -&gt; (send5'=0)&amp; (active5'=0);
+[msg8] active5=0 -&gt; (send5'=0)&amp; (active5'=0);
+endmodule
+
+module node6
+active6:[0..1] init 1;
+send6:  [0..2] init 0;
+
+[msg3] active6=1 &amp; send6=0 -&gt; psend:(active6'=1)&amp;(send6'=1)+(1-psend):(active6'=0)&amp;(send6'=0);
+[msg7] active6=1 &amp; send6=0 -&gt; psend:(active6'=1)&amp;(send6'=1)+(1-psend):(active6'=0)&amp;(send6'=0);
+[msg3] active6=1 &amp; send6!=0  -&gt; (active6'=1) &amp; (send6'=2);
+[msg7] active6=1 &amp; send6!=0  -&gt; (active6'=1) &amp; (send6'=2);
+[]     active6=1 &amp; send6 =2  -&gt; (active6'=1) &amp; (send6'=0);
+[msg6] active6=1 &amp; send6=1 -&gt; (send6'=0)&amp; (active6'=0);
+[msg3] active6=0 -&gt; (send6'=0)&amp; (active6'=0);
+[msg7] active6=0 -&gt; (send6'=0)&amp; (active6'=0);
+endmodule
+
+module node7
+active7:[0..1] init 1;
+send7:  [0..2] init 0;
+
+[msg4] active7=1 &amp; send7=0 -&gt; psend:(active7'=1)&amp;(send7'=1)+(1-psend):(active7'=0)&amp;(send7'=0);
+[msg6] active7=1 &amp; send7=0 -&gt; psend:(active7'=1)&amp;(send7'=1)+(1-psend):(active7'=0)&amp;(send7'=0);
+[msg8] active7=1 &amp; send7=0 -&gt; psend:(active7'=1)&amp;(send7'=1)+(1-psend):(active7'=0)&amp;(send7'=0);
+[msg4] active7=1 &amp; send7!=0  -&gt; (active7'=1) &amp; (send7'=2);
+[msg6] active7=1 &amp; send7!=0  -&gt; (active7'=1) &amp; (send7'=2);
+[msg8] active7=1 &amp; send7!=0  -&gt; (active7'=1) &amp; (send7'=2);
+[]     active7=1 &amp; send7 =2  -&gt; (active7'=1) &amp; (send7'=0);
+[msg7] active7=1 &amp; send7=1 -&gt; (send7'=0)&amp; (active7'=0);
+[msg4] active7=0 -&gt; (send7'=0)&amp; (active7'=0);
+[msg6] active7=0 -&gt; (send7'=0)&amp; (active7'=0);
+[msg8] active7=0 -&gt; (send7'=0)&amp; (active7'=0);
+endmodule
+
+module node8
+active8:[0..1] init 1;
+send8:  [0..2] init 0;
+
+[msg5] active8=1 &amp; send8=0 -&gt; psend:(active8'=1)&amp;(send8'=1)+(1-psend):(active8'=0)&amp;(send8'=0);
+[msg7] active8=1 &amp; send8=0 -&gt; psend:(active8'=1)&amp;(send8'=1)+(1-psend):(active8'=0)&amp;(send8'=0);
+[msg5] active8=1 &amp; send8!=0  -&gt; (active8'=1) &amp; (send8'=2);
+[msg7] active8=1 &amp; send8!=0  -&gt; (active8'=1) &amp; (send8'=2);
+[]     active8=1 &amp; send8 =2  -&gt; (active8'=1) &amp; (send8'=0);
+[msg8] active8=1 &amp; send8=1 -&gt; (send8'=0)&amp; (active8'=0);
+[msg5] active8=0 -&gt; (send8'=0)&amp; (active8'=0);
+[msg7] active8=0 -&gt; (send8'=0)&amp; (active8'=0);
+endmodule</content>
+    </model>
+  </models>
+  <requirements>
+    <requirement name="active_0" type="bltl">
+      <content>optimize
+psend := [0;1;0.2]
+end
+
+F&lt;=#1000 active0=0</content>
+    </requirement>
+    <requirement name="active_1" type="bltl">
+      <content>F&lt;=#1000 active1=0</content>
+    </requirement>
+    <requirement name="active_2" type="bltl">
+      <content>F&lt;=#1000 active2=0</content>
+    </requirement>
+    <requirement name="active_3" type="bltl">
+      <content>F&lt;=#1000 active3=0</content>
+    </requirement>
+    <requirement name="active_4" type="bltl">
+      <content>F&lt;=#1000 active4=0</content>
+    </requirement>
+    <requirement name="active_5" type="bltl">
+      <content>F&lt;=#1000 active5=0</content>
+    </requirement>
+    <requirement name="active_6" type="bltl">
+      <content>F&lt;=#1000 active6=0</content>
+    </requirement>
+    <requirement name="active_7" type="bltl">
+      <content>F&lt;=#1000 active7=0</content>
+    </requirement>
+    <requirement name="active_8" type="bltl">
+      <content>F&lt;=#1000 active8=0</content>
+    </requirement>
+  </requirements>
+  <resources />
+</PlasmaProject>

@@ -1,0 +1,2 @@
+// Probability that station 1 will be polled within 100 time units
+F <=100 (s=1 & a=0)

@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlasmaProject name="Consensus">
+  <models>
+    <model name="coin2.nm" type="rml">
+      <content>// COIN FLIPPING PROTOCOL FOR POLYNOMIAL RANDOMIZED CONSENSUS [AH90] 
+// gxn/dxp 20/11/00
+
+mdp
+
+// constants
+const int N=2;
+const int K=2;
+const int range = 2*(K+1)*N;
+const int counter_init = (K+1)*N;
+const int left = N;
+const int right = 2*(K+1)*N - N;
+
+// shared coin
+global counter : [0..range] init counter_init;
+
+module process1
+	
+	// program counter
+	pc1 : [0..3];
+	// 0 - flip
+	// 1 - write 
+	// 2 - check
+	// 3 - finished
+	
+	// local coin
+	coin1 : [0..1];	
+
+	// flip coin
+	[] (pc1=0)  -&gt; 0.5 : (coin1'=0) &amp; (pc1'=1) + 0.5 : (coin1'=1) &amp; (pc1'=1);
+	// write tails -1  (reset coin to add regularity)
+	[] (pc1=1) &amp; (coin1=0) &amp; (counter&gt;0) -&gt; (counter'=counter-1) &amp; (pc1'=2) &amp; (coin1'=0);
+	// write heads +1 (reset coin to add regularity)
+	[] (pc1=1) &amp; (coin1=1) &amp; (counter&lt;range) -&gt; (counter'=counter+1) &amp; (pc1'=2) &amp; (coin1'=0);
+	// check
+	// decide tails
+	[] (pc1=2) &amp; (counter&lt;=left) -&gt; (pc1'=3) &amp; (coin1'=0);
+	// decide heads
+	[] (pc1=2) &amp; (counter&gt;=right) -&gt; (pc1'=3) &amp; (coin1'=1);
+	// flip again
+	[] (pc1=2) &amp; (counter&gt;left) &amp; (counter&lt;right) -&gt; (pc1'=0);
+	// loop (all loop together when done)
+	[done] (pc1=3) -&gt; (pc1'=3);
+
+endmodule
+
+// construct remaining processes through renaming
+module process2 = process1[pc1=pc2,coin1=coin2] endmodule
+
+// labels
+label "finished" = pc1=3 &amp; pc2=3 ;
+label "all_coins_equal_0" = coin1=0 &amp; coin2=0 ;
+label "all_coins_equal_1" = coin1=1 &amp; coin2=1 ;
+label "agree" = coin1=coin2 ;
+
+label "error" = counter != counter_init;
+
+// rewards
+rewards "steps"
+	true : 1;
+endrewards</content>
+    </model>
+    <model name="coin4.nm" type="rml">
+      <content>// COIN FLIPPING PROTOCOL FOR POLYNOMIAL RANDOMIZED CONSENSUS [AH90] 
+// gxn/dxp 20/11/00
+
+mdp sml
+
+// constants
+const int N=4;
+const int K=2;
+const int range = 2*(K+1)*N;
+const int counter_init = (K+1)*N;
+const int left = N;
+const int right = 2*(K+1)*N - N;
+
+// shared coin
+global counter : [0..range] init counter_init;
+
+module process1
+	
+	// program counter
+	pc1 : [0..3];
+	// 0 - flip
+	// 1 - write 
+	// 2 - check
+	// 3 - finished
+	
+	// local coin
+	coin1 : [0..1];	
+
+	// flip coin
+	[] (pc1=0)  -&gt; 0.5 : (coin1'=0) &amp; (pc1'=1) + 0.5 : (coin1'=1) &amp; (pc1'=1);
+	// write tails -1  (reset coin to add regularity)
+	[] (pc1=1) &amp; (coin1=0) &amp; (counter&gt;0) -&gt; (counter'=counter-1) &amp; (pc1'=2) &amp; (coin1'=0);
+	// write heads +1 (reset coin to add regularity)
+	[] (pc1=1) &amp; (coin1=1) &amp; (counter&lt;range) -&gt; (counter'=counter+1) &amp; (pc1'=2) &amp; (coin1'=0);
+	// check
+	// decide tails
+	[] (pc1=2) &amp; (counter&lt;=left) -&gt; (pc1'=3) &amp; (coin1'=0);
+	// decide heads
+	[] (pc1=2) &amp; (counter&gt;=right) -&gt; (pc1'=3) &amp; (coin1'=1);
+	// flip again
+	[] (pc1=2) &amp; (counter&gt;left) &amp; (counter&lt;right) -&gt; (pc1'=0);
+	// loop (all loop together when done)
+	[done] (pc1=3) -&gt; (pc1'=3);
+
+endmodule
+
+// construct remaining processes through renaming
+module process2 = process1[pc1=pc2,coin1=coin2] endmodule
+module process3 = process1[pc1=pc3,coin1=coin3] endmodule
+module process4 = process1[pc1=pc4,coin1=coin4] endmodule
+
+// labels
+label "finished" = pc1=3 &amp; pc2=3 &amp; pc3=3 &amp; pc4=3 ;
+label "all_coins_equal_0" = coin1=0 &amp; coin2=0 &amp; coin3=0 &amp; coin4=0 ;
+label "all_coins_equal_1" = coin1=1 &amp; coin2=1 &amp; coin3=1 &amp; coin4=1 ;
+label "agree" = coin1=coin2 &amp; coin2=coin3 &amp; coin3=coin4 ;
+
+// rewards
+rewards "steps"
+	true : 1;
+endrewards</content>
+    </model>
+    <model name="coin6.nm" type="rml">
+      <content>// COIN FLIPPING PROTOCOL FOR POLYNOMIAL RANDOMIZED CONSENSUS [AH90] 
+// gxn/dxp 20/11/00
+
+mdp
+
+// constants
+const int N=6;
+const int K;
+const int range = 2*(K+1)*N;
+const int counter_init = (K+1)*N;
+const int left = N;
+const int right = 2*(K+1)*N - N;
+
+// shared coin
+global counter : [0..range] init counter_init;
+
+module process1
+	
+	// program counter
+	pc1 : [0..3];
+	// 0 - flip
+	// 1 - write 
+	// 2 - check
+	// 3 - finished
+	
+	// local coin
+	coin1 : [0..1];	
+
+	// flip coin
+	[] (pc1=0)  -&gt; 0.5 : (coin1'=0) &amp; (pc1'=1) + 0.5 : (coin1'=1) &amp; (pc1'=1);
+	// write tails -1  (reset coin to add regularity)
+	[] (pc1=1) &amp; (coin1=0) &amp; (counter&gt;0) -&gt; (counter'=counter-1) &amp; (pc1'=2) &amp; (coin1'=0);
+	// write heads +1 (reset coin to add regularity)
+	[] (pc1=1) &amp; (coin1=1) &amp; (counter&lt;range) -&gt; (counter'=counter+1) &amp; (pc1'=2) &amp; (coin1'=0);
+	// check
+	// decide tails
+	[] (pc1=2) &amp; (counter&lt;=left) -&gt; (pc1'=3) &amp; (coin1'=0);
+	// decide heads
+	[] (pc1=2) &amp; (counter&gt;=right) -&gt; (pc1'=3) &amp; (coin1'=1);
+	// flip again
+	[] (pc1=2) &amp; (counter&gt;left) &amp; (counter&lt;right) -&gt; (pc1'=0);
+	// loop (all loop together when done)
+	[done] (pc1=3) -&gt; (pc1'=3);
+
+endmodule
+
+// construct remaining processes through renaming
+module process2 = process1[pc1=pc2,coin1=coin2] endmodule
+module process3 = process1[pc1=pc3,coin1=coin3] endmodule
+module process4 = process1[pc1=pc4,coin1=coin4] endmodule
+module process5 = process1[pc1=pc5,coin1=coin5] endmodule
+module process6 = process1[pc1=pc6,coin1=coin6] endmodule
+
+// labels
+label "finished" = pc1=3 &amp; pc2=3 &amp; pc3=3 &amp; pc4=3 &amp; pc5=3 &amp; pc6=3 ;
+label "all_coins_equal_0" = coin1=0 &amp; coin2=0 &amp; coin3=0 &amp; coin4=0 &amp; coin5=0 &amp; coin6=0 ;
+label "all_coins_equal_1" = coin1=1 &amp; coin2=1 &amp; coin3=1 &amp; coin4=1 &amp; coin5=1 &amp; coin6=1 ;
+label "agree" = coin1=coin2 &amp; coin2=coin3 &amp; coin3=coin4 &amp; coin4=coin5 &amp; coin5=coin6 ;
+
+// rewards
+rewards "steps"
+	true : 1;
+endrewards</content>
+    </model>
+    <model name="coin8.nm" type="rml">
+      <content>// COIN FLIPPING PROTOCOL FOR POLYNOMIAL RANDOMIZED CONSENSUS [AH90] 
+// gxn/dxp 20/11/00
+
+mdp
+
+// constants
+const int N=8;
+const int K=2;
+const int range = 2*(K+1)*N;
+const int counter_init = (K+1)*N;
+const int left = N;
+const int right = 2*(K+1)*N - N;
+
+// shared coin
+global counter : [0..range] init counter_init;
+
+module process1
+	
+	// program counter
+	pc1 : [0..3];
+	// 0 - flip
+	// 1 - write 
+	// 2 - check
+	// 3 - finished
+	
+	// local coin
+	coin1 : [0..1];	
+
+	// flip coin
+	[] (pc1=0)  -&gt; 0.5 : (coin1'=0) &amp; (pc1'=1) + 0.5 : (coin1'=1) &amp; (pc1'=1);
+	// write tails -1  (reset coin to add regularity)
+	[] (pc1=1) &amp; (coin1=0) &amp; (counter&gt;0) -&gt; (counter'=counter-1) &amp; (pc1'=2) &amp; (coin1'=0);
+	// write heads +1 (reset coin to add regularity)
+	[] (pc1=1) &amp; (coin1=1) &amp; (counter&lt;range) -&gt; (counter'=counter+1) &amp; (pc1'=2) &amp; (coin1'=0);
+	// check
+	// decide tails
+	[] (pc1=2) &amp; (counter&lt;=left) -&gt; (pc1'=3) &amp; (coin1'=0);
+	// decide heads
+	[] (pc1=2) &amp; (counter&gt;=right) -&gt; (pc1'=3) &amp; (coin1'=1);
+	// flip again
+	[] (pc1=2) &amp; (counter&gt;left) &amp; (counter&lt;right) -&gt; (pc1'=0);
+	// loop (all loop together when done)
+	[done] (pc1=3) -&gt; (pc1'=3);
+
+endmodule
+
+// construct remaining processes through renaming
+module process2 = process1[pc1=pc2,coin1=coin2] endmodule
+module process3 = process1[pc1=pc3,coin1=coin3] endmodule
+module process4 = process1[pc1=pc4,coin1=coin4] endmodule
+module process5 = process1[pc1=pc5,coin1=coin5] endmodule
+module process6 = process1[pc1=pc6,coin1=coin6] endmodule
+module process7 = process1[pc1=pc7,coin1=coin7] endmodule
+module process8 = process1[pc1=pc8,coin1=coin8] endmodule
+
+// labels
+label "finished" = pc1=3 &amp; pc2=3 &amp; pc3=3 &amp; pc4=3 &amp; pc5=3 &amp; pc6=3 &amp; pc7=3 &amp; pc8=3 ;
+label "all_coins_equal_0" = coin1=0 &amp; coin2=0 &amp; coin3=0 &amp; coin4=0 &amp; coin5=0 &amp; coin6=0 &amp; coin7=0 &amp; coin8=0 ;
+label "all_coins_equal_1" = coin1=1 &amp; coin2=1 &amp; coin3=1 &amp; coin4=1 &amp; coin5=1 &amp; coin6=1 &amp; coin7=1 &amp; coin8=1 ;
+label "agree" = coin1=coin2 &amp; coin2=coin3 &amp; coin3=coin4 &amp; coin4=coin5 &amp; coin5=coin6 &amp; coin6=coin7 &amp; coin7=coin8 ;
+
+// rewards
+rewards "steps"
+	true : 1;
+endrewards</content>
+    </model>
+    <model name="coin10.nm" type="rml">
+      <content>// COIN FLIPPING PROTOCOL FOR POLYNOMIAL RANDOMIZED CONSENSUS [AH90] 
+// gxn/dxp 20/11/00
+
+mdp
+
+// constants
+const int N=10;
+const int K=2;
+const int range = 2*(K+1)*N;
+const int counter_init = (K+1)*N;
+const int left = N;
+const int right = 2*(K+1)*N - N;
+
+// shared coin
+global counter : [0..range] init counter_init;
+
+module process1
+	
+	// program counter
+	pc1 : [0..3];
+	// 0 - flip
+	// 1 - write 
+	// 2 - check
+	// 3 - finished
+	
+	// local coin
+	coin1 : [0..1];	
+
+	// flip coin
+	[] (pc1=0)  -&gt; 0.5 : (coin1'=0) &amp; (pc1'=1) + 0.5 : (coin1'=1) &amp; (pc1'=1);
+	// write tails -1  (reset coin to add regularity)
+	[] (pc1=1) &amp; (coin1=0) &amp; (counter&gt;0) -&gt; (counter'=counter-1) &amp; (pc1'=2) &amp; (coin1'=0);
+	// write heads +1 (reset coin to add regularity)
+	[] (pc1=1) &amp; (coin1=1) &amp; (counter&lt;range) -&gt; (counter'=counter+1) &amp; (pc1'=2) &amp; (coin1'=0);
+	// check
+	// decide tails
+	[] (pc1=2) &amp; (counter&lt;=left) -&gt; (pc1'=3) &amp; (coin1'=0);
+	// decide heads
+	[] (pc1=2) &amp; (counter&gt;=right) -&gt; (pc1'=3) &amp; (coin1'=1);
+	// flip again
+	[] (pc1=2) &amp; (counter&gt;left) &amp; (counter&lt;right) -&gt; (pc1'=0);
+	// loop (all loop together when done)
+	[done] (pc1=3) -&gt; (pc1'=3);
+
+endmodule
+
+// construct remaining processes through renaming
+module process2 = process1[pc1=pc2,coin1=coin2] endmodule
+module process3 = process1[pc1=pc3,coin1=coin3] endmodule
+module process4 = process1[pc1=pc4,coin1=coin4] endmodule
+module process5 = process1[pc1=pc5,coin1=coin5] endmodule
+module process6 = process1[pc1=pc6,coin1=coin6] endmodule
+module process7 = process1[pc1=pc7,coin1=coin7] endmodule
+module process8 = process1[pc1=pc8,coin1=coin8] endmodule
+module process9 = process1[pc1=pc9,coin1=coin9] endmodule
+module process10 = process1[pc1=pc10,coin1=coin10] endmodule
+
+// labels
+label "finished" = pc1=3 &amp; pc2=3 &amp; pc3=3 &amp; pc4=3 &amp; pc5=3 &amp; pc6=3 &amp; pc7=3 &amp; pc8=3 &amp; pc9=3 &amp; pc10=3 ;
+label "all_coins_equal_0" = coin1=0 &amp; coin2=0 &amp; coin3=0 &amp; coin4=0 &amp; coin5=0 &amp; coin6=0 &amp; coin7=0 &amp; coin8=0 &amp; coin9=0 &amp; coin10=0 ;
+label "all_coins_equal_1" = coin1=1 &amp; coin2=1 &amp; coin3=1 &amp; coin4=1 &amp; coin5=1 &amp; coin6=1 &amp; coin7=1 &amp; coin8=1 &amp; coin9=1 &amp; coin10=1 ;
+label "agree" = coin1=coin2 &amp; coin2=coin3 &amp; coin3=coin4 &amp; coin4=coin5 &amp; coin5=coin6 &amp; coin6=coin7 &amp; coin7=coin8 &amp; coin8=coin9 &amp; coin9=coin10 ;
+
+// rewards
+rewards "steps"
+	true : 1;
+endrewards</content>
+    </model>
+  </models>
+  <requirements>
+    <requirement name="C1_finished" type="bltl">
+      <content>// Optimize constant K for each model
+// If used, affects all other properties
+//declare
+//B := 5000//[0;5000;200]
+optimize
+K := [2; 8; 2]
+end
+
+F&lt;=#2000 "finished"</content>
+    </requirement>
+    <requirement name="C2_finished_1" type="bltl">
+      <content>// Optimize constant K for each model
+// If used, affects all other properties
+declare
+B := 5000
+optimize
+K := 4
+end
+
+F&lt;=# (B) "finished" &amp; "all_coins_equal_1"</content>
+    </requirement>
+    <requirement name="C2_finished_0" type="bltl">
+      <content>// Optimize constant K for each model
+// If used, affects all other properties
+declare
+B := 5000
+optimize
+K := [2; 4; 2]
+end
+
+F&lt;=# (B) "finished" &amp; "all_coins_equal_0"</content>
+    </requirement>
+    <requirement name="C3_not_agreed" type="bltl">
+      <content>F&lt;=# 5000 "finished" &amp; !"agree"</content>
+    </requirement>
+    <requirement name="C2_finished_1_speed" type="bltl">
+      <content>// Optimize constant K for each model
+// If used, affects all other properties
+declare
+B := 5000
+optimize
+K := 4//[2; 6; 4]
+end
+
+X&lt;=#(B) (F&lt;=#1 "finished" &amp; "all_coins_equal_1")</content>
+    </requirement>
+  </requirements>
+  <resources />
+</PlasmaProject>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pnml xmlns="http://www.pnml.org/version-2009/grammar/pnml">
+  <net id="Generate-By-Cosmos-0001" type="http://www.pnml.org/version-2009/grammar/ptnet">
+    <page id="page0">
+      <name><text>DefaultPage</text></name>
+      <place id="0">
+        <name><text>A1</text></name>
+        <initialMarking><text>2</text></initialMarking>
+      </place>
+      <place id="1">
+        <name><text>A2</text></name>
+        <initialMarking><text>1</text></initialMarking>
+      </place>
+      <place id="2">
+        <name><text>A3</text></name>
+        <initialMarking><text>1</text></initialMarking>
+      </place>
+      <transition id="3">
+        <name><text>t1_2</text></name>
+      </transition>
+      <transition id="4">
+        <name><text>t1_3</text></name>
+      </transition>
+      <transition id="5">
+        <name><text>t2_1</text></name>
+      </transition>
+      <transition id="6">
+        <name><text>t2_3</text></name>
+      </transition>
+      <transition id="7">
+        <name><text>tloop3</text></name>
+      </transition>
+      <arc id="8" source="0" target="3">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="9" source="1" target="3">
+        <inscription><text>1</text></inscription>
+      </arc>
+      <arc id="10" source="0" target="4">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="11" source="2" target="4">
+        <inscription><text>1</text></inscription>
+      </arc>
+      <arc id="12" source="1" target="5">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="13" source="0" target="5">
+        <inscription><text>1</text></inscription>
+      </arc>
+      <arc id="14" source="1" target="6">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="15" source="2" target="6">
+        <inscription><text>1</text></inscription>
+      </arc>
+      <arc id="16" source="2" target="7">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="17" source="3" target="1">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="18" source="4" target="2">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="19" source="5" target="0">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="20" source="6" target="2">
+        <inscription><text>2</text></inscription>
+      </arc>
+      <arc id="21" source="7" target="2">
+        <inscription><text>2</text></inscription>
+      </arc>
+    </page>
+  </net>
+</pnml>
+<xml>

@@ -1,0 +1,6 @@
+species A=1000,B=1000,C,D,E
+
+A + B -> C
+C -> D
+D -> E
+

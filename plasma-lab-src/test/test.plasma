@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlasmaProject name="test">
+  <models>
+    <model name="password_protected_profiles_3_users" type="rml">
+      <content>//small test case with 3 users
+dtmc
+
+module user1accessProfile1 
+u:[0..3];
+//0 logged out
+//1 entering password
+//2 logged in
+//3 access denied
+p : int init 1; // profile umber in which user tries to connect
+userNumber : int init 1; //each user has the password corresponding to the profile with the same number as their number
+[] u=0-&gt;(u'=1);
+[] u=1 &amp; p=userNumber-&gt;(u'=2);
+[] u=1 &amp; !(p=userNumber)-&gt;(u'=3);
+endmodule</content>
+    </model>
+    <model name="test" type="rml">
+      <content>dtmc
+
+// Constantes pour les mots de passe de deux utilisateurs différents
+const int correct_pwd_user1 = 1;  // Le mot de passe correct pour l'utilisateur 1 est 1
+const int correct_pwd_user2 = 2;  // Le mot de passe correct pour l'utilisateur 2 est 2
+
+// Module représentant le premier utilisateur essayant d'accéder à son profil
+module user1
+    state1: [0..4] init 0;  // États de l'utilisateur 1 : de 0 (déconnecté) à 5 (accès refusé)
+    pwd_attempt1: [0..2];  // Mot de passe entré par l'utilisateur 1 (0 = incorrect, 1 = correct)
+
+    // Transitions pour l'utilisateur 1
+    [] state1=0 -&gt; (state1'=1);  // L'utilisateur 1 tente de se connecter
+    [] state1=1 -&gt; (pwd_attempt1'=correct_pwd_user1);  // L'utilisateur 1 entre son mot de passe
+
+    [] state1=1 &amp; (pwd_attempt1=correct_pwd_user1) -&gt; (state1'=3);  // Accès autorisé si le mot de passe est correct
+    [] state1=1 &amp; (pwd_attempt1!=correct_pwd_user1) -&gt; (state1'=4);  // Accès refusé si le mot de passe est incorrect
+
+    [] state1=3 -&gt; (state1'=0);  // L'utilisateur 1 se déconnecte après accès au profil
+    [] state1=4 -&gt; (state1'=0);  // L'utilisateur 1 retourne à l'état déconnecté après refus d'accès
+endmodule
+
+// Module représentant le second utilisateur avec ses propres règles et son propre mot de passe
+module user2
+    state2: [0..4] init 0;  // États de l'utilisateur 2 : de 0 (déconnecté) à 5 (accès refusé)
+    pwd_attempt2: [0..2];  // Mot de passe entré par l'utilisateur 2 (0 = incorrect, 2 = correct)
+
+    // Transitions pour l'utilisateur 2
+    [] state2=0 -&gt; (state2'=1);  // L'utilisateur 2 tente de se connecter
+    [] state2=1 -&gt; (pwd_attempt2'=correct_pwd_user2);  // L'utilisateur 2 entre son mot de passe
+
+    [] state2=1 &amp; (pwd_attempt2=correct_pwd_user2) -&gt; (state2'=3);  // Accès autorisé si le mot de passe est correct
+    [] state2=1 &amp; (pwd_attempt2!=correct_pwd_user2) -&gt; (state2'=4);  // Accès refusé si le mot de passe est incorrect
+
+    [] state2=3 -&gt; (state2'=0);  // L'utilisateur 2 se déconnecte après accès au profil
+    [] state2=4 -&gt; (state2'=0);  // L'utilisateur 2 retourne à l'état déconnecté après refus d'accès
+endmodule
+
+// Labels pour suivre certains états pour chaque utilisateur
+label "user1_trying_login" = (state1=1);  // L'utilisateur 1 est en train de tenter de se connecter
+label "user1_access_granted" = (state1=3);  // L'utilisateur 1 a obtenu l'accès à son profil
+label "user1_access_denied" = (state1=4);  // L'utilisateur 1 a été refusé l'accès
+label "user1_logged_out" = (state1=0);  // L'utilisateur 1 est déconnecté
+
+label "user2_trying_login" = (state2=1);  // L'utilisateur 2 est en train de tenter de se connecter
+label "user2_access_granted" = (state2=3);  // L'utilisateur 2 a obtenu l'accès à son profil
+label "user2_access_denied" = (state2=4);  // L'utilisateur 2 a été refusé l'accès
+label "user2_logged_out" = (state2=0);  // L'utilisateur 2 est déconnecté</content>
+    </model>
+  </models>
+  <requirements>
+    <requirement name="req_test" type="bltl">
+      <content>P&gt;=1 [ (state1=1 &amp; pwd_attempt1!=correct_pwd_user1) =&gt; P&gt;=1 [ F state1=4 ] ]</content>
+    </requirement>
+  </requirements>
+  <resources />
+</PlasmaProject>

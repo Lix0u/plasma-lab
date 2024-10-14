@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlasmaProject name="PigsShed">
+  <models>
+    <model name="pigs_shed" type="matlab">
+      <content>cochons.slx
+cochons/FailureOn =1 =&gt; [0;1;1]</content>
+    </model>
+    <model name="pigs_shed_nofail" type="matlab">
+      <content>cochons_nofail.slx</content>
+    </model>
+    <model name="pigs_shed_optim" type="matlab">
+      <content>cochons_optim.slx
+cochons_optim/Controler/TFanOn=22 =&gt; [22;22;1]
+cochons_optim/Controler/TFanOff=20 =&gt; [20;20;1]
+cochons_optim/Controler/THeatOn=18 =&gt; [18;18;1]
+cochons_optim/Controler/THeatOff=20 =&gt; [19;20;1]
+
+cochons_optim/Controler/TFanOff &lt; cochons_optim/Controler/TFanOn
+cochons_optim/Controler/THeatOn &lt; cochons_optim/Controler/THeatOff
+cochons_optim/Controler/THeatOn &lt; cochons_optim/Controler/TFanOn</content>
+    </model>
+  </models>
+  <requirements>
+    <requirement name="req1" type="bltl">
+      <content>declare
+	K := [50; 50; 0]
+end
+
+F&lt;=12000 G&lt;=(K) Discomfort &gt; 0</content>
+    </requirement>
+    <requirement name="req2" type="bltl">
+      <content>declare
+	K := [500; 3000; 500]
+end
+
+F&lt;=12000 G&lt;=(K) Discomfort=0</content>
+    </requirement>
+    <requirement name="ReqCost" type="bltl">
+      <content>X&lt;=12000 Cost</content>
+    </requirement>
+    <requirement name="ReqDisconfort" type="bltl">
+      <content>X&lt;=12000 DiscomfortValue</content>
+    </requirement>
+    <requirement name="req3" type="bltl">
+      <content>declare
+	K := [100; 500; 100];
+	L := [100; 500; 100]
+end
+
+G&lt;=12000(G&lt;=25 Discomfort&gt;0 =&gt; (F&lt;=(K) G&lt;=(L) Discomfort=0))</content>
+    </requirement>
+    <requirement name="req1_25" type="bltl">
+      <content>F&lt;=12000 G&lt;=25 Discomfort &gt; 0</content>
+    </requirement>
+    <requirement name="req1_cusum" type="bltl">
+      <content>G&lt;=10 Discomfort &gt; 0</content>
+    </requirement>
+  </requirements>
+  <resources />
+</PlasmaProject>

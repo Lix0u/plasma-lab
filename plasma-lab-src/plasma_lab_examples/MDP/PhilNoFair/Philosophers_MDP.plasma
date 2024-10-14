@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlasmaProject name="Philosophers_MDP">
+  <models>
+    <model name="philnofair3_edit" type="rml">
+      <content>// Randomised dining philosophers based on Lehmann &amp; Rabin 1981
+// No fairness
+
+mdp
+
+module phil1
+	p1: [0..11];
+	[] p1=0 -&gt; (p1'=1);
+	[] p1=1 -&gt; 0.5 : (p1'=2) + 0.5 : (p1'=3);
+	[] p1=1 -&gt; 0.5 : (p1'=2) + 0.5 : (p1'=3);
+	[] p1=2 &amp; ((p2&gt;=0 &amp; p2&lt;=4) | (p2=6)) -&gt; (p1'=4);
+	[] p1=3 &amp; ((p3&gt;=0 &amp; p3&lt;=3) | (p3=5) | (p3=7)) -&gt; (p1'=5);
+	[] p1=4 &amp; ((p3&gt;=0 &amp; p3&lt;=3) | (p3=5) | (p3=7)) -&gt; (p1'=8);
+	[] p1=4 &amp; !((p3&gt;=0 &amp; p3&lt;=3) | (p3=5) | (p3=7)) -&gt; (p1'=6);
+	[] p1=5 &amp; ((p2&gt;=0 &amp; p2&lt;=4) | (p2=6)) -&gt; (p1'=8);
+	[] p1=5 &amp; !((p2&gt;=0 &amp; p2&lt;=4) | (p2=6)) -&gt; (p1'=7);
+	[] p1=6 -&gt; (p1'=1);
+	[] p1=7 -&gt; (p1'=1);
+endmodule
+
+module phil2  = phil1 [p1=p2,  p2=p3,  p3=p1]  endmodule
+module phil3 = phil1 [p1=p3, p2=p1,  p3=p2] endmodule
+
+rewards "num_steps"
+	[] true : 1;
+endrewards
+
+label "eat" = (p1&gt;=8) | (p2&gt;=8) | (p3&gt;=8);</content>
+    </model>
+    <model name="philnofair10" type="rml">
+      <content>// Randomised dining philosophers based on Lehmann &amp; Rabin 1981
+// No fairness
+
+mdp
+
+formula lfree = p2&gt;=0 &amp; p2&lt;=4 | p2=6 | p2=10;
+formula rfree = p10&gt;=0 &amp; p10&lt;=3 | p10=5 | p10=7 | p10=11;
+
+module phil1
+	p1: [0..11];
+	[] p1=0 -&gt; (p1'=1);
+	[] p1=1 -&gt; 0.5 : (p1'=2) + 0.5 : (p1'=3);
+	[] p1=2 &amp; lfree -&gt; (p1'=4);
+	[] p1=3 &amp; rfree -&gt; (p1'=5);
+	[] p1=4 &amp; rfree -&gt; (p1'=8);
+	[] p1=4 &amp; !rfree -&gt; (p1'=6);
+	[] p1=5 &amp; lfree -&gt; (p1'=8);
+	[] p1=5 &amp; !lfree -&gt; (p1'=7);
+	[] p1=6 -&gt; (p1'=1);
+	[] p1=7 -&gt; (p1'=1);
+	[] p1=8 -&gt; (p1'=9);
+	[] p1=9 -&gt; (p1'=10);
+	[] p1=9 -&gt; (p1'=11);
+	[] p1=10 -&gt; (p1'=0);
+	[] p1=11 -&gt; (p1'=0);
+endmodule
+
+module phil2  = phil1 [p1=p2,  p2=p3,  p10=p1]  endmodule
+module phil3  = phil1 [p1=p3,  p2=p4,  p10=p2]  endmodule
+module phil4  = phil1 [p1=p4,  p2=p5,  p10=p3]  endmodule
+module phil5  = phil1 [p1=p5,  p2=p6,  p10=p4]  endmodule
+module phil6  = phil1 [p1=p6,  p2=p7,  p10=p5]  endmodule
+module phil7  = phil1 [p1=p7,  p2=p8,  p10=p6]  endmodule
+module phil8  = phil1 [p1=p8,  p2=p9,  p10=p7]  endmodule
+module phil9  = phil1 [p1=p9,  p2=p10,  p10=p8]  endmodule
+module phil10 = phil1 [p1=p10, p2=p1,  p10=p9] endmodule
+
+rewards "num_steps"
+	[] true : 1;
+endrewards
+
+label "hungry" = p1&gt;0 &amp; p1&lt;8 | p2&gt;0 &amp; p2&lt;8 | p3&gt;0 &amp; p3&lt;8 | p4&gt;0 &amp; p4&lt;8 | p5&gt;0 &amp; p5&lt;8 | p6&gt;0 &amp; p6&lt;8 | p7&gt;0 &amp; p7&lt;8 | p8&gt;0 &amp; p8&lt;8 | p9&gt;0 &amp; p9&lt;8 | p10&gt;0 &amp; p10&lt;8;
+label "eat" = p1&gt;=8 &amp; p1&lt;=9 | p2&gt;=8 &amp; p2&lt;=9 | p3&gt;=8 &amp; p3&lt;=9 | p4&gt;=8 &amp; p4&lt;=9 | p5&gt;=8 &amp; p5&lt;=9 | p6&gt;=8 &amp; p6&lt;=9 | p7&gt;=8 &amp; p7&lt;=9 | p8&gt;=8 &amp; p8&lt;=9 | p9&gt;=8 &amp; p9&lt;=9 | p10&gt;=8 &amp; p10&lt;=9;</content>
+    </model>
+    <model name="philnofair3" type="rml">
+      <content>// randomized dining philosophers [LR81]
+// dxp/gxn 23/01/02
+
+// model which does not require fairness
+// remove the possibility of loops:
+// (1) cannot stay in thinking 
+// (2) if first fork not free then cannot move (another philosopher must more)
+
+mdp
+
+// atomic formulae 
+// left fork free and right fork free resp.
+formula lfree = (p2&gt;=0&amp;p2&lt;=4)|p2=6|p2=10;
+formula rfree = (p3&gt;=0&amp;p3&lt;=3)|p3=5|p3=7|p3=11;
+
+module phil1
+
+	p1: [0..11];
+
+	[] p1=0 -&gt; (p1'=1); // trying
+	[] p1=1 -&gt; 0.5 : (p1'=2) + 0.5 : (p1'=3); // draw randomly
+	[] p1=2 &amp;  lfree -&gt; (p1'=4); // pick up left
+	[] p1=3 &amp;  rfree -&gt; (p1'=5); // pick up right
+	[] p1=4 &amp;  rfree -&gt; (p1'=8); // pick up right (got left)
+	[] p1=4 &amp; !rfree -&gt; (p1'=6); // right not free (got left)
+	[] p1=5 &amp;  lfree -&gt; (p1'=8); // pick up left (got right)
+	[] p1=5 &amp; !lfree -&gt; (p1'=7); // left not free (got right)
+	[] p1=6  -&gt; (p1'=1); // put down left
+	[] p1=7  -&gt; (p1'=1); // put down right
+	[] p1=8  -&gt; (p1'=9); // move to eating (got forks)
+	[] p1=9  -&gt; (p1'=10); // finished eating and put down left 
+	[] p1=9  -&gt; (p1'=11); // finished eating and put down right
+	[] p1=10 -&gt; (p1'=0); // put down right and return to think
+	[] p1=11 -&gt; (p1'=0); // put down left and return to think
+
+endmodule
+
+// construct further modules through renaming
+module phil2 = phil1 [ p1=p2, p2=p3, p3=p1 ] endmodule
+module phil3 = phil1 [ p1=p3, p2=p1, p3=p2 ] endmodule
+
+// rewards (number of steps)
+rewards "num_steps"
+	[] true : 1;
+endrewards
+// labels
+label "hungry" = ((p1&gt;0)&amp;(p1&lt;8))|((p2&gt;0)&amp;(p2&lt;8))|((p3&gt;0)&amp;(p3&lt;8));
+label "eat" = ((p1&gt;=8)&amp;(p1&lt;=9))|((p2&gt;=8)&amp;(p2&lt;=9))|((p3&gt;=8)&amp;(p3&lt;=9));</content>
+    </model>
+    <model name="philnofair3_max" type="rml">
+      <content>// randomized dining philosophers [LR81]
+// dxp/gxn 23/01/02
+
+// model which does not require fairness
+// remove the possibility of loops:
+// (1) cannot stay in thinking 
+// (2) if first fork not free then cannot move (another philosopher must more)
+
+mdp
+
+// atomic formulae 
+// left fork free and right fork free resp.
+formula lfree = (p2&gt;=0&amp;p2&lt;=4)|p2=6|p2=10;
+formula rfree = (p3&gt;=0&amp;p3&lt;=3)|p3=5|p3=7|p3=11;
+
+module phil1
+
+	p1: [0..11];
+
+	[] (p2&lt;=5 &amp; p3&lt;=5) &amp; p1=0 -&gt; (p1'=1); // trying
+	[] (p2&gt;=1 &amp; p3&gt;=1) &amp; p1=1 -&gt; 0.5 : (p1'=2) + 0.5 : (p1'=3); // draw randomly
+	[] (p2&gt;=2 &amp; p3&gt;=2) &amp; p1=2 &amp;  lfree -&gt; (p1'=4); // pick up left
+	[] (p2&gt;=2 &amp; p3&gt;=2) &amp; p1=3 &amp;  rfree -&gt; (p1'=5); // pick up right
+	[] (p2&gt;=2 &amp; p2 &lt;= 5 &amp; p3&gt;=2 &amp; p3 &lt;= 5) &amp; p1=4 &amp;  rfree -&gt; (p1'=8); // pick up right (got left)
+	[] p1=4 &amp; !rfree -&gt; (p1'=6); // right not free (got left)
+	[] (p2&gt;=2 &amp; p2 &lt;= 5 &amp; p3&gt;=2 &amp; p3 &lt;= 5) &amp; p1=5 &amp;  lfree -&gt; (p1'=8); // pick up left (got right)
+	[] p1=5 &amp; !lfree -&gt; (p1'=7); // left not free (got right)
+	[] p1=6  -&gt; (p1'=1); // put down left
+	[] p1=7  -&gt; (p1'=1); // put down right
+endmodule
+
+// construct further modules through renaming
+module phil2 = phil1 [ p1=p2, p2=p3, p3=p1 ] endmodule
+module phil3 = phil1 [ p1=p3, p2=p1, p3=p2 ] endmodule
+
+// rewards (number of steps)
+rewards "num_steps"
+	[] true : 1;
+endrewards
+// labels
+label "hungry" = ((p1&gt;0)&amp;(p1&lt;8))|((p2&gt;0)&amp;(p2&lt;8))|((p3&gt;0)&amp;(p3&lt;8));
+label "eat" = ((p1&gt;=8)&amp;(p1&lt;=9))|((p2&gt;=8)&amp;(p2&lt;=9))|((p3&gt;=8)&amp;(p3&lt;=9));</content>
+    </model>
+  </models>
+  <requirements>
+    <requirement name="Feat" type="bltl">
+      <content>F&lt;=#50 "eat"</content>
+    </requirement>
+    <requirement name="Reat" type="bltl">
+      <content>F&lt;=#100 ("eat" &amp; "num_steps")</content>
+    </requirement>
+  </requirements>
+  <resources />
+</PlasmaProject>

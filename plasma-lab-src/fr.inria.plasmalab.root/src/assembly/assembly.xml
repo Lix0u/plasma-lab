@@ -1,0 +1,98 @@
+<!--
+
+    This file is part of fr.inria.plasmalab.root.
+
+    fr.inria.plasmalab.root is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    fr.inria.plasmalab.root is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+
+    You should have received a copy of the GNU Lesser General Public License
+    along with fr.inria.plasmalab.root.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<assembly
+  xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.0 http://maven.apache.org/xsd/assembly-1.1.0.xsd">
+  <id>distribution</id>
+  <formats>
+    <format>dir</format>
+    <format>zip</format>
+    <format>tar.gz</format>
+  </formats>
+  <includeBaseDirectory>true</includeBaseDirectory>
+  <baseDirectory>plasmalab-${project.version}</baseDirectory>
+  <moduleSets>
+
+    <moduleSet>
+      <useAllReactorProjects>true</useAllReactorProjects>
+      <excludes>
+        <!-- exclude plugins from this module set-->
+        <exclude>fr.inria.plasmalab:fr.inria.plasmalab.plugin_bltl</exclude>
+        <exclude>fr.inria.plasmalab:fr.inria.plasmalab.bio</exclude>
+        <exclude>fr.inria.plasmalab:fr.inria.plasmalab.llvm</exclude>
+		<exclude>fr.inria.plasmalab:fr.inria.plasmalab.matlab</exclude>
+        <!--<exclude>fr.inria.plasmalab:fr.inria.plasmalab.systemc</exclude> -->
+        <!-- exclude all dependencies of plugin_bltl-->
+        <exclude>fr.inria.plasmalab:fr.inria.plasmalab.bltl</exclude>
+        <exclude>fr.inria.plasmalab:fr.inria.plasmalab.altl</exclude>
+        <exclude>fr.inria.plasmalab:fr.inria.plasmalab.rmlbis</exclude>
+        <exclude>fr.inria.plasmalab:fr.inria.plasmalab.gcsl</exclude>
+        <exclude>fr.inria.plasmalab:fr.inria.plasmalab.nested</exclude>
+        <!-- exclude some shaded jars aswell -->
+        <exclude>fr.inria.plasmalab:fr.inria.plasmalab.root</exclude>
+      </excludes>
+      <binaries>
+        <outputDirectory>libs</outputDirectory>
+        <unpack>false</unpack>
+        <dependencySets>
+          <dependencySet>
+            <unpack>false</unpack>
+            <scope>runtime</scope>
+          </dependencySet>
+        </dependencySets>
+      </binaries>
+    </moduleSet>
+    <moduleSet>
+      <includes>
+        <!-- plugins -->
+        <include>fr.inria.plasmalab:fr.inria.plasmalab.plugin_bltl</include>
+        <include>fr.inria.plasmalab:fr.inria.plasmalab.bio</include>
+        <!-- <include>fr.inria.plasmalab:fr.inria.plasmalab.llvm</include> -->
+	<!-- <include>fr.inria.plasmalab:fr.inria.plasmalab.matlab</include> -->
+      </includes>
+      <binaries>
+        <outputDirectory>plugins</outputDirectory>
+        <!-- they are shaded -->
+        <includeDependencies>false</includeDependencies>
+        <unpack>false</unpack>
+    </binaries>
+    </moduleSet>
+  </moduleSets>
+  <fileSets>
+    <fileSet>
+          <directory>scripts</directory>
+          <outputDirectory></outputDirectory>
+      </fileSet>
+      <fileSet>
+          <directory>demos</directory>
+          <outputDirectory>demos</outputDirectory>
+      </fileSet>
+      <fileSet>
+          <directory>configs</directory>
+          <outputDirectory>configs</outputDirectory>
+       </fileSet>
+       <fileSet>
+         <includes>
+           <include>README.md</include>
+       </includes>
+       </fileSet>
+       
+  </fileSets>
+</assembly>

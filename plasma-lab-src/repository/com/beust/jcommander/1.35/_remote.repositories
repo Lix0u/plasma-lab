@@ -1,0 +1,7 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Oct 17 15:18:57 CEST 2019
+jcommander-1.35.jar>=
+jcommander-1.35-sources.jar>central=
+jcommander-1.35.pom>=
+jcommander-1.35.jar>maven-inria-release=
+jcommander-1.35.pom>central=

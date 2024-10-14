@@ -1,0 +1,2060 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlasmaProject name="dna_walkers">
+  <models>
+    <model name="track12Block1" type="rml">
+      <content>ctmc
+ 
+				const double failureRate=0.3;
+ 
+ 	module walker
+ 
+		stator1		: [0 .. 1] init 1;
+		stator2		: [0 .. 1] init 0;
+		stator3		: [0 .. 1] init 0;
+		stator4		: [0 .. 1] init 0;
+		stator5		: [0 .. 1] init 1;
+		stator6		: [0 .. 1] init 0;
+		stator7		: [0 .. 1] init 0;
+		stator8		: [0 .. 1] init 0;
+		stator9		: [0 .. 1] init 0;
+		stator10		: [0 .. 1] init 0;
+		stator11		: [0 .. 1] init 0;
+		stator12		: [0 .. 1] init 0;
+ 
+		w1 : [0 .. 12] init 1;	// w1=0 is sinkstat for deadlocks
+ 
+ 
+		blockade5		: [0 .. 1] init 0;
+ 
+		[block5]  blockade5=0 	-&gt;	1000000.0 * failureRate  : (blockade5'=1) &amp; (stator5'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade5'=1);
+ 
+ 
+		[step] w1=1 &amp; stator2=0	-&gt; 0.0029999999999999996 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=1 &amp; stator3=0	-&gt; 5.9999999999999995E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=1 &amp; stator4=0	-&gt; 2.9999999999999997E-5 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=1 &amp; stator5=0	-&gt; 2.9999999999999997E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=1 &amp; stator9=0	-&gt; 2.9999999999999997E-5 : (w1'=9) &amp; (stator9'=1);
+ 
+		[step] w1=2 &amp; stator1=0	-&gt; 0.009 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=2 &amp; stator3=0	-&gt; 0.009 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=2 &amp; stator4=0	-&gt; 1.7999999999999998E-4 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=2 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=2 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=2 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=2 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+ 
+		[step] w1=3 &amp; stator1=0	-&gt; 1.7999999999999998E-4 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=3 &amp; stator2=0	-&gt; 0.009 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=3 &amp; stator4=0	-&gt; 0.009 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=3 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=3 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=3 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=3 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=3 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=3 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+ 
+		[step] w1=4 &amp; stator1=0	-&gt; 8.999999999999999E-5 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=4 &amp; stator2=0	-&gt; 1.7999999999999998E-4 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=4 &amp; stator3=0	-&gt; 0.009 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=4 &amp; stator5=0	-&gt; 0.009 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=4 &amp; stator6=0	-&gt; 1.7999999999999998E-4 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=4 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=4 &amp; stator9=0	-&gt; 0.009 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=4 &amp; stator10=0	-&gt; 1.7999999999999998E-4 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=4 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+ 
+		[step] w1=5 &amp; stator1=0	-&gt; 8.999999999999999E-5 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=5 &amp; stator2=0	-&gt; 1.7999999999999998E-4 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=5 &amp; stator3=0	-&gt; 1.7999999999999998E-4 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=5 &amp; stator4=0	-&gt; 0.009 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=5 &amp; stator6=0	-&gt; 0.009 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=5 &amp; stator7=0	-&gt; 1.7999999999999998E-4 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=5 &amp; stator8=0	-&gt; 8.999999999999999E-6 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=5 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=5 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=5 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+ 
+		[step] w1=6 &amp; stator2=0	-&gt; 8.999999999999999E-5 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=6 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=6 &amp; stator4=0	-&gt; 1.7999999999999998E-4 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=6 &amp; stator5=0	-&gt; 0.009 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=6 &amp; stator7=0	-&gt; 0.009 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=6 &amp; stator8=0	-&gt; 1.7999999999999997E-5 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=6 &amp; stator9=0	-&gt; 8.999999999999999E-5 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=6 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+ 
+		[step] w1=7 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=7 &amp; stator4=0	-&gt; 8.999999999999999E-5 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=7 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=7 &amp; stator6=0	-&gt; 0.009 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=7 &amp; stator8=0	-&gt; 9.0E-4 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=7 &amp; stator9=0	-&gt; 8.999999999999999E-5 : (w1'=9) &amp; (stator9'=1);
+ 
+		[step] w1=9 &amp; stator1=0	-&gt; 8.999999999999999E-5 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=9 &amp; stator2=0	-&gt; 1.7999999999999998E-4 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=9 &amp; stator3=0	-&gt; 1.7999999999999998E-4 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=9 &amp; stator4=0	-&gt; 0.009 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=9 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=9 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=9 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=9 &amp; stator10=0	-&gt; 0.009 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=9 &amp; stator11=0	-&gt; 1.7999999999999998E-4 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=9 &amp; stator12=0	-&gt; 8.999999999999999E-6 : (w1'=12) &amp; (stator12'=1);
+ 
+		[step] w1=10 &amp; stator2=0	-&gt; 8.999999999999999E-5 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=10 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=10 &amp; stator4=0	-&gt; 1.7999999999999998E-4 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=10 &amp; stator5=0	-&gt; 8.999999999999999E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=10 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=10 &amp; stator9=0	-&gt; 0.009 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=10 &amp; stator11=0	-&gt; 0.009 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=10 &amp; stator12=0	-&gt; 1.7999999999999997E-5 : (w1'=12) &amp; (stator12'=1);
+ 
+		[step] w1=11 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=11 &amp; stator4=0	-&gt; 8.999999999999999E-5 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=11 &amp; stator5=0	-&gt; 8.999999999999999E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=11 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=11 &amp; stator10=0	-&gt; 0.009 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=11 &amp; stator12=0	-&gt; 9.0E-4 : (w1'=12) &amp; (stator12'=1);
+		[]	w1 = 1	-&gt;	.000000001	: 	(w1'=1);
+		[]	w1 = 2	-&gt;	.000000001	: 	(w1'=2);
+		[]	w1 = 3	-&gt;	.000000001	: 	(w1'=3);
+		[]	w1 = 4	-&gt;	.000000001	: 	(w1'=4);
+		[]	w1 = 5	-&gt;	.000000001	: 	(w1'=5);
+		[]	w1 = 6	-&gt;	.000000001	: 	(w1'=6);
+		[]	w1 = 7	-&gt;	.000000001	: 	(w1'=7);
+		[]	w1 = 8	-&gt;	.000000001	: 	(w1'=8);
+		[]	w1 = 9	-&gt;	.000000001	: 	(w1'=9);
+		[]	w1 = 10	-&gt;	.000000001	: 	(w1'=10);
+		[]	w1 = 11	-&gt;	.000000001	: 	(w1'=11);
+		[]	w1 = 12	-&gt;	.000000001	: 	(w1'=12);
+	endmodule
+ 
+	rewards "steps"
+ 
+		[step] true : 1;
+ 
+	endrewards
+ 
+	rewards "time"
+ 
+		 true : 1;
+ 
+	endrewards
+ 
+	rewards "blocked" // time spend in blocked anchorages
+ 
+		w1 =5	:	1;
+ 
+	endrewards
+ 
+label "deadlockUser" =  
+( w1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator9=1)
+| ( w1=2 &amp; stator1=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator9=1 &amp; stator10=1)
+| ( w1=3 &amp; stator1=1 &amp; stator2=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1)
+| ( w1=4 &amp; stator1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1)
+| ( w1=5 &amp; stator1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator6=1 &amp; stator7=1 &amp; stator8=1 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1)
+| ( w1=6 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator7=1 &amp; stator8=1 &amp; stator9=1 &amp; stator10=1)
+| ( w1=7 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator8=1 &amp; stator9=1)
+| ( w1=9 &amp; stator1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator10=1 &amp; stator11=1 &amp; stator12=1)
+| ( w1=10 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator9=1 &amp; stator11=1 &amp; stator12=1)
+| ( w1=11 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator9=1 &amp; stator10=1 &amp; stator12=1);
+
+label "finish"=(w1=8)|(w1=12);
+
+label "finish_correct"=(w1=12);</content>
+    </model>
+    <model name="track12Block2" type="rml">
+      <content>ctmc
+ 
+				const double failureRate=0.3;
+ 
+ 	module walker
+ 
+		stator1		: [0 .. 1] init 1;
+		stator2		: [0 .. 1] init 0;
+		stator3		: [0 .. 1] init 0;
+		stator4		: [0 .. 1] init 0;
+		stator5		: [0 .. 1] init 1;
+		stator6		: [0 .. 1] init 1;
+		stator7		: [0 .. 1] init 0;
+		stator8		: [0 .. 1] init 0;
+		stator9		: [0 .. 1] init 0;
+		stator10		: [0 .. 1] init 0;
+		stator11		: [0 .. 1] init 0;
+		stator12		: [0 .. 1] init 0;
+ 
+		w1 : [0 .. 12] init 1;	// w1=0 is sinkstat for deadlocks
+ 
+ 
+		blockade5		: [0 .. 1] init 0;
+		blockade6		: [0 .. 1] init 0;
+ 
+		[block5]  blockade5=0 	-&gt;	1000000.0 * failureRate  : (blockade5'=1) &amp; (stator5'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade5'=1);
+		[block6]  blockade6=0 	-&gt;	1000000.0 * failureRate  : (blockade6'=1) &amp; (stator6'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade6'=1);
+ 
+ 
+		[step] w1=1 &amp; stator2=0	-&gt; 0.0029999999999999996 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=1 &amp; stator3=0	-&gt; 5.9999999999999995E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=1 &amp; stator4=0	-&gt; 2.9999999999999997E-5 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=1 &amp; stator5=0	-&gt; 2.9999999999999997E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=1 &amp; stator9=0	-&gt; 2.9999999999999997E-5 : (w1'=9) &amp; (stator9'=1);
+ 
+		[step] w1=2 &amp; stator1=0	-&gt; 0.009 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=2 &amp; stator3=0	-&gt; 0.009 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=2 &amp; stator4=0	-&gt; 1.7999999999999998E-4 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=2 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=2 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=2 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=2 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+ 
+		[step] w1=3 &amp; stator1=0	-&gt; 1.7999999999999998E-4 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=3 &amp; stator2=0	-&gt; 0.009 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=3 &amp; stator4=0	-&gt; 0.009 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=3 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=3 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=3 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=3 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=3 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=3 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+ 
+		[step] w1=4 &amp; stator1=0	-&gt; 8.999999999999999E-5 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=4 &amp; stator2=0	-&gt; 1.7999999999999998E-4 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=4 &amp; stator3=0	-&gt; 0.009 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=4 &amp; stator5=0	-&gt; 0.009 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=4 &amp; stator6=0	-&gt; 1.7999999999999998E-4 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=4 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=4 &amp; stator9=0	-&gt; 0.009 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=4 &amp; stator10=0	-&gt; 1.7999999999999998E-4 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=4 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+ 
+		[step] w1=5 &amp; stator1=0	-&gt; 8.999999999999999E-5 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=5 &amp; stator2=0	-&gt; 1.7999999999999998E-4 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=5 &amp; stator3=0	-&gt; 1.7999999999999998E-4 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=5 &amp; stator4=0	-&gt; 0.009 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=5 &amp; stator6=0	-&gt; 0.009 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=5 &amp; stator7=0	-&gt; 1.7999999999999998E-4 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=5 &amp; stator8=0	-&gt; 8.999999999999999E-6 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=5 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=5 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=5 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+ 
+		[step] w1=6 &amp; stator2=0	-&gt; 8.999999999999999E-5 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=6 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=6 &amp; stator4=0	-&gt; 1.7999999999999998E-4 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=6 &amp; stator5=0	-&gt; 0.009 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=6 &amp; stator7=0	-&gt; 0.009 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=6 &amp; stator8=0	-&gt; 1.7999999999999997E-5 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=6 &amp; stator9=0	-&gt; 8.999999999999999E-5 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=6 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+ 
+		[step] w1=7 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=7 &amp; stator4=0	-&gt; 8.999999999999999E-5 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=7 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=7 &amp; stator6=0	-&gt; 0.009 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=7 &amp; stator8=0	-&gt; 9.0E-4 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=7 &amp; stator9=0	-&gt; 8.999999999999999E-5 : (w1'=9) &amp; (stator9'=1);
+ 
+		[step] w1=9 &amp; stator1=0	-&gt; 8.999999999999999E-5 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=9 &amp; stator2=0	-&gt; 1.7999999999999998E-4 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=9 &amp; stator3=0	-&gt; 1.7999999999999998E-4 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=9 &amp; stator4=0	-&gt; 0.009 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=9 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=9 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=9 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=9 &amp; stator10=0	-&gt; 0.009 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=9 &amp; stator11=0	-&gt; 1.7999999999999998E-4 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=9 &amp; stator12=0	-&gt; 8.999999999999999E-6 : (w1'=12) &amp; (stator12'=1);
+ 
+		[step] w1=10 &amp; stator2=0	-&gt; 8.999999999999999E-5 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=10 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=10 &amp; stator4=0	-&gt; 1.7999999999999998E-4 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=10 &amp; stator5=0	-&gt; 8.999999999999999E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=10 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=10 &amp; stator9=0	-&gt; 0.009 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=10 &amp; stator11=0	-&gt; 0.009 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=10 &amp; stator12=0	-&gt; 1.7999999999999997E-5 : (w1'=12) &amp; (stator12'=1);
+ 
+		[step] w1=11 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=11 &amp; stator4=0	-&gt; 8.999999999999999E-5 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=11 &amp; stator5=0	-&gt; 8.999999999999999E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=11 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=11 &amp; stator10=0	-&gt; 0.009 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=11 &amp; stator12=0	-&gt; 9.0E-4 : (w1'=12) &amp; (stator12'=1);
+		[]	w1 = 1	-&gt;	.000000001	: 	(w1'=1);
+		[]	w1 = 2	-&gt;	.000000001	: 	(w1'=2);
+		[]	w1 = 3	-&gt;	.000000001	: 	(w1'=3);
+		[]	w1 = 4	-&gt;	.000000001	: 	(w1'=4);
+		[]	w1 = 5	-&gt;	.000000001	: 	(w1'=5);
+		[]	w1 = 6	-&gt;	.000000001	: 	(w1'=6);
+		[]	w1 = 7	-&gt;	.000000001	: 	(w1'=7);
+		[]	w1 = 8	-&gt;	.000000001	: 	(w1'=8);
+		[]	w1 = 9	-&gt;	.000000001	: 	(w1'=9);
+		[]	w1 = 10	-&gt;	.000000001	: 	(w1'=10);
+		[]	w1 = 11	-&gt;	.000000001	: 	(w1'=11);
+		[]	w1 = 12	-&gt;	.000000001	: 	(w1'=12);
+	endmodule
+ 
+	rewards "steps"
+ 
+		[step] true : 1;
+ 
+	endrewards
+ 
+	rewards "time"
+ 
+		 true : 1;
+ 
+	endrewards
+ 
+	rewards "blocked" // time spend in blocked anchorages
+ 
+		w1 =5 | w1 =6	:	1;
+ 
+	endrewards
+ 
+label "deadlockUser" =  
+( w1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator9=1)
+| ( w1=2 &amp; stator1=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator9=1 &amp; stator10=1)
+| ( w1=3 &amp; stator1=1 &amp; stator2=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1)
+| ( w1=4 &amp; stator1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1)
+| ( w1=5 &amp; stator1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator6=1 &amp; stator7=1 &amp; stator8=1 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1)
+| ( w1=6 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator7=1 &amp; stator8=1 &amp; stator9=1 &amp; stator10=1)
+| ( w1=7 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator8=1 &amp; stator9=1)
+| ( w1=9 &amp; stator1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator10=1 &amp; stator11=1 &amp; stator12=1)
+| ( w1=10 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator9=1 &amp; stator11=1 &amp; stator12=1)
+| ( w1=11 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator9=1 &amp; stator10=1 &amp; stator12=1)
+;
+
+label "finish"=(w1=8)|(w1=12);
+
+label "finish_correct"=(w1=12);</content>
+    </model>
+    <model name="track12BlockBoth" type="rml">
+      <content>ctmc
+ 
+				const double failureRate=0.3;
+ 
+ 	module walker
+ 
+		stator1		: [0 .. 1] init 1;
+		stator2		: [0 .. 1] init 0;
+		stator3		: [0 .. 1] init 0;
+		stator4		: [0 .. 1] init 0;
+		stator5		: [0 .. 1] init 1;
+		stator6		: [0 .. 1] init 0;
+		stator7		: [0 .. 1] init 0;
+		stator8		: [0 .. 1] init 0;
+		stator9		: [0 .. 1] init 1;
+		stator10		: [0 .. 1] init 0;
+		stator11		: [0 .. 1] init 0;
+		stator12		: [0 .. 1] init 0;
+ 
+		w1 : [0 .. 12] init 1;	// w1=0 is sinkstat for deadlocks
+ 
+ 
+		blockade5		: [0 .. 1] init 0;
+		blockade9		: [0 .. 1] init 0;
+ 
+		[block5]  blockade5=0 	-&gt;	1000000.0 * failureRate  : (blockade5'=1) &amp; (stator5'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade5'=1);
+		[block9]  blockade9=0 	-&gt;	1000000.0 * failureRate  : (blockade9'=1) &amp; (stator9'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade9'=1);
+ 
+ 
+		[step] w1=1 &amp; stator2=0	-&gt; 0.0029999999999999996 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=1 &amp; stator3=0	-&gt; 5.9999999999999995E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=1 &amp; stator4=0	-&gt; 2.9999999999999997E-5 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=1 &amp; stator5=0	-&gt; 2.9999999999999997E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=1 &amp; stator9=0	-&gt; 2.9999999999999997E-5 : (w1'=9) &amp; (stator9'=1);
+ 
+		[step] w1=2 &amp; stator1=0	-&gt; 0.009 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=2 &amp; stator3=0	-&gt; 0.009 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=2 &amp; stator4=0	-&gt; 1.7999999999999998E-4 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=2 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=2 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=2 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=2 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+ 
+		[step] w1=3 &amp; stator1=0	-&gt; 1.7999999999999998E-4 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=3 &amp; stator2=0	-&gt; 0.009 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=3 &amp; stator4=0	-&gt; 0.009 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=3 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=3 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=3 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=3 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=3 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=3 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+ 
+		[step] w1=4 &amp; stator1=0	-&gt; 8.999999999999999E-5 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=4 &amp; stator2=0	-&gt; 1.7999999999999998E-4 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=4 &amp; stator3=0	-&gt; 0.009 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=4 &amp; stator5=0	-&gt; 0.009 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=4 &amp; stator6=0	-&gt; 1.7999999999999998E-4 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=4 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=4 &amp; stator9=0	-&gt; 0.009 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=4 &amp; stator10=0	-&gt; 1.7999999999999998E-4 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=4 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+ 
+		[step] w1=5 &amp; stator1=0	-&gt; 8.999999999999999E-5 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=5 &amp; stator2=0	-&gt; 1.7999999999999998E-4 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=5 &amp; stator3=0	-&gt; 1.7999999999999998E-4 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=5 &amp; stator4=0	-&gt; 0.009 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=5 &amp; stator6=0	-&gt; 0.009 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=5 &amp; stator7=0	-&gt; 1.7999999999999998E-4 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=5 &amp; stator8=0	-&gt; 8.999999999999999E-6 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=5 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=5 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=5 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+ 
+		[step] w1=6 &amp; stator2=0	-&gt; 8.999999999999999E-5 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=6 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=6 &amp; stator4=0	-&gt; 1.7999999999999998E-4 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=6 &amp; stator5=0	-&gt; 0.009 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=6 &amp; stator7=0	-&gt; 0.009 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=6 &amp; stator8=0	-&gt; 1.7999999999999997E-5 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=6 &amp; stator9=0	-&gt; 8.999999999999999E-5 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=6 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+ 
+		[step] w1=7 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=7 &amp; stator4=0	-&gt; 8.999999999999999E-5 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=7 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=7 &amp; stator6=0	-&gt; 0.009 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=7 &amp; stator8=0	-&gt; 9.0E-4 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=7 &amp; stator9=0	-&gt; 8.999999999999999E-5 : (w1'=9) &amp; (stator9'=1);
+ 
+		[step] w1=9 &amp; stator1=0	-&gt; 8.999999999999999E-5 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=9 &amp; stator2=0	-&gt; 1.7999999999999998E-4 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=9 &amp; stator3=0	-&gt; 1.7999999999999998E-4 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=9 &amp; stator4=0	-&gt; 0.009 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=9 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=9 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=9 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=9 &amp; stator10=0	-&gt; 0.009 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=9 &amp; stator11=0	-&gt; 1.7999999999999998E-4 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=9 &amp; stator12=0	-&gt; 8.999999999999999E-6 : (w1'=12) &amp; (stator12'=1);
+ 
+		[step] w1=10 &amp; stator2=0	-&gt; 8.999999999999999E-5 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=10 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=10 &amp; stator4=0	-&gt; 1.7999999999999998E-4 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=10 &amp; stator5=0	-&gt; 8.999999999999999E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=10 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=10 &amp; stator9=0	-&gt; 0.009 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=10 &amp; stator11=0	-&gt; 0.009 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=10 &amp; stator12=0	-&gt; 1.7999999999999997E-5 : (w1'=12) &amp; (stator12'=1);
+ 
+		[step] w1=11 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=11 &amp; stator4=0	-&gt; 8.999999999999999E-5 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=11 &amp; stator5=0	-&gt; 8.999999999999999E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=11 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=11 &amp; stator10=0	-&gt; 0.009 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=11 &amp; stator12=0	-&gt; 9.0E-4 : (w1'=12) &amp; (stator12'=1);
+		[]	w1 = 1	-&gt;	.000000001	: 	(w1'=1);
+		[]	w1 = 2	-&gt;	.000000001	: 	(w1'=2);
+		[]	w1 = 3	-&gt;	.000000001	: 	(w1'=3);
+		[]	w1 = 4	-&gt;	.000000001	: 	(w1'=4);
+		[]	w1 = 5	-&gt;	.000000001	: 	(w1'=5);
+		[]	w1 = 6	-&gt;	.000000001	: 	(w1'=6);
+		[]	w1 = 7	-&gt;	.000000001	: 	(w1'=7);
+		[]	w1 = 8	-&gt;	.000000001	: 	(w1'=8);
+		[]	w1 = 9	-&gt;	.000000001	: 	(w1'=9);
+		[]	w1 = 10	-&gt;	.000000001	: 	(w1'=10);
+		[]	w1 = 11	-&gt;	.000000001	: 	(w1'=11);
+		[]	w1 = 12	-&gt;	.000000001	: 	(w1'=12);
+	endmodule
+ 
+	rewards "steps"
+ 
+		[step] true : 1;
+ 
+	endrewards
+ 
+	rewards "time"
+ 
+		 true : 1;
+ 
+	endrewards
+ 
+	rewards "blocked" // time spend in blocked anchorages
+ 
+		w1 =5 | w1 =9	:	1;
+ 
+	endrewards
+ 
+label "deadlockUser" =  
+( w1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator9=1)
+| ( w1=2 &amp; stator1=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator9=1 &amp; stator10=1)
+| ( w1=3 &amp; stator1=1 &amp; stator2=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1)
+| ( w1=4 &amp; stator1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1)
+| ( w1=5 &amp; stator1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator6=1 &amp; stator7=1 &amp; stator8=1 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1)
+| ( w1=6 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator7=1 &amp; stator8=1 &amp; stator9=1 &amp; stator10=1)
+| ( w1=7 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator8=1 &amp; stator9=1)
+| ( w1=9 &amp; stator1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator10=1 &amp; stator11=1 &amp; stator12=1)
+| ( w1=10 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator9=1 &amp; stator11=1 &amp; stator12=1)
+| ( w1=11 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator9=1 &amp; stator10=1 &amp; stator12=1)
+;</content>
+    </model>
+    <model name="track28LLDouble" type="rml">
+      <content>ctmc
+ 
+				const double failureRate=0.3;
+ 
+ 	module walker
+ 
+		stator1		: [0 .. 1] init 1;
+		stator2		: [0 .. 1] init 0;
+		stator3		: [0 .. 1] init 0;
+		stator4		: [0 .. 1] init 0;
+		stator5		: [0 .. 1] init 1;
+		stator6		: [0 .. 1] init 1;
+		stator7		: [0 .. 1] init 0;
+		stator8		: [0 .. 1] init 0;
+		stator9		: [0 .. 1] init 0;
+		stator10		: [0 .. 1] init 0;
+		stator11		: [0 .. 1] init 0;
+		stator12		: [0 .. 1] init 0;
+		stator13		: [0 .. 1] init 0;
+		stator14		: [0 .. 1] init 0;
+		stator15		: [0 .. 1] init 1;
+		stator16		: [0 .. 1] init 1;
+		stator17		: [0 .. 1] init 0;
+		stator18		: [0 .. 1] init 0;
+		stator19		: [0 .. 1] init 0;
+		stator20		: [0 .. 1] init 0;
+		stator21		: [0 .. 1] init 0;
+		stator22		: [0 .. 1] init 0;
+		stator23		: [0 .. 1] init 1;
+		stator24		: [0 .. 1] init 1;
+		stator25		: [0 .. 1] init 0;
+		stator26		: [0 .. 1] init 0;
+		stator27		: [0 .. 1] init 0;
+		stator28		: [0 .. 1] init 0;
+ 
+		w1 : [0 .. 28] init 1;	// w1=0 is sinkstat for deadlocks
+ 
+ 
+		blockade5		: [0 .. 1] init 0;
+		blockade6		: [0 .. 1] init 0;
+		blockade15		: [0 .. 1] init 0;
+		blockade16		: [0 .. 1] init 0;
+		blockade23		: [0 .. 1] init 0;
+		blockade24		: [0 .. 1] init 0;
+ 
+		[block5]  blockade5=0 	-&gt;	1000000.0 * failureRate  : (blockade5'=1) &amp; (stator5'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade5'=1);
+		[block6]  blockade6=0 	-&gt;	1000000.0 * failureRate  : (blockade6'=1) &amp; (stator6'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade6'=1);
+		[block15]  blockade15=0 	-&gt;	1000000.0 * failureRate  : (blockade15'=1) &amp; (stator15'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade15'=1);
+		[block16]  blockade16=0 	-&gt;	1000000.0 * failureRate  : (blockade16'=1) &amp; (stator16'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade16'=1);
+		[block23]  blockade23=0 	-&gt;	1000000.0 * failureRate  : (blockade23'=1) &amp; (stator23'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade23'=1);
+		[block24]  blockade24=0 	-&gt;	1000000.0 * failureRate  : (blockade24'=1) &amp; (stator24'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade24'=1);
+ 
+ 
+		[step] w1=1 &amp; stator2=0	-&gt; 0.0029999999999999996 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=1 &amp; stator3=0	-&gt; 5.9999999999999995E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=1 &amp; stator4=0	-&gt; 2.9999999999999997E-5 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=1 &amp; stator5=0	-&gt; 2.9999999999999997E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=1 &amp; stator9=0	-&gt; 2.9999999999999997E-5 : (w1'=9) &amp; (stator9'=1);
+ 
+		[step] w1=2 &amp; stator1=0	-&gt; 0.009 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=2 &amp; stator3=0	-&gt; 0.009 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=2 &amp; stator4=0	-&gt; 1.7999999999999998E-4 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=2 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=2 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=2 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=2 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+ 
+		[step] w1=3 &amp; stator1=0	-&gt; 1.7999999999999998E-4 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=3 &amp; stator2=0	-&gt; 0.009 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=3 &amp; stator4=0	-&gt; 0.009 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=3 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=3 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=3 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=3 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=3 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=3 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+ 
+		[step] w1=4 &amp; stator1=0	-&gt; 8.999999999999999E-5 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=4 &amp; stator2=0	-&gt; 1.7999999999999998E-4 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=4 &amp; stator3=0	-&gt; 0.009 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=4 &amp; stator5=0	-&gt; 0.009 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=4 &amp; stator6=0	-&gt; 1.7999999999999998E-4 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=4 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=4 &amp; stator9=0	-&gt; 0.009 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=4 &amp; stator10=0	-&gt; 1.7999999999999998E-4 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=4 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+ 
+		[step] w1=5 &amp; stator1=0	-&gt; 8.999999999999999E-5 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=5 &amp; stator2=0	-&gt; 1.7999999999999998E-4 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=5 &amp; stator3=0	-&gt; 1.7999999999999998E-4 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=5 &amp; stator4=0	-&gt; 0.009 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=5 &amp; stator6=0	-&gt; 0.009 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=5 &amp; stator7=0	-&gt; 1.7999999999999998E-4 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=5 &amp; stator8=0	-&gt; 8.999999999999999E-5 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=5 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=5 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=5 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=5 &amp; stator13=0	-&gt; 8.999999999999999E-5 : (w1'=13) &amp; (stator13'=1);
+ 
+		[step] w1=6 &amp; stator2=0	-&gt; 8.999999999999999E-5 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=6 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=6 &amp; stator4=0	-&gt; 1.7999999999999998E-4 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=6 &amp; stator5=0	-&gt; 0.009 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=6 &amp; stator7=0	-&gt; 0.009 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=6 &amp; stator8=0	-&gt; 1.7999999999999998E-4 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=6 &amp; stator9=0	-&gt; 8.999999999999999E-5 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=6 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=6 &amp; stator13=0	-&gt; 8.999999999999999E-5 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=6 &amp; stator14=0	-&gt; 8.999999999999999E-5 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=6 &amp; stator18=0	-&gt; 8.999999999999999E-5 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=6 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+ 
+		[step] w1=7 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=7 &amp; stator4=0	-&gt; 8.999999999999999E-5 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=7 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=7 &amp; stator6=0	-&gt; 0.009 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=7 &amp; stator8=0	-&gt; 0.009 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=7 &amp; stator9=0	-&gt; 8.999999999999999E-5 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=7 &amp; stator13=0	-&gt; 1.7999999999999998E-4 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=7 &amp; stator14=0	-&gt; 1.7999999999999998E-4 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=7 &amp; stator15=0	-&gt; 8.999999999999999E-5 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=7 &amp; stator18=0	-&gt; 8.999999999999999E-5 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=7 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+ 
+		[step] w1=8 &amp; stator5=0	-&gt; 8.999999999999999E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=8 &amp; stator6=0	-&gt; 1.7999999999999998E-4 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=8 &amp; stator7=0	-&gt; 0.009 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=8 &amp; stator13=0	-&gt; 0.009 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=8 &amp; stator14=0	-&gt; 1.7999999999999998E-4 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=8 &amp; stator15=0	-&gt; 1.7999999999999998E-4 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=8 &amp; stator16=0	-&gt; 8.999999999999999E-5 : (w1'=16) &amp; (stator16'=1);
+		[step] w1=8 &amp; stator18=0	-&gt; 1.7999999999999998E-4 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=8 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+ 
+		[step] w1=9 &amp; stator1=0	-&gt; 8.999999999999999E-5 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=9 &amp; stator2=0	-&gt; 1.7999999999999998E-4 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=9 &amp; stator3=0	-&gt; 1.7999999999999998E-4 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=9 &amp; stator4=0	-&gt; 0.009 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=9 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=9 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=9 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=9 &amp; stator10=0	-&gt; 0.009 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=9 &amp; stator11=0	-&gt; 1.7999999999999998E-4 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=9 &amp; stator12=0	-&gt; 8.999999999999999E-5 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=9 &amp; stator21=0	-&gt; 8.999999999999999E-5 : (w1'=21) &amp; (stator21'=1);
+ 
+		[step] w1=10 &amp; stator2=0	-&gt; 8.999999999999999E-5 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=10 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=10 &amp; stator4=0	-&gt; 1.7999999999999998E-4 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=10 &amp; stator5=0	-&gt; 8.999999999999999E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=10 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=10 &amp; stator9=0	-&gt; 0.009 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=10 &amp; stator11=0	-&gt; 0.009 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=10 &amp; stator12=0	-&gt; 1.7999999999999998E-4 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=10 &amp; stator21=0	-&gt; 8.999999999999999E-5 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=10 &amp; stator22=0	-&gt; 8.999999999999999E-5 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=10 &amp; stator23=0	-&gt; 8.999999999999999E-5 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=10 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+ 
+		[step] w1=11 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=11 &amp; stator4=0	-&gt; 8.999999999999999E-5 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=11 &amp; stator5=0	-&gt; 8.999999999999999E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=11 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=11 &amp; stator10=0	-&gt; 0.009 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=11 &amp; stator12=0	-&gt; 0.009 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=11 &amp; stator21=0	-&gt; 1.7999999999999998E-4 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=11 &amp; stator22=0	-&gt; 1.7999999999999998E-4 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=11 &amp; stator23=0	-&gt; 8.999999999999999E-5 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=11 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=11 &amp; stator26=0	-&gt; 8.999999999999999E-5 : (w1'=26) &amp; (stator26'=1);
+ 
+		[step] w1=12 &amp; stator9=0	-&gt; 8.999999999999999E-5 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=12 &amp; stator10=0	-&gt; 1.7999999999999998E-4 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=12 &amp; stator11=0	-&gt; 0.009 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=12 &amp; stator21=0	-&gt; 0.009 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=12 &amp; stator22=0	-&gt; 1.7999999999999998E-4 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=12 &amp; stator23=0	-&gt; 1.7999999999999998E-4 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=12 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=12 &amp; stator26=0	-&gt; 1.7999999999999998E-4 : (w1'=26) &amp; (stator26'=1);
+		[step] w1=12 &amp; stator27=0	-&gt; 8.999999999999999E-5 : (w1'=27) &amp; (stator27'=1);
+ 
+		[step] w1=13 &amp; stator5=0	-&gt; 8.999999999999999E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=13 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=13 &amp; stator7=0	-&gt; 1.7999999999999998E-4 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=13 &amp; stator8=0	-&gt; 0.009 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=13 &amp; stator14=0	-&gt; 0.009 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=13 &amp; stator15=0	-&gt; 1.7999999999999998E-4 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=13 &amp; stator16=0	-&gt; 8.999999999999999E-5 : (w1'=16) &amp; (stator16'=1);
+		[step] w1=13 &amp; stator17=0	-&gt; 8.999999999999999E-6 : (w1'=17) &amp; (stator17'=1);
+		[step] w1=13 &amp; stator18=0	-&gt; 1.7999999999999998E-4 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=13 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+		[step] w1=13 &amp; stator20=0	-&gt; 8.999999999999999E-6 : (w1'=20) &amp; (stator20'=1);
+ 
+		[step] w1=14 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=14 &amp; stator7=0	-&gt; 1.7999999999999998E-4 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=14 &amp; stator8=0	-&gt; 1.7999999999999998E-4 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=14 &amp; stator13=0	-&gt; 0.009 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=14 &amp; stator15=0	-&gt; 0.009 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=14 &amp; stator16=0	-&gt; 1.7999999999999998E-4 : (w1'=16) &amp; (stator16'=1);
+		[step] w1=14 &amp; stator17=0	-&gt; 8.999999999999999E-6 : (w1'=17) &amp; (stator17'=1);
+		[step] w1=14 &amp; stator18=0	-&gt; 0.009 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=14 &amp; stator19=0	-&gt; 1.7999999999999998E-4 : (w1'=19) &amp; (stator19'=1);
+		[step] w1=14 &amp; stator20=0	-&gt; 8.999999999999999E-6 : (w1'=20) &amp; (stator20'=1);
+ 
+		[step] w1=15 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=15 &amp; stator8=0	-&gt; 1.7999999999999998E-4 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=15 &amp; stator13=0	-&gt; 1.7999999999999998E-4 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=15 &amp; stator14=0	-&gt; 0.009 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=15 &amp; stator16=0	-&gt; 0.009 : (w1'=16) &amp; (stator16'=1);
+		[step] w1=15 &amp; stator17=0	-&gt; 1.7999999999999997E-5 : (w1'=17) &amp; (stator17'=1);
+		[step] w1=15 &amp; stator18=0	-&gt; 1.7999999999999998E-4 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=15 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+		[step] w1=15 &amp; stator20=0	-&gt; 8.999999999999999E-6 : (w1'=20) &amp; (stator20'=1);
+ 
+		[step] w1=16 &amp; stator8=0	-&gt; 8.999999999999999E-5 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=16 &amp; stator13=0	-&gt; 8.999999999999999E-5 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=16 &amp; stator14=0	-&gt; 1.7999999999999998E-4 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=16 &amp; stator15=0	-&gt; 0.009 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=16 &amp; stator17=0	-&gt; 9.0E-4 : (w1'=17) &amp; (stator17'=1);
+		[step] w1=16 &amp; stator18=0	-&gt; 8.999999999999999E-5 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=16 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+ 
+		[step] w1=18 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=18 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=18 &amp; stator8=0	-&gt; 1.7999999999999998E-4 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=18 &amp; stator13=0	-&gt; 1.7999999999999998E-4 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=18 &amp; stator14=0	-&gt; 0.009 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=18 &amp; stator15=0	-&gt; 1.7999999999999998E-4 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=18 &amp; stator16=0	-&gt; 8.999999999999999E-5 : (w1'=16) &amp; (stator16'=1);
+		[step] w1=18 &amp; stator17=0	-&gt; 8.999999999999999E-6 : (w1'=17) &amp; (stator17'=1);
+		[step] w1=18 &amp; stator19=0	-&gt; 0.009 : (w1'=19) &amp; (stator19'=1);
+		[step] w1=18 &amp; stator20=0	-&gt; 1.7999999999999997E-5 : (w1'=20) &amp; (stator20'=1);
+		[step] w1=18 &amp; stator25=0	-&gt; 8.999999999999999E-6 : (w1'=25) &amp; (stator25'=1);
+ 
+		[step] w1=19 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=19 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=19 &amp; stator8=0	-&gt; 8.999999999999999E-5 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=19 &amp; stator13=0	-&gt; 8.999999999999999E-5 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=19 &amp; stator14=0	-&gt; 1.7999999999999998E-4 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=19 &amp; stator15=0	-&gt; 8.999999999999999E-5 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=19 &amp; stator16=0	-&gt; 8.999999999999999E-5 : (w1'=16) &amp; (stator16'=1);
+		[step] w1=19 &amp; stator18=0	-&gt; 0.009 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=19 &amp; stator20=0	-&gt; 9.0E-4 : (w1'=20) &amp; (stator20'=1);
+		[step] w1=19 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=19 &amp; stator25=0	-&gt; 8.999999999999999E-6 : (w1'=25) &amp; (stator25'=1);
+ 
+		[step] w1=21 &amp; stator9=0	-&gt; 8.999999999999999E-5 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=21 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=21 &amp; stator11=0	-&gt; 1.7999999999999998E-4 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=21 &amp; stator12=0	-&gt; 0.009 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=21 &amp; stator22=0	-&gt; 0.009 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=21 &amp; stator23=0	-&gt; 1.7999999999999998E-4 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=21 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=21 &amp; stator25=0	-&gt; 8.999999999999999E-6 : (w1'=25) &amp; (stator25'=1);
+		[step] w1=21 &amp; stator26=0	-&gt; 1.7999999999999998E-4 : (w1'=26) &amp; (stator26'=1);
+		[step] w1=21 &amp; stator27=0	-&gt; 8.999999999999999E-5 : (w1'=27) &amp; (stator27'=1);
+		[step] w1=21 &amp; stator28=0	-&gt; 8.999999999999999E-6 : (w1'=28) &amp; (stator28'=1);
+ 
+		[step] w1=22 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=22 &amp; stator11=0	-&gt; 1.7999999999999998E-4 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=22 &amp; stator12=0	-&gt; 1.7999999999999998E-4 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=22 &amp; stator21=0	-&gt; 0.009 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=22 &amp; stator23=0	-&gt; 0.009 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=22 &amp; stator24=0	-&gt; 1.7999999999999998E-4 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=22 &amp; stator25=0	-&gt; 8.999999999999999E-6 : (w1'=25) &amp; (stator25'=1);
+		[step] w1=22 &amp; stator26=0	-&gt; 0.009 : (w1'=26) &amp; (stator26'=1);
+		[step] w1=22 &amp; stator27=0	-&gt; 1.7999999999999998E-4 : (w1'=27) &amp; (stator27'=1);
+		[step] w1=22 &amp; stator28=0	-&gt; 8.999999999999999E-6 : (w1'=28) &amp; (stator28'=1);
+ 
+		[step] w1=23 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=23 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=23 &amp; stator12=0	-&gt; 1.7999999999999998E-4 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=23 &amp; stator20=0	-&gt; 8.999999999999999E-6 : (w1'=20) &amp; (stator20'=1);
+		[step] w1=23 &amp; stator21=0	-&gt; 1.7999999999999998E-4 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=23 &amp; stator22=0	-&gt; 0.009 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=23 &amp; stator24=0	-&gt; 0.009 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=23 &amp; stator25=0	-&gt; 1.7999999999999997E-5 : (w1'=25) &amp; (stator25'=1);
+		[step] w1=23 &amp; stator26=0	-&gt; 1.7999999999999998E-4 : (w1'=26) &amp; (stator26'=1);
+		[step] w1=23 &amp; stator27=0	-&gt; 8.999999999999999E-5 : (w1'=27) &amp; (stator27'=1);
+		[step] w1=23 &amp; stator28=0	-&gt; 8.999999999999999E-6 : (w1'=28) &amp; (stator28'=1);
+ 
+		[step] w1=24 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=24 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=24 &amp; stator12=0	-&gt; 8.999999999999999E-5 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=24 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+		[step] w1=24 &amp; stator20=0	-&gt; 8.999999999999999E-6 : (w1'=20) &amp; (stator20'=1);
+		[step] w1=24 &amp; stator21=0	-&gt; 8.999999999999999E-5 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=24 &amp; stator22=0	-&gt; 1.7999999999999998E-4 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=24 &amp; stator23=0	-&gt; 0.009 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=24 &amp; stator25=0	-&gt; 9.0E-4 : (w1'=25) &amp; (stator25'=1);
+		[step] w1=24 &amp; stator26=0	-&gt; 8.999999999999999E-5 : (w1'=26) &amp; (stator26'=1);
+		[step] w1=24 &amp; stator27=0	-&gt; 8.999999999999999E-5 : (w1'=27) &amp; (stator27'=1);
+ 
+		[step] w1=26 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=26 &amp; stator12=0	-&gt; 1.7999999999999998E-4 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=26 &amp; stator21=0	-&gt; 1.7999999999999998E-4 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=26 &amp; stator22=0	-&gt; 0.009 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=26 &amp; stator23=0	-&gt; 1.7999999999999998E-4 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=26 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=26 &amp; stator25=0	-&gt; 8.999999999999999E-6 : (w1'=25) &amp; (stator25'=1);
+		[step] w1=26 &amp; stator27=0	-&gt; 0.009 : (w1'=27) &amp; (stator27'=1);
+		[step] w1=26 &amp; stator28=0	-&gt; 1.7999999999999997E-5 : (w1'=28) &amp; (stator28'=1);
+ 
+		[step] w1=27 &amp; stator12=0	-&gt; 8.999999999999999E-5 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=27 &amp; stator21=0	-&gt; 8.999999999999999E-5 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=27 &amp; stator22=0	-&gt; 1.7999999999999998E-4 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=27 &amp; stator23=0	-&gt; 8.999999999999999E-5 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=27 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=27 &amp; stator26=0	-&gt; 0.009 : (w1'=26) &amp; (stator26'=1);
+		[step] w1=27 &amp; stator28=0	-&gt; 9.0E-4 : (w1'=28) &amp; (stator28'=1);
+		[]	w1 = 1	-&gt;	.000000001	: 	(w1'=1);
+		[]	w1 = 2	-&gt;	.000000001	: 	(w1'=2);
+		[]	w1 = 3	-&gt;	.000000001	: 	(w1'=3);
+		[]	w1 = 4	-&gt;	.000000001	: 	(w1'=4);
+		[]	w1 = 5	-&gt;	.000000001	: 	(w1'=5);
+		[]	w1 = 6	-&gt;	.000000001	: 	(w1'=6);
+		[]	w1 = 7	-&gt;	.000000001	: 	(w1'=7);
+		[]	w1 = 8	-&gt;	.000000001	: 	(w1'=8);
+		[]	w1 = 9	-&gt;	.000000001	: 	(w1'=9);
+		[]	w1 = 10	-&gt;	.000000001	: 	(w1'=10);
+		[]	w1 = 11	-&gt;	.000000001	: 	(w1'=11);
+		[]	w1 = 12	-&gt;	.000000001	: 	(w1'=12);
+		[]	w1 = 13	-&gt;	.000000001	: 	(w1'=13);
+		[]	w1 = 14	-&gt;	.000000001	: 	(w1'=14);
+		[]	w1 = 15	-&gt;	.000000001	: 	(w1'=15);
+		[]	w1 = 16	-&gt;	.000000001	: 	(w1'=16);
+		[]	w1 = 17	-&gt;	.000000001	: 	(w1'=17);
+		[]	w1 = 18	-&gt;	.000000001	: 	(w1'=18);
+		[]	w1 = 19	-&gt;	.000000001	: 	(w1'=19);
+		[]	w1 = 20	-&gt;	.000000001	: 	(w1'=20);
+		[]	w1 = 21	-&gt;	.000000001	: 	(w1'=21);
+		[]	w1 = 22	-&gt;	.000000001	: 	(w1'=22);
+		[]	w1 = 23	-&gt;	.000000001	: 	(w1'=23);
+		[]	w1 = 24	-&gt;	.000000001	: 	(w1'=24);
+		[]	w1 = 25	-&gt;	.000000001	: 	(w1'=25);
+		[]	w1 = 26	-&gt;	.000000001	: 	(w1'=26);
+		[]	w1 = 27	-&gt;	.000000001	: 	(w1'=27);
+		[]	w1 = 28	-&gt;	.000000001	: 	(w1'=28);
+	endmodule
+ 
+	rewards "steps"
+ 
+		[step] true : 1;
+ 
+	endrewards
+ 
+	rewards "time"
+ 
+		 true : 1;
+ 
+	endrewards
+ 
+	rewards "blocked" // time spend in blocked anchorages
+ 
+		w1 =5 | w1 =6 | w1 =15 | w1 =16 | w1 =23 | w1 =24	:	1;
+ 
+	endrewards
+ 
+label "deadlockUser" =  
+( w1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator9=1)
+| ( w1=2 &amp; stator1=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator9=1 &amp; stator10=1)
+| ( w1=3 &amp; stator1=1 &amp; stator2=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1)
+| ( w1=4 &amp; stator1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1)
+| ( w1=5 &amp; stator1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator6=1 &amp; stator7=1 &amp; stator8=1 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1 &amp; stator13=1)
+| ( w1=6 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator7=1 &amp; stator8=1 &amp; stator9=1 &amp; stator10=1 &amp; stator13=1 &amp; stator14=1 &amp; stator18=1 &amp; stator19=1)
+| ( w1=7 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator8=1 &amp; stator9=1 &amp; stator13=1 &amp; stator14=1 &amp; stator15=1 &amp; stator18=1 &amp; stator19=1)
+| ( w1=8 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator13=1 &amp; stator14=1 &amp; stator15=1 &amp; stator16=1 &amp; stator18=1 &amp; stator19=1)
+| ( w1=9 &amp; stator1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator10=1 &amp; stator11=1 &amp; stator12=1 &amp; stator21=1)
+| ( w1=10 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator9=1 &amp; stator11=1 &amp; stator12=1 &amp; stator21=1 &amp; stator22=1 &amp; stator23=1 &amp; stator24=1)
+| ( w1=11 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator9=1 &amp; stator10=1 &amp; stator12=1 &amp; stator21=1 &amp; stator22=1 &amp; stator23=1 &amp; stator24=1 &amp; stator26=1)
+| ( w1=12 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1 &amp; stator21=1 &amp; stator22=1 &amp; stator23=1 &amp; stator24=1 &amp; stator26=1 &amp; stator27=1)
+| ( w1=13 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator8=1 &amp; stator14=1 &amp; stator15=1 &amp; stator16=1 &amp; stator17=1 &amp; stator18=1 &amp; stator19=1 &amp; stator20=1)
+| ( w1=14 &amp; stator6=1 &amp; stator7=1 &amp; stator8=1 &amp; stator13=1 &amp; stator15=1 &amp; stator16=1 &amp; stator17=1 &amp; stator18=1 &amp; stator19=1 &amp; stator20=1)
+| ( w1=15 &amp; stator7=1 &amp; stator8=1 &amp; stator13=1 &amp; stator14=1 &amp; stator16=1 &amp; stator17=1 &amp; stator18=1 &amp; stator19=1 &amp; stator20=1)
+| ( w1=16 &amp; stator8=1 &amp; stator13=1 &amp; stator14=1 &amp; stator15=1 &amp; stator17=1 &amp; stator18=1 &amp; stator19=1)
+| ( w1=18 &amp; stator6=1 &amp; stator7=1 &amp; stator8=1 &amp; stator13=1 &amp; stator14=1 &amp; stator15=1 &amp; stator16=1 &amp; stator17=1 &amp; stator19=1 &amp; stator20=1 &amp; stator25=1)
+| ( w1=19 &amp; stator6=1 &amp; stator7=1 &amp; stator8=1 &amp; stator13=1 &amp; stator14=1 &amp; stator15=1 &amp; stator16=1 &amp; stator18=1 &amp; stator20=1 &amp; stator24=1 &amp; stator25=1)
+| ( w1=21 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1 &amp; stator12=1 &amp; stator22=1 &amp; stator23=1 &amp; stator24=1 &amp; stator25=1 &amp; stator26=1 &amp; stator27=1 &amp; stator28=1)
+| ( w1=22 &amp; stator10=1 &amp; stator11=1 &amp; stator12=1 &amp; stator21=1 &amp; stator23=1 &amp; stator24=1 &amp; stator25=1 &amp; stator26=1 &amp; stator27=1 &amp; stator28=1)
+| ( w1=23 &amp; stator10=1 &amp; stator11=1 &amp; stator12=1 &amp; stator20=1 &amp; stator21=1 &amp; stator22=1 &amp; stator24=1 &amp; stator25=1 &amp; stator26=1 &amp; stator27=1 &amp; stator28=1)
+| ( w1=24 &amp; stator10=1 &amp; stator11=1 &amp; stator12=1 &amp; stator19=1 &amp; stator20=1 &amp; stator21=1 &amp; stator22=1 &amp; stator23=1 &amp; stator25=1 &amp; stator26=1 &amp; stator27=1)
+| ( w1=26 &amp; stator11=1 &amp; stator12=1 &amp; stator21=1 &amp; stator22=1 &amp; stator23=1 &amp; stator24=1 &amp; stator25=1 &amp; stator27=1 &amp; stator28=1)
+| ( w1=27 &amp; stator12=1 &amp; stator21=1 &amp; stator22=1 &amp; stator23=1 &amp; stator24=1 &amp; stator26=1 &amp; stator28=1)
+;
+
+label "finish"=(w1=17)|(w1=20)|(w1=25)|(w1=28);
+
+label "finish_correct"=(w1=28);</content>
+    </model>
+    <model name="track28LRDouble" type="rml">
+      <content>ctmc
+ 
+				const double failureRate=0.3;
+ 
+ 	module walker
+ 
+		stator1		: [0 .. 1] init 1;
+		stator2		: [0 .. 1] init 0;
+		stator3		: [0 .. 1] init 0;
+		stator4		: [0 .. 1] init 0;
+		stator5		: [0 .. 1] init 1;
+		stator6		: [0 .. 1] init 1;
+		stator7		: [0 .. 1] init 0;
+		stator8		: [0 .. 1] init 0;
+		stator9		: [0 .. 1] init 0;
+		stator10		: [0 .. 1] init 0;
+		stator11		: [0 .. 1] init 0;
+		stator12		: [0 .. 1] init 0;
+		stator13		: [0 .. 1] init 0;
+		stator14		: [0 .. 1] init 0;
+		stator15		: [0 .. 1] init 0;
+		stator16		: [0 .. 1] init 0;
+		stator17		: [0 .. 1] init 0;
+		stator18		: [0 .. 1] init 1;
+		stator19		: [0 .. 1] init 1;
+		stator20		: [0 .. 1] init 0;
+		stator21		: [0 .. 1] init 0;
+		stator22		: [0 .. 1] init 0;
+		stator23		: [0 .. 1] init 0;
+		stator24		: [0 .. 1] init 0;
+		stator25		: [0 .. 1] init 0;
+		stator26		: [0 .. 1] init 1;
+		stator27		: [0 .. 1] init 1;
+		stator28		: [0 .. 1] init 0;
+ 
+		w1 : [0 .. 28] init 1;	// w1=0 is sinkstat for deadlocks
+ 
+ 
+		blockade5		: [0 .. 1] init 0;
+		blockade6		: [0 .. 1] init 0;
+		blockade18		: [0 .. 1] init 0;
+		blockade19		: [0 .. 1] init 0;
+		blockade26		: [0 .. 1] init 0;
+		blockade27		: [0 .. 1] init 0;
+ 
+		[block5]  blockade5=0 	-&gt;	1000000.0 * failureRate  : (blockade5'=1) &amp; (stator5'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade5'=1);
+		[block6]  blockade6=0 	-&gt;	1000000.0 * failureRate  : (blockade6'=1) &amp; (stator6'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade6'=1);
+		[block18]  blockade18=0 	-&gt;	1000000.0 * failureRate  : (blockade18'=1) &amp; (stator18'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade18'=1);
+		[block19]  blockade19=0 	-&gt;	1000000.0 * failureRate  : (blockade19'=1) &amp; (stator19'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade19'=1);
+		[block26]  blockade26=0 	-&gt;	1000000.0 * failureRate  : (blockade26'=1) &amp; (stator26'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade26'=1);
+		[block27]  blockade27=0 	-&gt;	1000000.0 * failureRate  : (blockade27'=1) &amp; (stator27'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade27'=1);
+ 
+ 
+		[step] w1=1 &amp; stator2=0	-&gt; 0.0029999999999999996 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=1 &amp; stator3=0	-&gt; 5.9999999999999995E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=1 &amp; stator4=0	-&gt; 2.9999999999999997E-5 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=1 &amp; stator5=0	-&gt; 2.9999999999999997E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=1 &amp; stator9=0	-&gt; 2.9999999999999997E-5 : (w1'=9) &amp; (stator9'=1);
+ 
+		[step] w1=2 &amp; stator1=0	-&gt; 0.009 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=2 &amp; stator3=0	-&gt; 0.009 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=2 &amp; stator4=0	-&gt; 1.7999999999999998E-4 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=2 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=2 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=2 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=2 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+ 
+		[step] w1=3 &amp; stator1=0	-&gt; 1.7999999999999998E-4 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=3 &amp; stator2=0	-&gt; 0.009 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=3 &amp; stator4=0	-&gt; 0.009 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=3 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=3 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=3 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=3 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=3 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=3 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+ 
+		[step] w1=4 &amp; stator1=0	-&gt; 8.999999999999999E-5 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=4 &amp; stator2=0	-&gt; 1.7999999999999998E-4 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=4 &amp; stator3=0	-&gt; 0.009 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=4 &amp; stator5=0	-&gt; 0.009 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=4 &amp; stator6=0	-&gt; 1.7999999999999998E-4 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=4 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=4 &amp; stator9=0	-&gt; 0.009 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=4 &amp; stator10=0	-&gt; 1.7999999999999998E-4 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=4 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+ 
+		[step] w1=5 &amp; stator1=0	-&gt; 8.999999999999999E-5 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=5 &amp; stator2=0	-&gt; 1.7999999999999998E-4 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=5 &amp; stator3=0	-&gt; 1.7999999999999998E-4 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=5 &amp; stator4=0	-&gt; 0.009 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=5 &amp; stator6=0	-&gt; 0.009 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=5 &amp; stator7=0	-&gt; 1.7999999999999998E-4 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=5 &amp; stator8=0	-&gt; 8.999999999999999E-5 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=5 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=5 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=5 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=5 &amp; stator13=0	-&gt; 8.999999999999999E-5 : (w1'=13) &amp; (stator13'=1);
+ 
+		[step] w1=6 &amp; stator2=0	-&gt; 8.999999999999999E-5 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=6 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=6 &amp; stator4=0	-&gt; 1.7999999999999998E-4 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=6 &amp; stator5=0	-&gt; 0.009 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=6 &amp; stator7=0	-&gt; 0.009 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=6 &amp; stator8=0	-&gt; 1.7999999999999998E-4 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=6 &amp; stator9=0	-&gt; 8.999999999999999E-5 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=6 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=6 &amp; stator13=0	-&gt; 8.999999999999999E-5 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=6 &amp; stator14=0	-&gt; 8.999999999999999E-5 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=6 &amp; stator18=0	-&gt; 8.999999999999999E-5 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=6 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+ 
+		[step] w1=7 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=7 &amp; stator4=0	-&gt; 8.999999999999999E-5 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=7 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=7 &amp; stator6=0	-&gt; 0.009 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=7 &amp; stator8=0	-&gt; 0.009 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=7 &amp; stator9=0	-&gt; 8.999999999999999E-5 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=7 &amp; stator13=0	-&gt; 1.7999999999999998E-4 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=7 &amp; stator14=0	-&gt; 1.7999999999999998E-4 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=7 &amp; stator15=0	-&gt; 8.999999999999999E-5 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=7 &amp; stator18=0	-&gt; 8.999999999999999E-5 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=7 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+ 
+		[step] w1=8 &amp; stator5=0	-&gt; 8.999999999999999E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=8 &amp; stator6=0	-&gt; 1.7999999999999998E-4 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=8 &amp; stator7=0	-&gt; 0.009 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=8 &amp; stator13=0	-&gt; 0.009 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=8 &amp; stator14=0	-&gt; 1.7999999999999998E-4 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=8 &amp; stator15=0	-&gt; 1.7999999999999998E-4 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=8 &amp; stator16=0	-&gt; 8.999999999999999E-5 : (w1'=16) &amp; (stator16'=1);
+		[step] w1=8 &amp; stator18=0	-&gt; 1.7999999999999998E-4 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=8 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+ 
+		[step] w1=9 &amp; stator1=0	-&gt; 8.999999999999999E-5 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=9 &amp; stator2=0	-&gt; 1.7999999999999998E-4 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=9 &amp; stator3=0	-&gt; 1.7999999999999998E-4 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=9 &amp; stator4=0	-&gt; 0.009 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=9 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=9 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=9 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=9 &amp; stator10=0	-&gt; 0.009 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=9 &amp; stator11=0	-&gt; 1.7999999999999998E-4 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=9 &amp; stator12=0	-&gt; 8.999999999999999E-5 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=9 &amp; stator21=0	-&gt; 8.999999999999999E-5 : (w1'=21) &amp; (stator21'=1);
+ 
+		[step] w1=10 &amp; stator2=0	-&gt; 8.999999999999999E-5 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=10 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=10 &amp; stator4=0	-&gt; 1.7999999999999998E-4 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=10 &amp; stator5=0	-&gt; 8.999999999999999E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=10 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=10 &amp; stator9=0	-&gt; 0.009 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=10 &amp; stator11=0	-&gt; 0.009 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=10 &amp; stator12=0	-&gt; 1.7999999999999998E-4 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=10 &amp; stator21=0	-&gt; 8.999999999999999E-5 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=10 &amp; stator22=0	-&gt; 8.999999999999999E-5 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=10 &amp; stator23=0	-&gt; 8.999999999999999E-5 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=10 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+ 
+		[step] w1=11 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=11 &amp; stator4=0	-&gt; 8.999999999999999E-5 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=11 &amp; stator5=0	-&gt; 8.999999999999999E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=11 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=11 &amp; stator10=0	-&gt; 0.009 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=11 &amp; stator12=0	-&gt; 0.009 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=11 &amp; stator21=0	-&gt; 1.7999999999999998E-4 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=11 &amp; stator22=0	-&gt; 1.7999999999999998E-4 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=11 &amp; stator23=0	-&gt; 8.999999999999999E-5 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=11 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=11 &amp; stator26=0	-&gt; 8.999999999999999E-5 : (w1'=26) &amp; (stator26'=1);
+ 
+		[step] w1=12 &amp; stator9=0	-&gt; 8.999999999999999E-5 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=12 &amp; stator10=0	-&gt; 1.7999999999999998E-4 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=12 &amp; stator11=0	-&gt; 0.009 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=12 &amp; stator21=0	-&gt; 0.009 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=12 &amp; stator22=0	-&gt; 1.7999999999999998E-4 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=12 &amp; stator23=0	-&gt; 1.7999999999999998E-4 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=12 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=12 &amp; stator26=0	-&gt; 1.7999999999999998E-4 : (w1'=26) &amp; (stator26'=1);
+		[step] w1=12 &amp; stator27=0	-&gt; 8.999999999999999E-5 : (w1'=27) &amp; (stator27'=1);
+ 
+		[step] w1=13 &amp; stator5=0	-&gt; 8.999999999999999E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=13 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=13 &amp; stator7=0	-&gt; 1.7999999999999998E-4 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=13 &amp; stator8=0	-&gt; 0.009 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=13 &amp; stator14=0	-&gt; 0.009 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=13 &amp; stator15=0	-&gt; 1.7999999999999998E-4 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=13 &amp; stator16=0	-&gt; 8.999999999999999E-5 : (w1'=16) &amp; (stator16'=1);
+		[step] w1=13 &amp; stator17=0	-&gt; 8.999999999999999E-6 : (w1'=17) &amp; (stator17'=1);
+		[step] w1=13 &amp; stator18=0	-&gt; 1.7999999999999998E-4 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=13 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+		[step] w1=13 &amp; stator20=0	-&gt; 8.999999999999999E-6 : (w1'=20) &amp; (stator20'=1);
+ 
+		[step] w1=14 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=14 &amp; stator7=0	-&gt; 1.7999999999999998E-4 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=14 &amp; stator8=0	-&gt; 1.7999999999999998E-4 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=14 &amp; stator13=0	-&gt; 0.009 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=14 &amp; stator15=0	-&gt; 0.009 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=14 &amp; stator16=0	-&gt; 1.7999999999999998E-4 : (w1'=16) &amp; (stator16'=1);
+		[step] w1=14 &amp; stator17=0	-&gt; 8.999999999999999E-6 : (w1'=17) &amp; (stator17'=1);
+		[step] w1=14 &amp; stator18=0	-&gt; 0.009 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=14 &amp; stator19=0	-&gt; 1.7999999999999998E-4 : (w1'=19) &amp; (stator19'=1);
+		[step] w1=14 &amp; stator20=0	-&gt; 8.999999999999999E-6 : (w1'=20) &amp; (stator20'=1);
+ 
+		[step] w1=15 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=15 &amp; stator8=0	-&gt; 1.7999999999999998E-4 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=15 &amp; stator13=0	-&gt; 1.7999999999999998E-4 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=15 &amp; stator14=0	-&gt; 0.009 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=15 &amp; stator16=0	-&gt; 0.009 : (w1'=16) &amp; (stator16'=1);
+		[step] w1=15 &amp; stator17=0	-&gt; 1.7999999999999997E-5 : (w1'=17) &amp; (stator17'=1);
+		[step] w1=15 &amp; stator18=0	-&gt; 1.7999999999999998E-4 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=15 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+		[step] w1=15 &amp; stator20=0	-&gt; 8.999999999999999E-6 : (w1'=20) &amp; (stator20'=1);
+ 
+		[step] w1=16 &amp; stator8=0	-&gt; 8.999999999999999E-5 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=16 &amp; stator13=0	-&gt; 8.999999999999999E-5 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=16 &amp; stator14=0	-&gt; 1.7999999999999998E-4 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=16 &amp; stator15=0	-&gt; 0.009 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=16 &amp; stator17=0	-&gt; 9.0E-4 : (w1'=17) &amp; (stator17'=1);
+		[step] w1=16 &amp; stator18=0	-&gt; 8.999999999999999E-5 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=16 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+ 
+		[step] w1=18 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=18 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=18 &amp; stator8=0	-&gt; 1.7999999999999998E-4 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=18 &amp; stator13=0	-&gt; 1.7999999999999998E-4 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=18 &amp; stator14=0	-&gt; 0.009 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=18 &amp; stator15=0	-&gt; 1.7999999999999998E-4 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=18 &amp; stator16=0	-&gt; 8.999999999999999E-5 : (w1'=16) &amp; (stator16'=1);
+		[step] w1=18 &amp; stator17=0	-&gt; 8.999999999999999E-6 : (w1'=17) &amp; (stator17'=1);
+		[step] w1=18 &amp; stator19=0	-&gt; 0.009 : (w1'=19) &amp; (stator19'=1);
+		[step] w1=18 &amp; stator20=0	-&gt; 1.7999999999999997E-5 : (w1'=20) &amp; (stator20'=1);
+		[step] w1=18 &amp; stator25=0	-&gt; 8.999999999999999E-6 : (w1'=25) &amp; (stator25'=1);
+ 
+		[step] w1=19 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=19 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=19 &amp; stator8=0	-&gt; 8.999999999999999E-5 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=19 &amp; stator13=0	-&gt; 8.999999999999999E-5 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=19 &amp; stator14=0	-&gt; 1.7999999999999998E-4 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=19 &amp; stator15=0	-&gt; 8.999999999999999E-5 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=19 &amp; stator16=0	-&gt; 8.999999999999999E-5 : (w1'=16) &amp; (stator16'=1);
+		[step] w1=19 &amp; stator18=0	-&gt; 0.009 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=19 &amp; stator20=0	-&gt; 9.0E-4 : (w1'=20) &amp; (stator20'=1);
+		[step] w1=19 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=19 &amp; stator25=0	-&gt; 8.999999999999999E-6 : (w1'=25) &amp; (stator25'=1);
+ 
+		[step] w1=21 &amp; stator9=0	-&gt; 8.999999999999999E-5 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=21 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=21 &amp; stator11=0	-&gt; 1.7999999999999998E-4 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=21 &amp; stator12=0	-&gt; 0.009 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=21 &amp; stator22=0	-&gt; 0.009 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=21 &amp; stator23=0	-&gt; 1.7999999999999998E-4 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=21 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=21 &amp; stator25=0	-&gt; 8.999999999999999E-6 : (w1'=25) &amp; (stator25'=1);
+		[step] w1=21 &amp; stator26=0	-&gt; 1.7999999999999998E-4 : (w1'=26) &amp; (stator26'=1);
+		[step] w1=21 &amp; stator27=0	-&gt; 8.999999999999999E-5 : (w1'=27) &amp; (stator27'=1);
+		[step] w1=21 &amp; stator28=0	-&gt; 8.999999999999999E-6 : (w1'=28) &amp; (stator28'=1);
+ 
+		[step] w1=22 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=22 &amp; stator11=0	-&gt; 1.7999999999999998E-4 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=22 &amp; stator12=0	-&gt; 1.7999999999999998E-4 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=22 &amp; stator21=0	-&gt; 0.009 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=22 &amp; stator23=0	-&gt; 0.009 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=22 &amp; stator24=0	-&gt; 1.7999999999999998E-4 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=22 &amp; stator25=0	-&gt; 8.999999999999999E-6 : (w1'=25) &amp; (stator25'=1);
+		[step] w1=22 &amp; stator26=0	-&gt; 0.009 : (w1'=26) &amp; (stator26'=1);
+		[step] w1=22 &amp; stator27=0	-&gt; 1.7999999999999998E-4 : (w1'=27) &amp; (stator27'=1);
+		[step] w1=22 &amp; stator28=0	-&gt; 8.999999999999999E-6 : (w1'=28) &amp; (stator28'=1);
+ 
+		[step] w1=23 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=23 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=23 &amp; stator12=0	-&gt; 1.7999999999999998E-4 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=23 &amp; stator20=0	-&gt; 8.999999999999999E-6 : (w1'=20) &amp; (stator20'=1);
+		[step] w1=23 &amp; stator21=0	-&gt; 1.7999999999999998E-4 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=23 &amp; stator22=0	-&gt; 0.009 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=23 &amp; stator24=0	-&gt; 0.009 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=23 &amp; stator25=0	-&gt; 1.7999999999999997E-5 : (w1'=25) &amp; (stator25'=1);
+		[step] w1=23 &amp; stator26=0	-&gt; 1.7999999999999998E-4 : (w1'=26) &amp; (stator26'=1);
+		[step] w1=23 &amp; stator27=0	-&gt; 8.999999999999999E-5 : (w1'=27) &amp; (stator27'=1);
+		[step] w1=23 &amp; stator28=0	-&gt; 8.999999999999999E-6 : (w1'=28) &amp; (stator28'=1);
+ 
+		[step] w1=24 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=24 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=24 &amp; stator12=0	-&gt; 8.999999999999999E-5 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=24 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+		[step] w1=24 &amp; stator20=0	-&gt; 8.999999999999999E-6 : (w1'=20) &amp; (stator20'=1);
+		[step] w1=24 &amp; stator21=0	-&gt; 8.999999999999999E-5 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=24 &amp; stator22=0	-&gt; 1.7999999999999998E-4 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=24 &amp; stator23=0	-&gt; 0.009 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=24 &amp; stator25=0	-&gt; 9.0E-4 : (w1'=25) &amp; (stator25'=1);
+		[step] w1=24 &amp; stator26=0	-&gt; 8.999999999999999E-5 : (w1'=26) &amp; (stator26'=1);
+		[step] w1=24 &amp; stator27=0	-&gt; 8.999999999999999E-5 : (w1'=27) &amp; (stator27'=1);
+ 
+		[step] w1=26 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=26 &amp; stator12=0	-&gt; 1.7999999999999998E-4 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=26 &amp; stator21=0	-&gt; 1.7999999999999998E-4 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=26 &amp; stator22=0	-&gt; 0.009 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=26 &amp; stator23=0	-&gt; 1.7999999999999998E-4 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=26 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=26 &amp; stator25=0	-&gt; 8.999999999999999E-6 : (w1'=25) &amp; (stator25'=1);
+		[step] w1=26 &amp; stator27=0	-&gt; 0.009 : (w1'=27) &amp; (stator27'=1);
+		[step] w1=26 &amp; stator28=0	-&gt; 1.7999999999999997E-5 : (w1'=28) &amp; (stator28'=1);
+ 
+		[step] w1=27 &amp; stator12=0	-&gt; 8.999999999999999E-5 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=27 &amp; stator21=0	-&gt; 8.999999999999999E-5 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=27 &amp; stator22=0	-&gt; 1.7999999999999998E-4 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=27 &amp; stator23=0	-&gt; 8.999999999999999E-5 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=27 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=27 &amp; stator26=0	-&gt; 0.009 : (w1'=26) &amp; (stator26'=1);
+		[step] w1=27 &amp; stator28=0	-&gt; 9.0E-4 : (w1'=28) &amp; (stator28'=1);
+		[]	w1 = 1	-&gt;	.000000001	: 	(w1'=1);
+		[]	w1 = 2	-&gt;	.000000001	: 	(w1'=2);
+		[]	w1 = 3	-&gt;	.000000001	: 	(w1'=3);
+		[]	w1 = 4	-&gt;	.000000001	: 	(w1'=4);
+		[]	w1 = 5	-&gt;	.000000001	: 	(w1'=5);
+		[]	w1 = 6	-&gt;	.000000001	: 	(w1'=6);
+		[]	w1 = 7	-&gt;	.000000001	: 	(w1'=7);
+		[]	w1 = 8	-&gt;	.000000001	: 	(w1'=8);
+		[]	w1 = 9	-&gt;	.000000001	: 	(w1'=9);
+		[]	w1 = 10	-&gt;	.000000001	: 	(w1'=10);
+		[]	w1 = 11	-&gt;	.000000001	: 	(w1'=11);
+		[]	w1 = 12	-&gt;	.000000001	: 	(w1'=12);
+		[]	w1 = 13	-&gt;	.000000001	: 	(w1'=13);
+		[]	w1 = 14	-&gt;	.000000001	: 	(w1'=14);
+		[]	w1 = 15	-&gt;	.000000001	: 	(w1'=15);
+		[]	w1 = 16	-&gt;	.000000001	: 	(w1'=16);
+		[]	w1 = 17	-&gt;	.000000001	: 	(w1'=17);
+		[]	w1 = 18	-&gt;	.000000001	: 	(w1'=18);
+		[]	w1 = 19	-&gt;	.000000001	: 	(w1'=19);
+		[]	w1 = 20	-&gt;	.000000001	: 	(w1'=20);
+		[]	w1 = 21	-&gt;	.000000001	: 	(w1'=21);
+		[]	w1 = 22	-&gt;	.000000001	: 	(w1'=22);
+		[]	w1 = 23	-&gt;	.000000001	: 	(w1'=23);
+		[]	w1 = 24	-&gt;	.000000001	: 	(w1'=24);
+		[]	w1 = 25	-&gt;	.000000001	: 	(w1'=25);
+		[]	w1 = 26	-&gt;	.000000001	: 	(w1'=26);
+		[]	w1 = 27	-&gt;	.000000001	: 	(w1'=27);
+		[]	w1 = 28	-&gt;	.000000001	: 	(w1'=28);
+	endmodule
+ 
+	rewards "steps"
+ 
+		[step] true : 1;
+ 
+	endrewards
+ 
+	rewards "time"
+ 
+		 true : 1;
+ 
+	endrewards
+ 
+	rewards "blocked" // time spend in blocked anchorages
+ 
+		w1 =5 | w1 =6 | w1 =18 | w1 =19 | w1 =26 | w1 =27	:	1;
+ 
+	endrewards
+ 
+label "deadlockUser" =  
+( w1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator9=1)
+| ( w1=2 &amp; stator1=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator9=1 &amp; stator10=1)
+| ( w1=3 &amp; stator1=1 &amp; stator2=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1)
+| ( w1=4 &amp; stator1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1)
+| ( w1=5 &amp; stator1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator6=1 &amp; stator7=1 &amp; stator8=1 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1 &amp; stator13=1)
+| ( w1=6 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator7=1 &amp; stator8=1 &amp; stator9=1 &amp; stator10=1 &amp; stator13=1 &amp; stator14=1 &amp; stator18=1 &amp; stator19=1)
+| ( w1=7 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator8=1 &amp; stator9=1 &amp; stator13=1 &amp; stator14=1 &amp; stator15=1 &amp; stator18=1 &amp; stator19=1)
+| ( w1=8 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator13=1 &amp; stator14=1 &amp; stator15=1 &amp; stator16=1 &amp; stator18=1 &amp; stator19=1)
+| ( w1=9 &amp; stator1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator10=1 &amp; stator11=1 &amp; stator12=1 &amp; stator21=1)
+| ( w1=10 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator9=1 &amp; stator11=1 &amp; stator12=1 &amp; stator21=1 &amp; stator22=1 &amp; stator23=1 &amp; stator24=1)
+| ( w1=11 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator9=1 &amp; stator10=1 &amp; stator12=1 &amp; stator21=1 &amp; stator22=1 &amp; stator23=1 &amp; stator24=1 &amp; stator26=1)
+| ( w1=12 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1 &amp; stator21=1 &amp; stator22=1 &amp; stator23=1 &amp; stator24=1 &amp; stator26=1 &amp; stator27=1)
+| ( w1=13 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator8=1 &amp; stator14=1 &amp; stator15=1 &amp; stator16=1 &amp; stator17=1 &amp; stator18=1 &amp; stator19=1 &amp; stator20=1)
+| ( w1=14 &amp; stator6=1 &amp; stator7=1 &amp; stator8=1 &amp; stator13=1 &amp; stator15=1 &amp; stator16=1 &amp; stator17=1 &amp; stator18=1 &amp; stator19=1 &amp; stator20=1)
+| ( w1=15 &amp; stator7=1 &amp; stator8=1 &amp; stator13=1 &amp; stator14=1 &amp; stator16=1 &amp; stator17=1 &amp; stator18=1 &amp; stator19=1 &amp; stator20=1)
+| ( w1=16 &amp; stator8=1 &amp; stator13=1 &amp; stator14=1 &amp; stator15=1 &amp; stator17=1 &amp; stator18=1 &amp; stator19=1)
+| ( w1=18 &amp; stator6=1 &amp; stator7=1 &amp; stator8=1 &amp; stator13=1 &amp; stator14=1 &amp; stator15=1 &amp; stator16=1 &amp; stator17=1 &amp; stator19=1 &amp; stator20=1 &amp; stator25=1)
+| ( w1=19 &amp; stator6=1 &amp; stator7=1 &amp; stator8=1 &amp; stator13=1 &amp; stator14=1 &amp; stator15=1 &amp; stator16=1 &amp; stator18=1 &amp; stator20=1 &amp; stator24=1 &amp; stator25=1)
+| ( w1=21 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1 &amp; stator12=1 &amp; stator22=1 &amp; stator23=1 &amp; stator24=1 &amp; stator25=1 &amp; stator26=1 &amp; stator27=1 &amp; stator28=1)
+| ( w1=22 &amp; stator10=1 &amp; stator11=1 &amp; stator12=1 &amp; stator21=1 &amp; stator23=1 &amp; stator24=1 &amp; stator25=1 &amp; stator26=1 &amp; stator27=1 &amp; stator28=1)
+| ( w1=23 &amp; stator10=1 &amp; stator11=1 &amp; stator12=1 &amp; stator20=1 &amp; stator21=1 &amp; stator22=1 &amp; stator24=1 &amp; stator25=1 &amp; stator26=1 &amp; stator27=1 &amp; stator28=1)
+| ( w1=24 &amp; stator10=1 &amp; stator11=1 &amp; stator12=1 &amp; stator19=1 &amp; stator20=1 &amp; stator21=1 &amp; stator22=1 &amp; stator23=1 &amp; stator25=1 &amp; stator26=1 &amp; stator27=1)
+| ( w1=26 &amp; stator11=1 &amp; stator12=1 &amp; stator21=1 &amp; stator22=1 &amp; stator23=1 &amp; stator24=1 &amp; stator25=1 &amp; stator27=1 &amp; stator28=1)
+| ( w1=27 &amp; stator12=1 &amp; stator21=1 &amp; stator22=1 &amp; stator23=1 &amp; stator24=1 &amp; stator26=1 &amp; stator28=1)
+;</content>
+    </model>
+    <model name="track28RLDouble" type="rml">
+      <content>ctmc
+ 
+				const double failureRate=0.3;
+ 
+ 	module walker
+ 
+		stator1		: [0 .. 1] init 1;
+		stator2		: [0 .. 1] init 0;
+		stator3		: [0 .. 1] init 0;
+		stator4		: [0 .. 1] init 0;
+		stator5		: [0 .. 1] init 0;
+		stator6		: [0 .. 1] init 0;
+		stator7		: [0 .. 1] init 0;
+		stator8		: [0 .. 1] init 0;
+		stator9		: [0 .. 1] init 1;
+		stator10		: [0 .. 1] init 1;
+		stator11		: [0 .. 1] init 0;
+		stator12		: [0 .. 1] init 0;
+		stator13		: [0 .. 1] init 0;
+		stator14		: [0 .. 1] init 0;
+		stator15		: [0 .. 1] init 1;
+		stator16		: [0 .. 1] init 1;
+		stator17		: [0 .. 1] init 0;
+		stator18		: [0 .. 1] init 0;
+		stator19		: [0 .. 1] init 0;
+		stator20		: [0 .. 1] init 0;
+		stator21		: [0 .. 1] init 0;
+		stator22		: [0 .. 1] init 0;
+		stator23		: [0 .. 1] init 1;
+		stator24		: [0 .. 1] init 1;
+		stator25		: [0 .. 1] init 0;
+		stator26		: [0 .. 1] init 0;
+		stator27		: [0 .. 1] init 0;
+		stator28		: [0 .. 1] init 0;
+ 
+		w1 : [0 .. 28] init 1;	// w1=0 is sinkstat for deadlocks
+ 
+ 
+		blockade9		: [0 .. 1] init 0;
+		blockade10		: [0 .. 1] init 0;
+		blockade15		: [0 .. 1] init 0;
+		blockade16		: [0 .. 1] init 0;
+		blockade23		: [0 .. 1] init 0;
+		blockade24		: [0 .. 1] init 0;
+ 
+		[block9]  blockade9=0 	-&gt;	1000000.0 * failureRate  : (blockade9'=1) &amp; (stator9'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade9'=1);
+		[block10]  blockade10=0 	-&gt;	1000000.0 * failureRate  : (blockade10'=1) &amp; (stator10'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade10'=1);
+		[block15]  blockade15=0 	-&gt;	1000000.0 * failureRate  : (blockade15'=1) &amp; (stator15'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade15'=1);
+		[block16]  blockade16=0 	-&gt;	1000000.0 * failureRate  : (blockade16'=1) &amp; (stator16'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade16'=1);
+		[block23]  blockade23=0 	-&gt;	1000000.0 * failureRate  : (blockade23'=1) &amp; (stator23'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade23'=1);
+		[block24]  blockade24=0 	-&gt;	1000000.0 * failureRate  : (blockade24'=1) &amp; (stator24'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade24'=1);
+ 
+ 
+		[step] w1=1 &amp; stator2=0	-&gt; 0.0029999999999999996 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=1 &amp; stator3=0	-&gt; 5.9999999999999995E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=1 &amp; stator4=0	-&gt; 2.9999999999999997E-5 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=1 &amp; stator5=0	-&gt; 2.9999999999999997E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=1 &amp; stator9=0	-&gt; 2.9999999999999997E-5 : (w1'=9) &amp; (stator9'=1);
+ 
+		[step] w1=2 &amp; stator1=0	-&gt; 0.009 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=2 &amp; stator3=0	-&gt; 0.009 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=2 &amp; stator4=0	-&gt; 1.7999999999999998E-4 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=2 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=2 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=2 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=2 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+ 
+		[step] w1=3 &amp; stator1=0	-&gt; 1.7999999999999998E-4 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=3 &amp; stator2=0	-&gt; 0.009 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=3 &amp; stator4=0	-&gt; 0.009 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=3 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=3 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=3 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=3 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=3 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=3 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+ 
+		[step] w1=4 &amp; stator1=0	-&gt; 8.999999999999999E-5 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=4 &amp; stator2=0	-&gt; 1.7999999999999998E-4 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=4 &amp; stator3=0	-&gt; 0.009 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=4 &amp; stator5=0	-&gt; 0.009 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=4 &amp; stator6=0	-&gt; 1.7999999999999998E-4 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=4 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=4 &amp; stator9=0	-&gt; 0.009 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=4 &amp; stator10=0	-&gt; 1.7999999999999998E-4 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=4 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+ 
+		[step] w1=5 &amp; stator1=0	-&gt; 8.999999999999999E-5 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=5 &amp; stator2=0	-&gt; 1.7999999999999998E-4 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=5 &amp; stator3=0	-&gt; 1.7999999999999998E-4 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=5 &amp; stator4=0	-&gt; 0.009 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=5 &amp; stator6=0	-&gt; 0.009 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=5 &amp; stator7=0	-&gt; 1.7999999999999998E-4 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=5 &amp; stator8=0	-&gt; 8.999999999999999E-5 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=5 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=5 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=5 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=5 &amp; stator13=0	-&gt; 8.999999999999999E-5 : (w1'=13) &amp; (stator13'=1);
+ 
+		[step] w1=6 &amp; stator2=0	-&gt; 8.999999999999999E-5 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=6 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=6 &amp; stator4=0	-&gt; 1.7999999999999998E-4 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=6 &amp; stator5=0	-&gt; 0.009 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=6 &amp; stator7=0	-&gt; 0.009 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=6 &amp; stator8=0	-&gt; 1.7999999999999998E-4 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=6 &amp; stator9=0	-&gt; 8.999999999999999E-5 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=6 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=6 &amp; stator13=0	-&gt; 8.999999999999999E-5 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=6 &amp; stator14=0	-&gt; 8.999999999999999E-5 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=6 &amp; stator18=0	-&gt; 8.999999999999999E-5 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=6 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+ 
+		[step] w1=7 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=7 &amp; stator4=0	-&gt; 8.999999999999999E-5 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=7 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=7 &amp; stator6=0	-&gt; 0.009 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=7 &amp; stator8=0	-&gt; 0.009 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=7 &amp; stator9=0	-&gt; 8.999999999999999E-5 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=7 &amp; stator13=0	-&gt; 1.7999999999999998E-4 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=7 &amp; stator14=0	-&gt; 1.7999999999999998E-4 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=7 &amp; stator15=0	-&gt; 8.999999999999999E-5 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=7 &amp; stator18=0	-&gt; 8.999999999999999E-5 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=7 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+ 
+		[step] w1=8 &amp; stator5=0	-&gt; 8.999999999999999E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=8 &amp; stator6=0	-&gt; 1.7999999999999998E-4 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=8 &amp; stator7=0	-&gt; 0.009 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=8 &amp; stator13=0	-&gt; 0.009 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=8 &amp; stator14=0	-&gt; 1.7999999999999998E-4 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=8 &amp; stator15=0	-&gt; 1.7999999999999998E-4 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=8 &amp; stator16=0	-&gt; 8.999999999999999E-5 : (w1'=16) &amp; (stator16'=1);
+		[step] w1=8 &amp; stator18=0	-&gt; 1.7999999999999998E-4 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=8 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+ 
+		[step] w1=9 &amp; stator1=0	-&gt; 8.999999999999999E-5 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=9 &amp; stator2=0	-&gt; 1.7999999999999998E-4 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=9 &amp; stator3=0	-&gt; 1.7999999999999998E-4 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=9 &amp; stator4=0	-&gt; 0.009 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=9 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=9 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=9 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=9 &amp; stator10=0	-&gt; 0.009 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=9 &amp; stator11=0	-&gt; 1.7999999999999998E-4 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=9 &amp; stator12=0	-&gt; 8.999999999999999E-5 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=9 &amp; stator21=0	-&gt; 8.999999999999999E-5 : (w1'=21) &amp; (stator21'=1);
+ 
+		[step] w1=10 &amp; stator2=0	-&gt; 8.999999999999999E-5 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=10 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=10 &amp; stator4=0	-&gt; 1.7999999999999998E-4 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=10 &amp; stator5=0	-&gt; 8.999999999999999E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=10 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=10 &amp; stator9=0	-&gt; 0.009 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=10 &amp; stator11=0	-&gt; 0.009 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=10 &amp; stator12=0	-&gt; 1.7999999999999998E-4 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=10 &amp; stator21=0	-&gt; 8.999999999999999E-5 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=10 &amp; stator22=0	-&gt; 8.999999999999999E-5 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=10 &amp; stator23=0	-&gt; 8.999999999999999E-5 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=10 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+ 
+		[step] w1=11 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=11 &amp; stator4=0	-&gt; 8.999999999999999E-5 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=11 &amp; stator5=0	-&gt; 8.999999999999999E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=11 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=11 &amp; stator10=0	-&gt; 0.009 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=11 &amp; stator12=0	-&gt; 0.009 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=11 &amp; stator21=0	-&gt; 1.7999999999999998E-4 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=11 &amp; stator22=0	-&gt; 1.7999999999999998E-4 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=11 &amp; stator23=0	-&gt; 8.999999999999999E-5 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=11 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=11 &amp; stator26=0	-&gt; 8.999999999999999E-5 : (w1'=26) &amp; (stator26'=1);
+ 
+		[step] w1=12 &amp; stator9=0	-&gt; 8.999999999999999E-5 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=12 &amp; stator10=0	-&gt; 1.7999999999999998E-4 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=12 &amp; stator11=0	-&gt; 0.009 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=12 &amp; stator21=0	-&gt; 0.009 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=12 &amp; stator22=0	-&gt; 1.7999999999999998E-4 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=12 &amp; stator23=0	-&gt; 1.7999999999999998E-4 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=12 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=12 &amp; stator26=0	-&gt; 1.7999999999999998E-4 : (w1'=26) &amp; (stator26'=1);
+		[step] w1=12 &amp; stator27=0	-&gt; 8.999999999999999E-5 : (w1'=27) &amp; (stator27'=1);
+ 
+		[step] w1=13 &amp; stator5=0	-&gt; 8.999999999999999E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=13 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=13 &amp; stator7=0	-&gt; 1.7999999999999998E-4 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=13 &amp; stator8=0	-&gt; 0.009 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=13 &amp; stator14=0	-&gt; 0.009 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=13 &amp; stator15=0	-&gt; 1.7999999999999998E-4 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=13 &amp; stator16=0	-&gt; 8.999999999999999E-5 : (w1'=16) &amp; (stator16'=1);
+		[step] w1=13 &amp; stator17=0	-&gt; 8.999999999999999E-6 : (w1'=17) &amp; (stator17'=1);
+		[step] w1=13 &amp; stator18=0	-&gt; 1.7999999999999998E-4 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=13 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+		[step] w1=13 &amp; stator20=0	-&gt; 8.999999999999999E-6 : (w1'=20) &amp; (stator20'=1);
+ 
+		[step] w1=14 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=14 &amp; stator7=0	-&gt; 1.7999999999999998E-4 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=14 &amp; stator8=0	-&gt; 1.7999999999999998E-4 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=14 &amp; stator13=0	-&gt; 0.009 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=14 &amp; stator15=0	-&gt; 0.009 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=14 &amp; stator16=0	-&gt; 1.7999999999999998E-4 : (w1'=16) &amp; (stator16'=1);
+		[step] w1=14 &amp; stator17=0	-&gt; 8.999999999999999E-6 : (w1'=17) &amp; (stator17'=1);
+		[step] w1=14 &amp; stator18=0	-&gt; 0.009 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=14 &amp; stator19=0	-&gt; 1.7999999999999998E-4 : (w1'=19) &amp; (stator19'=1);
+		[step] w1=14 &amp; stator20=0	-&gt; 8.999999999999999E-6 : (w1'=20) &amp; (stator20'=1);
+ 
+		[step] w1=15 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=15 &amp; stator8=0	-&gt; 1.7999999999999998E-4 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=15 &amp; stator13=0	-&gt; 1.7999999999999998E-4 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=15 &amp; stator14=0	-&gt; 0.009 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=15 &amp; stator16=0	-&gt; 0.009 : (w1'=16) &amp; (stator16'=1);
+		[step] w1=15 &amp; stator17=0	-&gt; 1.7999999999999997E-5 : (w1'=17) &amp; (stator17'=1);
+		[step] w1=15 &amp; stator18=0	-&gt; 1.7999999999999998E-4 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=15 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+		[step] w1=15 &amp; stator20=0	-&gt; 8.999999999999999E-6 : (w1'=20) &amp; (stator20'=1);
+ 
+		[step] w1=16 &amp; stator8=0	-&gt; 8.999999999999999E-5 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=16 &amp; stator13=0	-&gt; 8.999999999999999E-5 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=16 &amp; stator14=0	-&gt; 1.7999999999999998E-4 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=16 &amp; stator15=0	-&gt; 0.009 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=16 &amp; stator17=0	-&gt; 9.0E-4 : (w1'=17) &amp; (stator17'=1);
+		[step] w1=16 &amp; stator18=0	-&gt; 8.999999999999999E-5 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=16 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+ 
+		[step] w1=18 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=18 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=18 &amp; stator8=0	-&gt; 1.7999999999999998E-4 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=18 &amp; stator13=0	-&gt; 1.7999999999999998E-4 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=18 &amp; stator14=0	-&gt; 0.009 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=18 &amp; stator15=0	-&gt; 1.7999999999999998E-4 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=18 &amp; stator16=0	-&gt; 8.999999999999999E-5 : (w1'=16) &amp; (stator16'=1);
+		[step] w1=18 &amp; stator17=0	-&gt; 8.999999999999999E-6 : (w1'=17) &amp; (stator17'=1);
+		[step] w1=18 &amp; stator19=0	-&gt; 0.009 : (w1'=19) &amp; (stator19'=1);
+		[step] w1=18 &amp; stator20=0	-&gt; 1.7999999999999997E-5 : (w1'=20) &amp; (stator20'=1);
+		[step] w1=18 &amp; stator25=0	-&gt; 8.999999999999999E-6 : (w1'=25) &amp; (stator25'=1);
+ 
+		[step] w1=19 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=19 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=19 &amp; stator8=0	-&gt; 8.999999999999999E-5 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=19 &amp; stator13=0	-&gt; 8.999999999999999E-5 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=19 &amp; stator14=0	-&gt; 1.7999999999999998E-4 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=19 &amp; stator15=0	-&gt; 8.999999999999999E-5 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=19 &amp; stator16=0	-&gt; 8.999999999999999E-5 : (w1'=16) &amp; (stator16'=1);
+		[step] w1=19 &amp; stator18=0	-&gt; 0.009 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=19 &amp; stator20=0	-&gt; 9.0E-4 : (w1'=20) &amp; (stator20'=1);
+		[step] w1=19 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=19 &amp; stator25=0	-&gt; 8.999999999999999E-6 : (w1'=25) &amp; (stator25'=1);
+ 
+		[step] w1=21 &amp; stator9=0	-&gt; 8.999999999999999E-5 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=21 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=21 &amp; stator11=0	-&gt; 1.7999999999999998E-4 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=21 &amp; stator12=0	-&gt; 0.009 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=21 &amp; stator22=0	-&gt; 0.009 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=21 &amp; stator23=0	-&gt; 1.7999999999999998E-4 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=21 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=21 &amp; stator25=0	-&gt; 8.999999999999999E-6 : (w1'=25) &amp; (stator25'=1);
+		[step] w1=21 &amp; stator26=0	-&gt; 1.7999999999999998E-4 : (w1'=26) &amp; (stator26'=1);
+		[step] w1=21 &amp; stator27=0	-&gt; 8.999999999999999E-5 : (w1'=27) &amp; (stator27'=1);
+		[step] w1=21 &amp; stator28=0	-&gt; 8.999999999999999E-6 : (w1'=28) &amp; (stator28'=1);
+ 
+		[step] w1=22 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=22 &amp; stator11=0	-&gt; 1.7999999999999998E-4 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=22 &amp; stator12=0	-&gt; 1.7999999999999998E-4 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=22 &amp; stator21=0	-&gt; 0.009 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=22 &amp; stator23=0	-&gt; 0.009 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=22 &amp; stator24=0	-&gt; 1.7999999999999998E-4 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=22 &amp; stator25=0	-&gt; 8.999999999999999E-6 : (w1'=25) &amp; (stator25'=1);
+		[step] w1=22 &amp; stator26=0	-&gt; 0.009 : (w1'=26) &amp; (stator26'=1);
+		[step] w1=22 &amp; stator27=0	-&gt; 1.7999999999999998E-4 : (w1'=27) &amp; (stator27'=1);
+		[step] w1=22 &amp; stator28=0	-&gt; 8.999999999999999E-6 : (w1'=28) &amp; (stator28'=1);
+ 
+		[step] w1=23 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=23 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=23 &amp; stator12=0	-&gt; 1.7999999999999998E-4 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=23 &amp; stator20=0	-&gt; 8.999999999999999E-6 : (w1'=20) &amp; (stator20'=1);
+		[step] w1=23 &amp; stator21=0	-&gt; 1.7999999999999998E-4 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=23 &amp; stator22=0	-&gt; 0.009 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=23 &amp; stator24=0	-&gt; 0.009 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=23 &amp; stator25=0	-&gt; 1.7999999999999997E-5 : (w1'=25) &amp; (stator25'=1);
+		[step] w1=23 &amp; stator26=0	-&gt; 1.7999999999999998E-4 : (w1'=26) &amp; (stator26'=1);
+		[step] w1=23 &amp; stator27=0	-&gt; 8.999999999999999E-5 : (w1'=27) &amp; (stator27'=1);
+		[step] w1=23 &amp; stator28=0	-&gt; 8.999999999999999E-6 : (w1'=28) &amp; (stator28'=1);
+ 
+		[step] w1=24 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=24 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=24 &amp; stator12=0	-&gt; 8.999999999999999E-5 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=24 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+		[step] w1=24 &amp; stator20=0	-&gt; 8.999999999999999E-6 : (w1'=20) &amp; (stator20'=1);
+		[step] w1=24 &amp; stator21=0	-&gt; 8.999999999999999E-5 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=24 &amp; stator22=0	-&gt; 1.7999999999999998E-4 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=24 &amp; stator23=0	-&gt; 0.009 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=24 &amp; stator25=0	-&gt; 9.0E-4 : (w1'=25) &amp; (stator25'=1);
+		[step] w1=24 &amp; stator26=0	-&gt; 8.999999999999999E-5 : (w1'=26) &amp; (stator26'=1);
+		[step] w1=24 &amp; stator27=0	-&gt; 8.999999999999999E-5 : (w1'=27) &amp; (stator27'=1);
+ 
+		[step] w1=26 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=26 &amp; stator12=0	-&gt; 1.7999999999999998E-4 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=26 &amp; stator21=0	-&gt; 1.7999999999999998E-4 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=26 &amp; stator22=0	-&gt; 0.009 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=26 &amp; stator23=0	-&gt; 1.7999999999999998E-4 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=26 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=26 &amp; stator25=0	-&gt; 8.999999999999999E-6 : (w1'=25) &amp; (stator25'=1);
+		[step] w1=26 &amp; stator27=0	-&gt; 0.009 : (w1'=27) &amp; (stator27'=1);
+		[step] w1=26 &amp; stator28=0	-&gt; 1.7999999999999997E-5 : (w1'=28) &amp; (stator28'=1);
+ 
+		[step] w1=27 &amp; stator12=0	-&gt; 8.999999999999999E-5 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=27 &amp; stator21=0	-&gt; 8.999999999999999E-5 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=27 &amp; stator22=0	-&gt; 1.7999999999999998E-4 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=27 &amp; stator23=0	-&gt; 8.999999999999999E-5 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=27 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=27 &amp; stator26=0	-&gt; 0.009 : (w1'=26) &amp; (stator26'=1);
+		[step] w1=27 &amp; stator28=0	-&gt; 9.0E-4 : (w1'=28) &amp; (stator28'=1);
+		[]	w1 = 1	-&gt;	.000000001	: 	(w1'=1);
+		[]	w1 = 2	-&gt;	.000000001	: 	(w1'=2);
+		[]	w1 = 3	-&gt;	.000000001	: 	(w1'=3);
+		[]	w1 = 4	-&gt;	.000000001	: 	(w1'=4);
+		[]	w1 = 5	-&gt;	.000000001	: 	(w1'=5);
+		[]	w1 = 6	-&gt;	.000000001	: 	(w1'=6);
+		[]	w1 = 7	-&gt;	.000000001	: 	(w1'=7);
+		[]	w1 = 8	-&gt;	.000000001	: 	(w1'=8);
+		[]	w1 = 9	-&gt;	.000000001	: 	(w1'=9);
+		[]	w1 = 10	-&gt;	.000000001	: 	(w1'=10);
+		[]	w1 = 11	-&gt;	.000000001	: 	(w1'=11);
+		[]	w1 = 12	-&gt;	.000000001	: 	(w1'=12);
+		[]	w1 = 13	-&gt;	.000000001	: 	(w1'=13);
+		[]	w1 = 14	-&gt;	.000000001	: 	(w1'=14);
+		[]	w1 = 15	-&gt;	.000000001	: 	(w1'=15);
+		[]	w1 = 16	-&gt;	.000000001	: 	(w1'=16);
+		[]	w1 = 17	-&gt;	.000000001	: 	(w1'=17);
+		[]	w1 = 18	-&gt;	.000000001	: 	(w1'=18);
+		[]	w1 = 19	-&gt;	.000000001	: 	(w1'=19);
+		[]	w1 = 20	-&gt;	.000000001	: 	(w1'=20);
+		[]	w1 = 21	-&gt;	.000000001	: 	(w1'=21);
+		[]	w1 = 22	-&gt;	.000000001	: 	(w1'=22);
+		[]	w1 = 23	-&gt;	.000000001	: 	(w1'=23);
+		[]	w1 = 24	-&gt;	.000000001	: 	(w1'=24);
+		[]	w1 = 25	-&gt;	.000000001	: 	(w1'=25);
+		[]	w1 = 26	-&gt;	.000000001	: 	(w1'=26);
+		[]	w1 = 27	-&gt;	.000000001	: 	(w1'=27);
+		[]	w1 = 28	-&gt;	.000000001	: 	(w1'=28);
+	endmodule
+ 
+	rewards "steps"
+ 
+		[step] true : 1;
+ 
+	endrewards
+ 
+	rewards "time"
+ 
+		 true : 1;
+ 
+	endrewards
+ 
+	rewards "blocked" // time spend in blocked anchorages
+ 
+		w1 =9 | w1 =10 | w1 =15 | w1 =16 | w1 =23 | w1 =24	:	1;
+ 
+	endrewards
+ 
+label "deadlockUser" =  
+( w1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator9=1)
+| ( w1=2 &amp; stator1=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator9=1 &amp; stator10=1)
+| ( w1=3 &amp; stator1=1 &amp; stator2=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1)
+| ( w1=4 &amp; stator1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1)
+| ( w1=5 &amp; stator1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator6=1 &amp; stator7=1 &amp; stator8=1 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1 &amp; stator13=1)
+| ( w1=6 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator7=1 &amp; stator8=1 &amp; stator9=1 &amp; stator10=1 &amp; stator13=1 &amp; stator14=1 &amp; stator18=1 &amp; stator19=1)
+| ( w1=7 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator8=1 &amp; stator9=1 &amp; stator13=1 &amp; stator14=1 &amp; stator15=1 &amp; stator18=1 &amp; stator19=1)
+| ( w1=8 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator13=1 &amp; stator14=1 &amp; stator15=1 &amp; stator16=1 &amp; stator18=1 &amp; stator19=1)
+| ( w1=9 &amp; stator1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator10=1 &amp; stator11=1 &amp; stator12=1 &amp; stator21=1)
+| ( w1=10 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator9=1 &amp; stator11=1 &amp; stator12=1 &amp; stator21=1 &amp; stator22=1 &amp; stator23=1 &amp; stator24=1)
+| ( w1=11 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator9=1 &amp; stator10=1 &amp; stator12=1 &amp; stator21=1 &amp; stator22=1 &amp; stator23=1 &amp; stator24=1 &amp; stator26=1)
+| ( w1=12 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1 &amp; stator21=1 &amp; stator22=1 &amp; stator23=1 &amp; stator24=1 &amp; stator26=1 &amp; stator27=1)
+| ( w1=13 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator8=1 &amp; stator14=1 &amp; stator15=1 &amp; stator16=1 &amp; stator17=1 &amp; stator18=1 &amp; stator19=1 &amp; stator20=1)
+| ( w1=14 &amp; stator6=1 &amp; stator7=1 &amp; stator8=1 &amp; stator13=1 &amp; stator15=1 &amp; stator16=1 &amp; stator17=1 &amp; stator18=1 &amp; stator19=1 &amp; stator20=1)
+| ( w1=15 &amp; stator7=1 &amp; stator8=1 &amp; stator13=1 &amp; stator14=1 &amp; stator16=1 &amp; stator17=1 &amp; stator18=1 &amp; stator19=1 &amp; stator20=1)
+| ( w1=16 &amp; stator8=1 &amp; stator13=1 &amp; stator14=1 &amp; stator15=1 &amp; stator17=1 &amp; stator18=1 &amp; stator19=1)
+| ( w1=18 &amp; stator6=1 &amp; stator7=1 &amp; stator8=1 &amp; stator13=1 &amp; stator14=1 &amp; stator15=1 &amp; stator16=1 &amp; stator17=1 &amp; stator19=1 &amp; stator20=1 &amp; stator25=1)
+| ( w1=19 &amp; stator6=1 &amp; stator7=1 &amp; stator8=1 &amp; stator13=1 &amp; stator14=1 &amp; stator15=1 &amp; stator16=1 &amp; stator18=1 &amp; stator20=1 &amp; stator24=1 &amp; stator25=1)
+| ( w1=21 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1 &amp; stator12=1 &amp; stator22=1 &amp; stator23=1 &amp; stator24=1 &amp; stator25=1 &amp; stator26=1 &amp; stator27=1 &amp; stator28=1)
+| ( w1=22 &amp; stator10=1 &amp; stator11=1 &amp; stator12=1 &amp; stator21=1 &amp; stator23=1 &amp; stator24=1 &amp; stator25=1 &amp; stator26=1 &amp; stator27=1 &amp; stator28=1)
+| ( w1=23 &amp; stator10=1 &amp; stator11=1 &amp; stator12=1 &amp; stator20=1 &amp; stator21=1 &amp; stator22=1 &amp; stator24=1 &amp; stator25=1 &amp; stator26=1 &amp; stator27=1 &amp; stator28=1)
+| ( w1=24 &amp; stator10=1 &amp; stator11=1 &amp; stator12=1 &amp; stator19=1 &amp; stator20=1 &amp; stator21=1 &amp; stator22=1 &amp; stator23=1 &amp; stator25=1 &amp; stator26=1 &amp; stator27=1)
+| ( w1=26 &amp; stator11=1 &amp; stator12=1 &amp; stator21=1 &amp; stator22=1 &amp; stator23=1 &amp; stator24=1 &amp; stator25=1 &amp; stator27=1 &amp; stator28=1)
+| ( w1=27 &amp; stator12=1 &amp; stator21=1 &amp; stator22=1 &amp; stator23=1 &amp; stator24=1 &amp; stator26=1 &amp; stator28=1)
+;</content>
+    </model>
+    <model name="track28RRDouble" type="rml">
+      <content>ctmc
+ 
+				const double failureRate=0.3;
+ 
+ 	module walker
+ 
+		stator1		: [0 .. 1] init 1;
+		stator2		: [0 .. 1] init 0;
+		stator3		: [0 .. 1] init 0;
+		stator4		: [0 .. 1] init 0;
+		stator5		: [0 .. 1] init 0;
+		stator6		: [0 .. 1] init 0;
+		stator7		: [0 .. 1] init 0;
+		stator8		: [0 .. 1] init 0;
+		stator9		: [0 .. 1] init 1;
+		stator10		: [0 .. 1] init 1;
+		stator11		: [0 .. 1] init 0;
+		stator12		: [0 .. 1] init 0;
+		stator13		: [0 .. 1] init 0;
+		stator14		: [0 .. 1] init 0;
+		stator15		: [0 .. 1] init 0;
+		stator16		: [0 .. 1] init 0;
+		stator17		: [0 .. 1] init 0;
+		stator18		: [0 .. 1] init 1;
+		stator19		: [0 .. 1] init 1;
+		stator20		: [0 .. 1] init 0;
+		stator21		: [0 .. 1] init 0;
+		stator22		: [0 .. 1] init 0;
+		stator23		: [0 .. 1] init 0;
+		stator24		: [0 .. 1] init 0;
+		stator25		: [0 .. 1] init 0;
+		stator26		: [0 .. 1] init 1;
+		stator27		: [0 .. 1] init 1;
+		stator28		: [0 .. 1] init 0;
+ 
+		w1 : [0 .. 28] init 1;	// w1=0 is sinkstat for deadlocks
+ 
+ 
+		blockade9		: [0 .. 1] init 0;
+		blockade10		: [0 .. 1] init 0;
+		blockade18		: [0 .. 1] init 0;
+		blockade19		: [0 .. 1] init 0;
+		blockade26		: [0 .. 1] init 0;
+		blockade27		: [0 .. 1] init 0;
+ 
+		[block9]  blockade9=0 	-&gt;	1000000.0 * failureRate  : (blockade9'=1) &amp; (stator9'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade9'=1);
+		[block10]  blockade10=0 	-&gt;	1000000.0 * failureRate  : (blockade10'=1) &amp; (stator10'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade10'=1);
+		[block18]  blockade18=0 	-&gt;	1000000.0 * failureRate  : (blockade18'=1) &amp; (stator18'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade18'=1);
+		[block19]  blockade19=0 	-&gt;	1000000.0 * failureRate  : (blockade19'=1) &amp; (stator19'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade19'=1);
+		[block26]  blockade26=0 	-&gt;	1000000.0 * failureRate  : (blockade26'=1) &amp; (stator26'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade26'=1);
+		[block27]  blockade27=0 	-&gt;	1000000.0 * failureRate  : (blockade27'=1) &amp; (stator27'=0)	+	 1000000.0 * (1.0 - failureRate ) : (blockade27'=1);
+ 
+ 
+		[step] w1=1 &amp; stator2=0	-&gt; 0.0029999999999999996 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=1 &amp; stator3=0	-&gt; 5.9999999999999995E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=1 &amp; stator4=0	-&gt; 2.9999999999999997E-5 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=1 &amp; stator5=0	-&gt; 2.9999999999999997E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=1 &amp; stator9=0	-&gt; 2.9999999999999997E-5 : (w1'=9) &amp; (stator9'=1);
+ 
+		[step] w1=2 &amp; stator1=0	-&gt; 0.009 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=2 &amp; stator3=0	-&gt; 0.009 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=2 &amp; stator4=0	-&gt; 1.7999999999999998E-4 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=2 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=2 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=2 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=2 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+ 
+		[step] w1=3 &amp; stator1=0	-&gt; 1.7999999999999998E-4 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=3 &amp; stator2=0	-&gt; 0.009 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=3 &amp; stator4=0	-&gt; 0.009 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=3 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=3 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=3 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=3 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=3 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=3 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+ 
+		[step] w1=4 &amp; stator1=0	-&gt; 8.999999999999999E-5 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=4 &amp; stator2=0	-&gt; 1.7999999999999998E-4 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=4 &amp; stator3=0	-&gt; 0.009 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=4 &amp; stator5=0	-&gt; 0.009 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=4 &amp; stator6=0	-&gt; 1.7999999999999998E-4 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=4 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=4 &amp; stator9=0	-&gt; 0.009 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=4 &amp; stator10=0	-&gt; 1.7999999999999998E-4 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=4 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+ 
+		[step] w1=5 &amp; stator1=0	-&gt; 8.999999999999999E-5 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=5 &amp; stator2=0	-&gt; 1.7999999999999998E-4 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=5 &amp; stator3=0	-&gt; 1.7999999999999998E-4 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=5 &amp; stator4=0	-&gt; 0.009 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=5 &amp; stator6=0	-&gt; 0.009 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=5 &amp; stator7=0	-&gt; 1.7999999999999998E-4 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=5 &amp; stator8=0	-&gt; 8.999999999999999E-5 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=5 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=5 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=5 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=5 &amp; stator13=0	-&gt; 8.999999999999999E-5 : (w1'=13) &amp; (stator13'=1);
+ 
+		[step] w1=6 &amp; stator2=0	-&gt; 8.999999999999999E-5 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=6 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=6 &amp; stator4=0	-&gt; 1.7999999999999998E-4 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=6 &amp; stator5=0	-&gt; 0.009 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=6 &amp; stator7=0	-&gt; 0.009 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=6 &amp; stator8=0	-&gt; 1.7999999999999998E-4 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=6 &amp; stator9=0	-&gt; 8.999999999999999E-5 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=6 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=6 &amp; stator13=0	-&gt; 8.999999999999999E-5 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=6 &amp; stator14=0	-&gt; 8.999999999999999E-5 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=6 &amp; stator18=0	-&gt; 8.999999999999999E-5 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=6 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+ 
+		[step] w1=7 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=7 &amp; stator4=0	-&gt; 8.999999999999999E-5 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=7 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=7 &amp; stator6=0	-&gt; 0.009 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=7 &amp; stator8=0	-&gt; 0.009 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=7 &amp; stator9=0	-&gt; 8.999999999999999E-5 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=7 &amp; stator13=0	-&gt; 1.7999999999999998E-4 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=7 &amp; stator14=0	-&gt; 1.7999999999999998E-4 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=7 &amp; stator15=0	-&gt; 8.999999999999999E-5 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=7 &amp; stator18=0	-&gt; 8.999999999999999E-5 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=7 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+ 
+		[step] w1=8 &amp; stator5=0	-&gt; 8.999999999999999E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=8 &amp; stator6=0	-&gt; 1.7999999999999998E-4 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=8 &amp; stator7=0	-&gt; 0.009 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=8 &amp; stator13=0	-&gt; 0.009 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=8 &amp; stator14=0	-&gt; 1.7999999999999998E-4 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=8 &amp; stator15=0	-&gt; 1.7999999999999998E-4 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=8 &amp; stator16=0	-&gt; 8.999999999999999E-5 : (w1'=16) &amp; (stator16'=1);
+		[step] w1=8 &amp; stator18=0	-&gt; 1.7999999999999998E-4 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=8 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+ 
+		[step] w1=9 &amp; stator1=0	-&gt; 8.999999999999999E-5 : (w1'=1) &amp; (stator1'=1);
+		[step] w1=9 &amp; stator2=0	-&gt; 1.7999999999999998E-4 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=9 &amp; stator3=0	-&gt; 1.7999999999999998E-4 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=9 &amp; stator4=0	-&gt; 0.009 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=9 &amp; stator5=0	-&gt; 1.7999999999999998E-4 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=9 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=9 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=9 &amp; stator10=0	-&gt; 0.009 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=9 &amp; stator11=0	-&gt; 1.7999999999999998E-4 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=9 &amp; stator12=0	-&gt; 8.999999999999999E-5 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=9 &amp; stator21=0	-&gt; 8.999999999999999E-5 : (w1'=21) &amp; (stator21'=1);
+ 
+		[step] w1=10 &amp; stator2=0	-&gt; 8.999999999999999E-5 : (w1'=2) &amp; (stator2'=1);
+		[step] w1=10 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=10 &amp; stator4=0	-&gt; 1.7999999999999998E-4 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=10 &amp; stator5=0	-&gt; 8.999999999999999E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=10 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=10 &amp; stator9=0	-&gt; 0.009 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=10 &amp; stator11=0	-&gt; 0.009 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=10 &amp; stator12=0	-&gt; 1.7999999999999998E-4 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=10 &amp; stator21=0	-&gt; 8.999999999999999E-5 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=10 &amp; stator22=0	-&gt; 8.999999999999999E-5 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=10 &amp; stator23=0	-&gt; 8.999999999999999E-5 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=10 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+ 
+		[step] w1=11 &amp; stator3=0	-&gt; 8.999999999999999E-5 : (w1'=3) &amp; (stator3'=1);
+		[step] w1=11 &amp; stator4=0	-&gt; 8.999999999999999E-5 : (w1'=4) &amp; (stator4'=1);
+		[step] w1=11 &amp; stator5=0	-&gt; 8.999999999999999E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=11 &amp; stator9=0	-&gt; 1.7999999999999998E-4 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=11 &amp; stator10=0	-&gt; 0.009 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=11 &amp; stator12=0	-&gt; 0.009 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=11 &amp; stator21=0	-&gt; 1.7999999999999998E-4 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=11 &amp; stator22=0	-&gt; 1.7999999999999998E-4 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=11 &amp; stator23=0	-&gt; 8.999999999999999E-5 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=11 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=11 &amp; stator26=0	-&gt; 8.999999999999999E-5 : (w1'=26) &amp; (stator26'=1);
+ 
+		[step] w1=12 &amp; stator9=0	-&gt; 8.999999999999999E-5 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=12 &amp; stator10=0	-&gt; 1.7999999999999998E-4 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=12 &amp; stator11=0	-&gt; 0.009 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=12 &amp; stator21=0	-&gt; 0.009 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=12 &amp; stator22=0	-&gt; 1.7999999999999998E-4 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=12 &amp; stator23=0	-&gt; 1.7999999999999998E-4 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=12 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=12 &amp; stator26=0	-&gt; 1.7999999999999998E-4 : (w1'=26) &amp; (stator26'=1);
+		[step] w1=12 &amp; stator27=0	-&gt; 8.999999999999999E-5 : (w1'=27) &amp; (stator27'=1);
+ 
+		[step] w1=13 &amp; stator5=0	-&gt; 8.999999999999999E-5 : (w1'=5) &amp; (stator5'=1);
+		[step] w1=13 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=13 &amp; stator7=0	-&gt; 1.7999999999999998E-4 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=13 &amp; stator8=0	-&gt; 0.009 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=13 &amp; stator14=0	-&gt; 0.009 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=13 &amp; stator15=0	-&gt; 1.7999999999999998E-4 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=13 &amp; stator16=0	-&gt; 8.999999999999999E-5 : (w1'=16) &amp; (stator16'=1);
+		[step] w1=13 &amp; stator17=0	-&gt; 8.999999999999999E-6 : (w1'=17) &amp; (stator17'=1);
+		[step] w1=13 &amp; stator18=0	-&gt; 1.7999999999999998E-4 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=13 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+		[step] w1=13 &amp; stator20=0	-&gt; 8.999999999999999E-6 : (w1'=20) &amp; (stator20'=1);
+ 
+		[step] w1=14 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=14 &amp; stator7=0	-&gt; 1.7999999999999998E-4 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=14 &amp; stator8=0	-&gt; 1.7999999999999998E-4 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=14 &amp; stator13=0	-&gt; 0.009 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=14 &amp; stator15=0	-&gt; 0.009 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=14 &amp; stator16=0	-&gt; 1.7999999999999998E-4 : (w1'=16) &amp; (stator16'=1);
+		[step] w1=14 &amp; stator17=0	-&gt; 8.999999999999999E-6 : (w1'=17) &amp; (stator17'=1);
+		[step] w1=14 &amp; stator18=0	-&gt; 0.009 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=14 &amp; stator19=0	-&gt; 1.7999999999999998E-4 : (w1'=19) &amp; (stator19'=1);
+		[step] w1=14 &amp; stator20=0	-&gt; 8.999999999999999E-6 : (w1'=20) &amp; (stator20'=1);
+ 
+		[step] w1=15 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=15 &amp; stator8=0	-&gt; 1.7999999999999998E-4 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=15 &amp; stator13=0	-&gt; 1.7999999999999998E-4 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=15 &amp; stator14=0	-&gt; 0.009 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=15 &amp; stator16=0	-&gt; 0.009 : (w1'=16) &amp; (stator16'=1);
+		[step] w1=15 &amp; stator17=0	-&gt; 1.7999999999999997E-5 : (w1'=17) &amp; (stator17'=1);
+		[step] w1=15 &amp; stator18=0	-&gt; 1.7999999999999998E-4 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=15 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+		[step] w1=15 &amp; stator20=0	-&gt; 8.999999999999999E-6 : (w1'=20) &amp; (stator20'=1);
+ 
+		[step] w1=16 &amp; stator8=0	-&gt; 8.999999999999999E-5 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=16 &amp; stator13=0	-&gt; 8.999999999999999E-5 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=16 &amp; stator14=0	-&gt; 1.7999999999999998E-4 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=16 &amp; stator15=0	-&gt; 0.009 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=16 &amp; stator17=0	-&gt; 9.0E-4 : (w1'=17) &amp; (stator17'=1);
+		[step] w1=16 &amp; stator18=0	-&gt; 8.999999999999999E-5 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=16 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+ 
+		[step] w1=18 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=18 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=18 &amp; stator8=0	-&gt; 1.7999999999999998E-4 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=18 &amp; stator13=0	-&gt; 1.7999999999999998E-4 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=18 &amp; stator14=0	-&gt; 0.009 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=18 &amp; stator15=0	-&gt; 1.7999999999999998E-4 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=18 &amp; stator16=0	-&gt; 8.999999999999999E-5 : (w1'=16) &amp; (stator16'=1);
+		[step] w1=18 &amp; stator17=0	-&gt; 8.999999999999999E-6 : (w1'=17) &amp; (stator17'=1);
+		[step] w1=18 &amp; stator19=0	-&gt; 0.009 : (w1'=19) &amp; (stator19'=1);
+		[step] w1=18 &amp; stator20=0	-&gt; 1.7999999999999997E-5 : (w1'=20) &amp; (stator20'=1);
+		[step] w1=18 &amp; stator25=0	-&gt; 8.999999999999999E-6 : (w1'=25) &amp; (stator25'=1);
+ 
+		[step] w1=19 &amp; stator6=0	-&gt; 8.999999999999999E-5 : (w1'=6) &amp; (stator6'=1);
+		[step] w1=19 &amp; stator7=0	-&gt; 8.999999999999999E-5 : (w1'=7) &amp; (stator7'=1);
+		[step] w1=19 &amp; stator8=0	-&gt; 8.999999999999999E-5 : (w1'=8) &amp; (stator8'=1);
+		[step] w1=19 &amp; stator13=0	-&gt; 8.999999999999999E-5 : (w1'=13) &amp; (stator13'=1);
+		[step] w1=19 &amp; stator14=0	-&gt; 1.7999999999999998E-4 : (w1'=14) &amp; (stator14'=1);
+		[step] w1=19 &amp; stator15=0	-&gt; 8.999999999999999E-5 : (w1'=15) &amp; (stator15'=1);
+		[step] w1=19 &amp; stator16=0	-&gt; 8.999999999999999E-5 : (w1'=16) &amp; (stator16'=1);
+		[step] w1=19 &amp; stator18=0	-&gt; 0.009 : (w1'=18) &amp; (stator18'=1);
+		[step] w1=19 &amp; stator20=0	-&gt; 9.0E-4 : (w1'=20) &amp; (stator20'=1);
+		[step] w1=19 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=19 &amp; stator25=0	-&gt; 8.999999999999999E-6 : (w1'=25) &amp; (stator25'=1);
+ 
+		[step] w1=21 &amp; stator9=0	-&gt; 8.999999999999999E-5 : (w1'=9) &amp; (stator9'=1);
+		[step] w1=21 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=21 &amp; stator11=0	-&gt; 1.7999999999999998E-4 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=21 &amp; stator12=0	-&gt; 0.009 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=21 &amp; stator22=0	-&gt; 0.009 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=21 &amp; stator23=0	-&gt; 1.7999999999999998E-4 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=21 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=21 &amp; stator25=0	-&gt; 8.999999999999999E-6 : (w1'=25) &amp; (stator25'=1);
+		[step] w1=21 &amp; stator26=0	-&gt; 1.7999999999999998E-4 : (w1'=26) &amp; (stator26'=1);
+		[step] w1=21 &amp; stator27=0	-&gt; 8.999999999999999E-5 : (w1'=27) &amp; (stator27'=1);
+		[step] w1=21 &amp; stator28=0	-&gt; 8.999999999999999E-6 : (w1'=28) &amp; (stator28'=1);
+ 
+		[step] w1=22 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=22 &amp; stator11=0	-&gt; 1.7999999999999998E-4 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=22 &amp; stator12=0	-&gt; 1.7999999999999998E-4 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=22 &amp; stator21=0	-&gt; 0.009 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=22 &amp; stator23=0	-&gt; 0.009 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=22 &amp; stator24=0	-&gt; 1.7999999999999998E-4 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=22 &amp; stator25=0	-&gt; 8.999999999999999E-6 : (w1'=25) &amp; (stator25'=1);
+		[step] w1=22 &amp; stator26=0	-&gt; 0.009 : (w1'=26) &amp; (stator26'=1);
+		[step] w1=22 &amp; stator27=0	-&gt; 1.7999999999999998E-4 : (w1'=27) &amp; (stator27'=1);
+		[step] w1=22 &amp; stator28=0	-&gt; 8.999999999999999E-6 : (w1'=28) &amp; (stator28'=1);
+ 
+		[step] w1=23 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=23 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=23 &amp; stator12=0	-&gt; 1.7999999999999998E-4 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=23 &amp; stator20=0	-&gt; 8.999999999999999E-6 : (w1'=20) &amp; (stator20'=1);
+		[step] w1=23 &amp; stator21=0	-&gt; 1.7999999999999998E-4 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=23 &amp; stator22=0	-&gt; 0.009 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=23 &amp; stator24=0	-&gt; 0.009 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=23 &amp; stator25=0	-&gt; 1.7999999999999997E-5 : (w1'=25) &amp; (stator25'=1);
+		[step] w1=23 &amp; stator26=0	-&gt; 1.7999999999999998E-4 : (w1'=26) &amp; (stator26'=1);
+		[step] w1=23 &amp; stator27=0	-&gt; 8.999999999999999E-5 : (w1'=27) &amp; (stator27'=1);
+		[step] w1=23 &amp; stator28=0	-&gt; 8.999999999999999E-6 : (w1'=28) &amp; (stator28'=1);
+ 
+		[step] w1=24 &amp; stator10=0	-&gt; 8.999999999999999E-5 : (w1'=10) &amp; (stator10'=1);
+		[step] w1=24 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=24 &amp; stator12=0	-&gt; 8.999999999999999E-5 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=24 &amp; stator19=0	-&gt; 8.999999999999999E-5 : (w1'=19) &amp; (stator19'=1);
+		[step] w1=24 &amp; stator20=0	-&gt; 8.999999999999999E-6 : (w1'=20) &amp; (stator20'=1);
+		[step] w1=24 &amp; stator21=0	-&gt; 8.999999999999999E-5 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=24 &amp; stator22=0	-&gt; 1.7999999999999998E-4 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=24 &amp; stator23=0	-&gt; 0.009 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=24 &amp; stator25=0	-&gt; 9.0E-4 : (w1'=25) &amp; (stator25'=1);
+		[step] w1=24 &amp; stator26=0	-&gt; 8.999999999999999E-5 : (w1'=26) &amp; (stator26'=1);
+		[step] w1=24 &amp; stator27=0	-&gt; 8.999999999999999E-5 : (w1'=27) &amp; (stator27'=1);
+ 
+		[step] w1=26 &amp; stator11=0	-&gt; 8.999999999999999E-5 : (w1'=11) &amp; (stator11'=1);
+		[step] w1=26 &amp; stator12=0	-&gt; 1.7999999999999998E-4 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=26 &amp; stator21=0	-&gt; 1.7999999999999998E-4 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=26 &amp; stator22=0	-&gt; 0.009 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=26 &amp; stator23=0	-&gt; 1.7999999999999998E-4 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=26 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=26 &amp; stator25=0	-&gt; 8.999999999999999E-6 : (w1'=25) &amp; (stator25'=1);
+		[step] w1=26 &amp; stator27=0	-&gt; 0.009 : (w1'=27) &amp; (stator27'=1);
+		[step] w1=26 &amp; stator28=0	-&gt; 1.7999999999999997E-5 : (w1'=28) &amp; (stator28'=1);
+ 
+		[step] w1=27 &amp; stator12=0	-&gt; 8.999999999999999E-5 : (w1'=12) &amp; (stator12'=1);
+		[step] w1=27 &amp; stator21=0	-&gt; 8.999999999999999E-5 : (w1'=21) &amp; (stator21'=1);
+		[step] w1=27 &amp; stator22=0	-&gt; 1.7999999999999998E-4 : (w1'=22) &amp; (stator22'=1);
+		[step] w1=27 &amp; stator23=0	-&gt; 8.999999999999999E-5 : (w1'=23) &amp; (stator23'=1);
+		[step] w1=27 &amp; stator24=0	-&gt; 8.999999999999999E-5 : (w1'=24) &amp; (stator24'=1);
+		[step] w1=27 &amp; stator26=0	-&gt; 0.009 : (w1'=26) &amp; (stator26'=1);
+		[step] w1=27 &amp; stator28=0	-&gt; 9.0E-4 : (w1'=28) &amp; (stator28'=1);
+		[]	w1 = 1	-&gt;	.000000001	: 	(w1'=1);
+		[]	w1 = 2	-&gt;	.000000001	: 	(w1'=2);
+		[]	w1 = 3	-&gt;	.000000001	: 	(w1'=3);
+		[]	w1 = 4	-&gt;	.000000001	: 	(w1'=4);
+		[]	w1 = 5	-&gt;	.000000001	: 	(w1'=5);
+		[]	w1 = 6	-&gt;	.000000001	: 	(w1'=6);
+		[]	w1 = 7	-&gt;	.000000001	: 	(w1'=7);
+		[]	w1 = 8	-&gt;	.000000001	: 	(w1'=8);
+		[]	w1 = 9	-&gt;	.000000001	: 	(w1'=9);
+		[]	w1 = 10	-&gt;	.000000001	: 	(w1'=10);
+		[]	w1 = 11	-&gt;	.000000001	: 	(w1'=11);
+		[]	w1 = 12	-&gt;	.000000001	: 	(w1'=12);
+		[]	w1 = 13	-&gt;	.000000001	: 	(w1'=13);
+		[]	w1 = 14	-&gt;	.000000001	: 	(w1'=14);
+		[]	w1 = 15	-&gt;	.000000001	: 	(w1'=15);
+		[]	w1 = 16	-&gt;	.000000001	: 	(w1'=16);
+		[]	w1 = 17	-&gt;	.000000001	: 	(w1'=17);
+		[]	w1 = 18	-&gt;	.000000001	: 	(w1'=18);
+		[]	w1 = 19	-&gt;	.000000001	: 	(w1'=19);
+		[]	w1 = 20	-&gt;	.000000001	: 	(w1'=20);
+		[]	w1 = 21	-&gt;	.000000001	: 	(w1'=21);
+		[]	w1 = 22	-&gt;	.000000001	: 	(w1'=22);
+		[]	w1 = 23	-&gt;	.000000001	: 	(w1'=23);
+		[]	w1 = 24	-&gt;	.000000001	: 	(w1'=24);
+		[]	w1 = 25	-&gt;	.000000001	: 	(w1'=25);
+		[]	w1 = 26	-&gt;	.000000001	: 	(w1'=26);
+		[]	w1 = 27	-&gt;	.000000001	: 	(w1'=27);
+		[]	w1 = 28	-&gt;	.000000001	: 	(w1'=28);
+	endmodule
+ 
+	rewards "steps"
+ 
+		[step] true : 1;
+ 
+	endrewards
+ 
+	rewards "time"
+ 
+		 true : 1;
+ 
+	endrewards
+ 
+	rewards "blocked" // time spend in blocked anchorages
+ 
+		w1 =9 | w1 =10 | w1 =18 | w1 =19 | w1 =26 | w1 =27	:	1;
+ 
+	endrewards
+ 
+label "deadlockUser" =  
+( w1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator9=1)
+| ( w1=2 &amp; stator1=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator9=1 &amp; stator10=1)
+| ( w1=3 &amp; stator1=1 &amp; stator2=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1)
+| ( w1=4 &amp; stator1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1)
+| ( w1=5 &amp; stator1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator6=1 &amp; stator7=1 &amp; stator8=1 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1 &amp; stator13=1)
+| ( w1=6 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator7=1 &amp; stator8=1 &amp; stator9=1 &amp; stator10=1 &amp; stator13=1 &amp; stator14=1 &amp; stator18=1 &amp; stator19=1)
+| ( w1=7 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator8=1 &amp; stator9=1 &amp; stator13=1 &amp; stator14=1 &amp; stator15=1 &amp; stator18=1 &amp; stator19=1)
+| ( w1=8 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator13=1 &amp; stator14=1 &amp; stator15=1 &amp; stator16=1 &amp; stator18=1 &amp; stator19=1)
+| ( w1=9 &amp; stator1=1 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator10=1 &amp; stator11=1 &amp; stator12=1 &amp; stator21=1)
+| ( w1=10 &amp; stator2=1 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator6=1 &amp; stator9=1 &amp; stator11=1 &amp; stator12=1 &amp; stator21=1 &amp; stator22=1 &amp; stator23=1 &amp; stator24=1)
+| ( w1=11 &amp; stator3=1 &amp; stator4=1 &amp; stator5=1 &amp; stator9=1 &amp; stator10=1 &amp; stator12=1 &amp; stator21=1 &amp; stator22=1 &amp; stator23=1 &amp; stator24=1 &amp; stator26=1)
+| ( w1=12 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1 &amp; stator21=1 &amp; stator22=1 &amp; stator23=1 &amp; stator24=1 &amp; stator26=1 &amp; stator27=1)
+| ( w1=13 &amp; stator5=1 &amp; stator6=1 &amp; stator7=1 &amp; stator8=1 &amp; stator14=1 &amp; stator15=1 &amp; stator16=1 &amp; stator17=1 &amp; stator18=1 &amp; stator19=1 &amp; stator20=1)
+| ( w1=14 &amp; stator6=1 &amp; stator7=1 &amp; stator8=1 &amp; stator13=1 &amp; stator15=1 &amp; stator16=1 &amp; stator17=1 &amp; stator18=1 &amp; stator19=1 &amp; stator20=1)
+| ( w1=15 &amp; stator7=1 &amp; stator8=1 &amp; stator13=1 &amp; stator14=1 &amp; stator16=1 &amp; stator17=1 &amp; stator18=1 &amp; stator19=1 &amp; stator20=1)
+| ( w1=16 &amp; stator8=1 &amp; stator13=1 &amp; stator14=1 &amp; stator15=1 &amp; stator17=1 &amp; stator18=1 &amp; stator19=1)
+| ( w1=18 &amp; stator6=1 &amp; stator7=1 &amp; stator8=1 &amp; stator13=1 &amp; stator14=1 &amp; stator15=1 &amp; stator16=1 &amp; stator17=1 &amp; stator19=1 &amp; stator20=1 &amp; stator25=1)
+| ( w1=19 &amp; stator6=1 &amp; stator7=1 &amp; stator8=1 &amp; stator13=1 &amp; stator14=1 &amp; stator15=1 &amp; stator16=1 &amp; stator18=1 &amp; stator20=1 &amp; stator24=1 &amp; stator25=1)
+| ( w1=21 &amp; stator9=1 &amp; stator10=1 &amp; stator11=1 &amp; stator12=1 &amp; stator22=1 &amp; stator23=1 &amp; stator24=1 &amp; stator25=1 &amp; stator26=1 &amp; stator27=1 &amp; stator28=1)
+| ( w1=22 &amp; stator10=1 &amp; stator11=1 &amp; stator12=1 &amp; stator21=1 &amp; stator23=1 &amp; stator24=1 &amp; stator25=1 &amp; stator26=1 &amp; stator27=1 &amp; stator28=1)
+| ( w1=23 &amp; stator10=1 &amp; stator11=1 &amp; stator12=1 &amp; stator20=1 &amp; stator21=1 &amp; stator22=1 &amp; stator24=1 &amp; stator25=1 &amp; stator26=1 &amp; stator27=1 &amp; stator28=1)
+| ( w1=24 &amp; stator10=1 &amp; stator11=1 &amp; stator12=1 &amp; stator19=1 &amp; stator20=1 &amp; stator21=1 &amp; stator22=1 &amp; stator23=1 &amp; stator25=1 &amp; stator26=1 &amp; stator27=1)
+| ( w1=26 &amp; stator11=1 &amp; stator12=1 &amp; stator21=1 &amp; stator22=1 &amp; stator23=1 &amp; stator24=1 &amp; stator25=1 &amp; stator27=1 &amp; stator28=1)
+| ( w1=27 &amp; stator12=1 &amp; stator21=1 &amp; stator22=1 &amp; stator23=1 &amp; stator24=1 &amp; stator26=1 &amp; stator28=1)
+;
+
+label "finish"=(w1=17)|(w1=20)|(w1=25)|(w1=28);
+
+label "finish_correct"=(w1=17);</content>
+    </model>
+  </models>
+  <requirements>
+    <requirement name="deadlock_user" type="bltl">
+      <content>F&lt;=1000000 "deadlockUser"</content>
+    </requirement>
+    <requirement name="finish" type="bltl">
+      <content>F&lt;=12000 "finish"</content>
+    </requirement>
+    <requirement name="finish_correct" type="bltl">
+      <content>F&lt;=12000 "finish_correct"</content>
+    </requirement>
+  </requirements>
+  <resources />
+</PlasmaProject>

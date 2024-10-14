@@ -1,0 +1,51 @@
+// Network with 25 nodes
+//#UNKNOWNS =2
+
+dtmc
+const int True=1;
+const int False=0;
+const int Unknown=-1;
+
+module message1
+l1: [0..24] init 0;
+notCorrupt: [-1..1] init 1;
+
+[] l1=0 -> 1/3 : (l1'=1) & (notCorrupt'=True) + 1/3 : (l1'=5) & (notCorrupt'=True) + 1/3 : (l1'=6) & (notCorrupt'=True);
+[] l1=1 -> 1/4 : (l1'=2) & (notCorrupt'=False) + 1/4 : (l1'=5) & (notCorrupt'=True) + 1/4 : (l1'=6) & (notCorrupt'=True) +  1/4 : (l1'=7) & (notCorrupt'=True);
+[] l1=2 -> 1/4 : (l1'=3) & (notCorrupt'=True) + 1/4 : (l1'=6) & (notCorrupt'=True) + 1/4 : (l1'=7) & (notCorrupt'=True) + 1/4 : (l1'=8) & (notCorrupt'=True);
+[] l1=3 -> 1/4 : (l1'=4) & (notCorrupt'=True) + 1/4 : (l1'=7) & (notCorrupt'=True) + 1/4 : (l1'=8) & (notCorrupt'=True) + 1/4 : (l1'=9) & (notCorrupt'=Unknown);
+[] l1=4 -> 1/2 : (l1'=8) & (notCorrupt'=True) + 1/2 : (l1'=9) & (notCorrupt'=Unknown);
+[] l1=5 -> 1/4 : (l1'=1) & (notCorrupt'=True) + 1/4 : (l1'=6) & (notCorrupt'=True) + 1/4 : (l1'=10) & (notCorrupt'=True) + 1/4 : (l1'=11) & (notCorrupt'=True);
+[] l1=6 -> 1/5 : (l1'=2) & (notCorrupt'=False) + 1/5 : (l1'=7) & (notCorrupt'=True) + 1/5 : (l1'=10) & (notCorrupt'=True) + 
+		   1/5 : (l1'=11) & (notCorrupt'=True) + 1/5 : (l1'=12) & (notCorrupt'=True);
+[] l1=7 -> 1/5 : (l1'=3) & (notCorrupt'=True) + 1/5 : (l1'=8) & (notCorrupt'=True) + 1/5 : (l1'=11) & (notCorrupt'=True) + 
+		   1/5 : (l1'=12) & (notCorrupt'=True) + 1/5 : (l1'=13) & (notCorrupt'=True);
+[] l1=8 -> 1/5 : (l1'=4) & (notCorrupt'=True) + 1/5 : (l1'=9) & (notCorrupt'=Unknown) + 1/5 : (l1'=12) & (notCorrupt'=True) + 
+ 	  	   1/5 : (l1'=13) & (notCorrupt'=True) + 1/5 : (l1'=14) & (notCorrupt'=True);
+[] l1=9 -> 1/2 : (l1'=13) & (notCorrupt'=True) + 1/2 : (l1'=14) & (notCorrupt'=True);
+[] l1=10 -> 1/4 : (l1'=6) & (notCorrupt'=True) + 1/4 : (l1'=11) & (notCorrupt'=True) + 1/4 : (l1'=15) & (notCorrupt'=Unknown) + 1/4 : (l1'=16) & (notCorrupt'=True);
+[] l1=11 -> 1/5 : (l1'=7) & (notCorrupt'=True) + 1/5 : (l1'=12) & (notCorrupt'=True) + 1/5 : (l1'=15) & (notCorrupt'=Unknown) + 
+			1/5 : (l1'=16) & (notCorrupt'=True) + 1/5 : (l1'=17) & (notCorrupt'=True);
+[] l1=12 -> 1/5 : (l1'=8) & (notCorrupt'=True) + 1/5 : (l1'=13) & (notCorrupt'=True) + 1/5 : (l1'=16) & (notCorrupt'=True) + 
+			1/5 : (l1'=17) & (notCorrupt'=True) + 1/5 : (l1'=18) & (notCorrupt'=True);
+[] l1=13 -> 1/5 : (l1'=9) & (notCorrupt'=Unknown) + 1/5 : (l1'=14) & (notCorrupt'=True) + 1/5 : (l1'=17) & (notCorrupt'=True) +
+			1/5 : (l1'=18) & (notCorrupt'=True) + 1/5 : (l1'=19) & (notCorrupt'=True);
+[] l1=14 -> 1/2 : (l1'=18) & (notCorrupt'=True) + 1/2 : (l1'=19) & (notCorrupt'=True);
+[] l1=15 -> 1/4 : (l1'=11) & (notCorrupt'=True) + 1/4 : (l1'=16) & (notCorrupt'=True) + 1/4 : (l1'=20) & (notCorrupt'=False) + 1/4 : (l1'=21) & (notCorrupt'=True);
+[] l1=16 -> 1/5 : (l1'=12) & (notCorrupt'=True) + 1/5 : (l1'=17) & (notCorrupt'=True) + 1/5 : (l1'=20) & (notCorrupt'=False) + 
+			1/5 : (l1'=21) & (notCorrupt'=True) + 1/5 : (l1'=22) & (notCorrupt'=True);
+[] l1=17 -> 1/5 : (l1'=13) & (notCorrupt'=True) + 1/5 : (l1'=18) & (notCorrupt'=True) + 1/5 : (l1'=21) & (notCorrupt'=True) + 
+			1/5 : (l1'=22) & (notCorrupt'=True) + 1/5 : (l1'=23) & (notCorrupt'=True);
+[] l1=18 -> 1/5 : (l1'=14) & (notCorrupt'=True) + 1/5 : (l1'=19) & (notCorrupt'=True) + 1/5 : (l1'=22) & (notCorrupt'=True) + 
+			1/5 : (l1'=23) & (notCorrupt'=True) + 1/5 : (l1'=24) & (notCorrupt'=True);
+[] l1=19 -> 1/2 : (l1'=23) & (notCorrupt'=True) + 1/2 : (l1'=24) & (notCorrupt'=True);
+[] l1=20 -> 1/2 : (l1'=16) & (notCorrupt'=True) + 1/2 : (l1'=21) & (notCorrupt'=True);
+[] l1=21 -> 1/2 : (l1'=17) & (notCorrupt'=True) + 1/2 : (l1'=22) & (notCorrupt'=True);
+[] l1=22 -> 1/2 : (l1'=18) & (notCorrupt'=True) + 1/2 : (l1'=23) & (notCorrupt'=True);
+[] l1=23 -> 1/2 : (l1'=19) & (notCorrupt'=True) + 1/2 : (l1'=24) & (notCorrupt'=True);
+[] l1=24 -> 1 : (l1'=24) & (notCorrupt'=True);
+endmodule
+
+
+// labels
+label "delivered"= (l1=24);

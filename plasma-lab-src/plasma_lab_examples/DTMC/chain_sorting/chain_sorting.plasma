@@ -1,0 +1,1999 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlasmaProject name="chain_sorting">
+  <models>
+    <model name="chain5pre.pm" type="rml">
+      <content>dtmc
+
+label "hungry" = 0;
+// partition0 : 
+// {
+//   {c, d},
+//   {a, b},
+// }
+//
+// partition1 : 
+// {
+//   {a, c},
+//   {b, d},
+// }
+//
+// partition2 : 
+// {
+//   {b, c},
+//   {a, d},
+// }
+//
+
+
+// Actual code
+// -----------
+
+// number of step to count
+const int k = 20 ;
+
+//guard when counting
+formula counting = (b) &amp; (c &lt; k) ;
+
+//formulas to update interaction counters
+formula updp0a = mod(max(p0a,p0b)+1, k+1);
+formula updp0b = mod(max(p0b,p0a,p0c)+1, k+1);
+formula updp0c = mod(max(p0c,p0b,p0d)+1, k+1);
+formula updp0d = mod(max(p0d,p0c)+1, k+1);
+
+formula updp1a = mod(max(p1a,p1b,p1c)+1, k+1);
+formula updp1b = mod(max(p1b,p1a,p1c,p1d)+1, k+1);
+formula updp1c = mod(max(p1c,p1b,p1d,p1a)+1, k+1);
+formula updp1d = mod(max(p1d,p1c,p1b)+1, k+1);
+
+formula updp2a = mod(max(p2a,p2b,p2d)+1, k+1);
+formula updp2b = mod(max(p2b,p2a,p2c)+1, k+1);
+formula updp2c = mod(max(p2c,p2b,p2d)+1, k+1);
+formula updp2d = mod(max(p2d,p2c,p2a)+1, k+1);
+
+// labels to use in properties to check
+label "p0steps" = max(p0a,p0b,p0c,p0d) ;
+label "p1steps" = max(p1a,p1b,p1c,p1d) ;
+label "p2steps" = max(p2a,p2b,p2c,p2d) ;
+
+// range of the values to sort
+const int maxval = 3 ;
+
+module chain
+
+  // --------- 
+  // VARIABLES 
+  // _________ 
+
+  //state variable
+  s: [0..31] init 0 ;
+
+  // variables to store the last exec date for each interaction, for partition0
+  p0a:[0..k] init 0;
+  p0b:[0..k] init 0;
+  p0c:[0..k] init 0;
+  p0d:[0..k] init 0;
+
+  // variables to store the last exec date for each interaction, for partition1
+  p1a:[0..k] init 0;
+  p1b:[0..k] init 0;
+  p1c:[0..k] init 0;
+  p1d:[0..k] init 0;
+
+  // variables to store the last exec date for each interaction, for partition2
+  p2a:[0..k] init 0;
+  p2b:[0..k] init 0;
+  p2c:[0..k] init 0;
+  p2d:[0..k] init 0;
+
+  //boolean to switch counting 
+  b: bool init false;
+  //counter
+  c: [0..k] init 0;
+
+
+  // ----------- 
+  // TRANSITIONS 
+  // ___________ 
+
+
+  [] (!b) &amp;  (s=0) -&gt; 1.0: (s'=1);
+  [] (!b) &amp;  (s=1) -&gt; 1.0: (s'=2);
+  [] (!b) &amp;  (s=2) -&gt; 0.666666666667: (s'=3)
+                     +0.333333333333: (s'=4);
+  [] (!b) &amp;  (s=3) -&gt; 1.0: (s'=5);
+  [] (!b) &amp;  (s=4) -&gt; 0.857142857143: (s'=5)
+                     +0.142857142857: (s'=8);
+  [] (!b) &amp;  (s=5) -&gt; 0.5: (s'=6)
+                     +0.5: (s'=9);
+  [] (!b) &amp;  (s=6) -&gt; 0.4: (s'=7)
+                     +0.6: (s'=10);
+  [] (!b) &amp;  (s=7) -&gt; 1.0: (s'=11);
+  [] (!b) &amp;  (s=8) -&gt; 0.933333333333: (s'=9)
+                     +0.0666666666667: (s'=16);
+  [] (!b) &amp;  (s=9) -&gt; 0.75: (s'=10)
+                     +0.25: (s'=17);
+  [] (!b) &amp;  (s=10) -&gt; 0.545454545455: (s'=11)
+                      +0.181818181818: (s'=12)
+                      +0.272727272727: (s'=18);
+  [] (!b) &amp;  (s=11) -&gt; 0.5: (s'=13)
+                      +0.5: (s'=19);
+  [] (!b) &amp;  (s=12) -&gt; 0.666666666667: (s'=13)
+                      +0.333333333333: (s'=20);
+  [] (!b) &amp;  (s=13) -&gt; 0.25: (s'=14)
+                      +0.75: (s'=21);
+  [] (!b) &amp;  (s=14) -&gt; 0.222222222222: (s'=15)
+                      +0.777777777778: (s'=22);
+  [] (!b) &amp;  (s=15) -&gt; 1.0: (s'=23);
+  [] (!b) &amp;  (s=16) -&gt; 0.9375: (s'=17)
+                      +0.0625: (s'=0);
+  [] (!b) &amp;  (s=17) -&gt; 0.777777777778: (s'=18)
+                      +0.222222222222: (s'=1);
+  [] (!b) &amp;  (s=18) -&gt; 0.538461538462: (s'=19)
+                      +0.230769230769: (s'=20)
+                      +0.230769230769: (s'=2);
+  [] (!b) &amp;  (s=19) -&gt; 0.6: (s'=21)
+                      +0.4: (s'=3);
+  [] (!b) &amp;  (s=20) -&gt; 0.666666666667: (s'=21)
+                      +0.0666666666667: (s'=24)
+                      +0.266666666667: (s'=4);
+  [] (!b) &amp;  (s=21) -&gt; 0.272727272727: (s'=22)
+                      +0.181818181818: (s'=25)
+                      +0.545454545455: (s'=5);
+  [] (!b) &amp;  (s=22) -&gt; 0.230769230769: (s'=23)
+                      +0.230769230769: (s'=26)
+                      +0.538461538462: (s'=6);
+  [] (!b) &amp;  (s=23) -&gt; 0.333333333333: (s'=27)
+                      +0.666666666667: (s'=7);
+  [] (!b) &amp;  (s=24) -&gt; 0.6875: (s'=25)
+                      +0.3125: (s'=8);
+  [] (!b) &amp;  (s=25) -&gt; 0.333333333333: (s'=26)
+                      +0.666666666667: (s'=9);
+  [] (!b) &amp;  (s=26) -&gt; 0.266666666667: (s'=27)
+                      +0.0666666666667: (s'=28)
+                      +0.666666666667: (s'=10);
+  [] (!b) &amp;  (s=27) -&gt; 0.142857142857: (s'=29)
+                      +0.857142857143: (s'=11);
+  [] (!b) &amp;  (s=28) -&gt; 0.3125: (s'=29)
+                      +0.6875: (s'=12);
+  [] (!b) &amp;  (s=29) -&gt; 0.0666666666667: (s'=30)
+                      +0.933333333333: (s'=13);
+  [] (!b) &amp;  (s=30) -&gt; 0.0625: (s'=31)
+                      +0.9375: (s'=14);
+  [] (!b) &amp;  (s=31) -&gt; 1.0: (s'=15);
+  // transition to start counting
+  [] (!b) -&gt; (b'=true) ;
+
+  [] (counting) &amp;  (s=0) -&gt; 1.0: (s'=1) ;
+  [] (counting) &amp;  (s=1) -&gt; 1.0: (s'=2) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a) ;
+  [] (counting) &amp;  (s=2) -&gt; 0.666666666667: (s'=3)
+                           +0.333333333333: (s'=4) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b) ;
+  [] (counting) &amp;  (s=3) -&gt; 1.0: (s'=5) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b) ;
+  [] (counting) &amp;  (s=4) -&gt; 0.857142857143: (s'=5)
+                           +0.142857142857: (s'=8) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c) ;
+  [] (counting) &amp;  (s=5) -&gt; 0.5: (s'=6) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                           +0.5: (s'=9) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c) ;
+  [] (counting) &amp;  (s=6) -&gt; 0.4: (s'=7)
+                           +0.6: (s'=10) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c) ;
+  [] (counting) &amp;  (s=7) -&gt; 1.0: (s'=11) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c) ;
+  [] (counting) &amp;  (s=8) -&gt; 0.933333333333: (s'=9)
+                           +0.0666666666667: (s'=16) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=9) -&gt; 0.75: (s'=10) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                           +0.25: (s'=17) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=10) -&gt; 0.545454545455: (s'=11)
+                            +0.181818181818: (s'=12) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.272727272727: (s'=18) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=11) -&gt; 0.5: (s'=13) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.5: (s'=19) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=12) -&gt; 0.666666666667: (s'=13)
+                            +0.333333333333: (s'=20) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=13) -&gt; 0.25: (s'=14) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.75: (s'=21) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=14) -&gt; 0.222222222222: (s'=15)
+                            +0.777777777778: (s'=22) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=15) -&gt; 1.0: (s'=23) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=16) -&gt; 0.9375: (s'=17)
+                            +0.0625: (s'=0) ;
+  [] (counting) &amp;  (s=17) -&gt; 0.777777777778: (s'=18) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.222222222222: (s'=1) ;
+  [] (counting) &amp;  (s=18) -&gt; 0.538461538462: (s'=19)
+                            +0.230769230769: (s'=20) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.230769230769: (s'=2) ;
+  [] (counting) &amp;  (s=19) -&gt; 0.6: (s'=21) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.4: (s'=3) ;
+  [] (counting) &amp;  (s=20) -&gt; 0.666666666667: (s'=21)
+                            +0.0666666666667: (s'=24) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.266666666667: (s'=4) ;
+  [] (counting) &amp;  (s=21) -&gt; 0.272727272727: (s'=22) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.181818181818: (s'=25) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.545454545455: (s'=5) ;
+  [] (counting) &amp;  (s=22) -&gt; 0.230769230769: (s'=23)
+                            +0.230769230769: (s'=26) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.538461538462: (s'=6) ;
+  [] (counting) &amp;  (s=23) -&gt; 0.333333333333: (s'=27) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.666666666667: (s'=7) ;
+  [] (counting) &amp;  (s=24) -&gt; 0.6875: (s'=25)
+                            +0.3125: (s'=8) ;
+  [] (counting) &amp;  (s=25) -&gt; 0.333333333333: (s'=26) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.666666666667: (s'=9) ;
+  [] (counting) &amp;  (s=26) -&gt; 0.266666666667: (s'=27)
+                            +0.0666666666667: (s'=28) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.666666666667: (s'=10) ;
+  [] (counting) &amp;  (s=27) -&gt; 0.142857142857: (s'=29) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.857142857143: (s'=11) ;
+  [] (counting) &amp;  (s=28) -&gt; 0.3125: (s'=29)
+                            +0.6875: (s'=12) ;
+  [] (counting) &amp;  (s=29) -&gt; 0.0666666666667: (s'=30) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.933333333333: (s'=13) ;
+  [] (counting) &amp;  (s=30) -&gt; 0.0625: (s'=31)
+                            +0.9375: (s'=14) ;
+  [] (counting) &amp;  (s=31) -&gt; 1.0: (s'=15) ;
+
+endmodule</content>
+    </model>
+    <model name="chain5uni.pm" type="rml">
+      <content>dtmc
+
+// partition0 : 
+// {
+//   {c, d},
+//   {a, b},
+// }
+//
+// partition1 : 
+// {
+//   {a, c},
+//   {b, d},
+// }
+//
+// partition2 : 
+// {
+//   {b, c},
+//   {a, d},
+// }
+//
+
+
+// Actual code
+// -----------
+
+// number of step to count
+const int k =20 ;
+
+//guard when counting
+formula counting = (b) &amp; (c &lt; k) ;
+
+//formulas to update interaction counters
+formula updp0a = mod(max(p0a,p0b)+1, k+1);
+formula updp0b = mod(max(p0b,p0a,p0c)+1, k+1);
+formula updp0c = mod(max(p0c,p0b,p0d)+1, k+1);
+formula updp0d = mod(max(p0d,p0c)+1, k+1);
+
+formula updp1a = mod(max(p1a,p1b,p1c)+1, k+1);
+formula updp1b = mod(max(p1b,p1a,p1c,p1d)+1, k+1);
+formula updp1c = mod(max(p1c,p1b,p1d,p1a)+1, k+1);
+formula updp1d = mod(max(p1d,p1c,p1b)+1, k+1);
+
+formula updp2a = mod(max(p2a,p2b,p2d)+1, k+1);
+formula updp2b = mod(max(p2b,p2a,p2c)+1, k+1);
+formula updp2c = mod(max(p2c,p2b,p2d)+1, k+1);
+formula updp2d = mod(max(p2d,p2c,p2a)+1, k+1);
+
+
+// labels to use in properties to check
+label "p0steps" = max(p0a,p0b,p0c,p0d) ;
+label "p1steps" = max(p1a,p1b,p1c,p1d) ;
+label "p2steps" = max(p2a,p2b,p2c,p2d) ;
+
+// range of the values to sort
+const int maxval = 3 ;
+
+module chain
+
+  // --------- 
+  // VARIABLES 
+  // _________ 
+
+  //state variable
+  s: [0..31] init 0 ;
+
+  // variables to store the last exec date for each interaction, for partition0
+  p0a:[0..k] init 0;
+  p0b:[0..k] init 0;
+  p0c:[0..k] init 0;
+  p0d:[0..k] init 0;
+
+  // variables to store the last exec date for each interaction, for partition1
+  p1a:[0..k] init 0;
+  p1b:[0..k] init 0;
+  p1c:[0..k] init 0;
+  p1d:[0..k] init 0;
+
+  // variables to store the last exec date for each interaction, for partition2
+  p2a:[0..k] init 0;
+  p2b:[0..k] init 0;
+  p2c:[0..k] init 0;
+  p2d:[0..k] init 0;
+
+  //boolean to switch counting 
+  b: bool init false;
+  //counter
+  c: [0..k] init 0;
+
+
+  // ----------- 
+  // TRANSITIONS 
+  // ___________ 
+
+
+  [] (!b) &amp;  (s=0) -&gt; 1.0: (s'=1);
+  [] (!b) &amp;  (s=1) -&gt; 1.0: (s'=2);
+  [] (!b) &amp;  (s=2) -&gt; 0.5: (s'=3)
+                     +0.5: (s'=4);
+  [] (!b) &amp;  (s=3) -&gt; 1.0: (s'=5);
+  [] (!b) &amp;  (s=4) -&gt; 0.5: (s'=5)
+                     +0.5: (s'=8);
+  [] (!b) &amp;  (s=5) -&gt; 0.5: (s'=6)
+                     +0.5: (s'=9);
+  [] (!b) &amp;  (s=6) -&gt; 0.5: (s'=7)
+                     +0.5: (s'=10);
+  [] (!b) &amp;  (s=7) -&gt; 1.0: (s'=11);
+  [] (!b) &amp;  (s=8) -&gt; 0.5: (s'=9)
+                     +0.5: (s'=16);
+  [] (!b) &amp;  (s=9) -&gt; 0.5: (s'=10)
+                     +0.5: (s'=17);
+  [] (!b) &amp;  (s=10) -&gt; 0.333333333333: (s'=11)
+                      +0.333333333333: (s'=12)
+                      +0.333333333333: (s'=18);
+  [] (!b) &amp;  (s=11) -&gt; 0.5: (s'=13)
+                      +0.5: (s'=19);
+  [] (!b) &amp;  (s=12) -&gt; 0.5: (s'=13)
+                      +0.5: (s'=20);
+  [] (!b) &amp;  (s=13) -&gt; 0.5: (s'=14)
+                      +0.5: (s'=21);
+  [] (!b) &amp;  (s=14) -&gt; 0.5: (s'=15)
+                      +0.5: (s'=22);
+  [] (!b) &amp;  (s=15) -&gt; 1.0: (s'=23);
+  [] (!b) &amp;  (s=16) -&gt; 0.5: (s'=17)
+                      +0.5: (s'=0);
+  [] (!b) &amp;  (s=17) -&gt; 0.5: (s'=18)
+                      +0.5: (s'=1);
+  [] (!b) &amp;  (s=18) -&gt; 0.333333333333: (s'=19)
+                      +0.333333333333: (s'=20)
+                      +0.333333333333: (s'=2);
+  [] (!b) &amp;  (s=19) -&gt; 0.5: (s'=21)
+                      +0.5: (s'=3);
+  [] (!b) &amp;  (s=20) -&gt; 0.333333333333: (s'=21)
+                      +0.333333333333: (s'=24)
+                      +0.333333333333: (s'=4);
+  [] (!b) &amp;  (s=21) -&gt; 0.333333333333: (s'=22)
+                      +0.333333333333: (s'=25)
+                      +0.333333333333: (s'=5);
+  [] (!b) &amp;  (s=22) -&gt; 0.333333333333: (s'=23)
+                      +0.333333333333: (s'=26)
+                      +0.333333333333: (s'=6);
+  [] (!b) &amp;  (s=23) -&gt; 0.5: (s'=27)
+                      +0.5: (s'=7);
+  [] (!b) &amp;  (s=24) -&gt; 0.5: (s'=25)
+                      +0.5: (s'=8);
+  [] (!b) &amp;  (s=25) -&gt; 0.5: (s'=26)
+                      +0.5: (s'=9);
+  [] (!b) &amp;  (s=26) -&gt; 0.333333333333: (s'=27)
+                      +0.333333333333: (s'=28)
+                      +0.333333333333: (s'=10);
+  [] (!b) &amp;  (s=27) -&gt; 0.5: (s'=29)
+                      +0.5: (s'=11);
+  [] (!b) &amp;  (s=28) -&gt; 0.5: (s'=29)
+                      +0.5: (s'=12);
+  [] (!b) &amp;  (s=29) -&gt; 0.5: (s'=30)
+                      +0.5: (s'=13);
+  [] (!b) &amp;  (s=30) -&gt; 0.5: (s'=31)
+                      +0.5: (s'=14);
+  [] (!b) &amp;  (s=31) -&gt; 1.0: (s'=15);
+  // transition to start counting
+  [] (!b) -&gt; (b'=true) ;
+
+  [] (counting) &amp;  (s=0) -&gt; 1.0: (s'=1) ;
+  [] (counting) &amp;  (s=1) -&gt; 1.0: (s'=2) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a) ;
+  [] (counting) &amp;  (s=2) -&gt; 0.5: (s'=3)
+                           +0.5: (s'=4) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b) ;
+  [] (counting) &amp;  (s=3) -&gt; 1.0: (s'=5) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b) ;
+  [] (counting) &amp;  (s=4) -&gt; 0.5: (s'=5)
+                           +0.5: (s'=8) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c) ;
+  [] (counting) &amp;  (s=5) -&gt; 0.5: (s'=6) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                           +0.5: (s'=9) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c) ;
+  [] (counting) &amp;  (s=6) -&gt; 0.5: (s'=7)
+                           +0.5: (s'=10) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c) ;
+  [] (counting) &amp;  (s=7) -&gt; 1.0: (s'=11) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c) ;
+  [] (counting) &amp;  (s=8) -&gt; 0.5: (s'=9)
+                           +0.5: (s'=16) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=9) -&gt; 0.5: (s'=10) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                           +0.5: (s'=17) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=10) -&gt; 0.333333333333: (s'=11)
+                            +0.333333333333: (s'=12) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.333333333333: (s'=18) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=11) -&gt; 0.5: (s'=13) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.5: (s'=19) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=12) -&gt; 0.5: (s'=13)
+                            +0.5: (s'=20) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=13) -&gt; 0.5: (s'=14) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.5: (s'=21) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=14) -&gt; 0.5: (s'=15)
+                            +0.5: (s'=22) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=15) -&gt; 1.0: (s'=23) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=16) -&gt; 0.5: (s'=17)
+                            +0.5: (s'=0) ;
+  [] (counting) &amp;  (s=17) -&gt; 0.5: (s'=18) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.5: (s'=1) ;
+  [] (counting) &amp;  (s=18) -&gt; 0.333333333333: (s'=19)
+                            +0.333333333333: (s'=20) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.333333333333: (s'=2) ;
+  [] (counting) &amp;  (s=19) -&gt; 0.5: (s'=21) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.5: (s'=3) ;
+  [] (counting) &amp;  (s=20) -&gt; 0.333333333333: (s'=21)
+                            +0.333333333333: (s'=24) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.333333333333: (s'=4) ;
+  [] (counting) &amp;  (s=21) -&gt; 0.333333333333: (s'=22) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.333333333333: (s'=25) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.333333333333: (s'=5) ;
+  [] (counting) &amp;  (s=22) -&gt; 0.333333333333: (s'=23)
+                            +0.333333333333: (s'=26) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.333333333333: (s'=6) ;
+  [] (counting) &amp;  (s=23) -&gt; 0.5: (s'=27) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.5: (s'=7) ;
+  [] (counting) &amp;  (s=24) -&gt; 0.5: (s'=25)
+                            +0.5: (s'=8) ;
+  [] (counting) &amp;  (s=25) -&gt; 0.5: (s'=26) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.5: (s'=9) ;
+  [] (counting) &amp;  (s=26) -&gt; 0.333333333333: (s'=27)
+                            +0.333333333333: (s'=28) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.333333333333: (s'=10) ;
+  [] (counting) &amp;  (s=27) -&gt; 0.5: (s'=29) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.5: (s'=11) ;
+  [] (counting) &amp;  (s=28) -&gt; 0.5: (s'=29)
+                            +0.5: (s'=12) ;
+  [] (counting) &amp;  (s=29) -&gt; 0.5: (s'=30) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.5: (s'=13) ;
+  [] (counting) &amp;  (s=30) -&gt; 0.5: (s'=31)
+                            +0.5: (s'=14) ;
+  [] (counting) &amp;  (s=31) -&gt; 1.0: (s'=15) ;
+
+endmodule</content>
+    </model>
+    <model name="chain7pre.pm" type="rml">
+      <content>dtmc
+
+// partition0 : 
+// {
+//   {e, f},
+//   {c, d},
+//   {a, b},
+// }
+//
+// partition1 : 
+// {
+//   {a, d},
+//   {b, e},
+//   {c, f},
+// }
+//
+// partition2 : 
+// {
+//   {c, d},
+//   {b, e},
+//   {a, f},
+// }
+//
+
+
+// Actual code
+// -----------
+
+// number of step to count
+const int k ;
+
+//guard when counting
+formula counting = (b) &amp; (c &lt; k) ;
+
+//formulas to update interaction counters
+formula updp0a = mod(max(p0a,p0b)+1, k+1);
+formula updp0b = mod(max(p0b,p0a,p0c)+1, k+1);
+formula updp0c = mod(max(p0c,p0b,p0d)+1, k+1);
+formula updp0d = mod(max(p0d,p0c,p0e)+1, k+1);
+formula updp0e = mod(max(p0e,p0d,p0f)+1, k+1);
+formula updp0f = mod(max(p0f,p0e)+1, k+1);
+
+formula updp1a = mod(max(p1a,p1b,p1d)+1, k+1);
+formula updp1b = mod(max(p1b,p1a,p1c,p1e)+1, k+1);
+formula updp1c = mod(max(p1c,p1b,p1d,p1f)+1, k+1);
+formula updp1d = mod(max(p1d,p1c,p1e,p1a)+1, k+1);
+formula updp1e = mod(max(p1e,p1d,p1f,p1b)+1, k+1);
+formula updp1f = mod(max(p1f,p1e,p1c)+1, k+1);
+
+formula updp2a = mod(max(p2a,p2b,p2f)+1, k+1);
+formula updp2b = mod(max(p2b,p2a,p2c,p2e)+1, k+1);
+formula updp2c = mod(max(p2c,p2b,p2d)+1, k+1);
+formula updp2d = mod(max(p2d,p2c,p2e)+1, k+1);
+formula updp2e = mod(max(p2e,p2d,p2f,p2b)+1, k+1);
+formula updp2f = mod(max(p2f,p2e,p2a)+1, k+1);
+
+
+// labels to use in properties to check
+label "p0steps" = max(p0a,p0b,p0c,p0d,p0e,p0f) ;
+label "p1steps" = max(p1a,p1b,p1c,p1d,p1e,p1f) ;
+label "p2steps" = max(p2a,p2b,p2c,p2d,p2e,p2f) ;
+
+// range of the values to sort
+const int maxval = 3 ;
+
+module chain
+
+  // --------- 
+  // VARIABLES 
+  // _________ 
+
+  //state variable
+  s: [0..127] init 0 ;
+
+  // variables to store the last exec date for each interaction, for partition0
+  p0a:[0..k] init 0;
+  p0b:[0..k] init 0;
+  p0c:[0..k] init 0;
+  p0d:[0..k] init 0;
+  p0e:[0..k] init 0;
+  p0f:[0..k] init 0;
+
+  // variables to store the last exec date for each interaction, for partition1
+  p1a:[0..k] init 0;
+  p1b:[0..k] init 0;
+  p1c:[0..k] init 0;
+  p1d:[0..k] init 0;
+  p1e:[0..k] init 0;
+  p1f:[0..k] init 0;
+
+  // variables to store the last exec date for each interaction, for partition2
+  p2a:[0..k] init 0;
+  p2b:[0..k] init 0;
+  p2c:[0..k] init 0;
+  p2d:[0..k] init 0;
+  p2e:[0..k] init 0;
+  p2f:[0..k] init 0;
+
+  //boolean to switch counting 
+  b: bool init false;
+  //counter
+  c: [0..k] init 0;
+
+
+  // ----------- 
+  // TRANSITIONS 
+  // ___________ 
+
+
+  [] (!b) &amp;  (s=0) -&gt; 1.0: (s'=1);
+  [] (!b) &amp;  (s=1) -&gt; 1.0: (s'=2);
+  [] (!b) &amp;  (s=2) -&gt; 0.666666666667: (s'=3)
+                     +0.333333333333: (s'=4);
+  [] (!b) &amp;  (s=3) -&gt; 1.0: (s'=5);
+  [] (!b) &amp;  (s=4) -&gt; 0.857142857143: (s'=5)
+                     +0.142857142857: (s'=8);
+  [] (!b) &amp;  (s=5) -&gt; 0.5: (s'=6)
+                     +0.5: (s'=9);
+  [] (!b) &amp;  (s=6) -&gt; 0.4: (s'=7)
+                     +0.6: (s'=10);
+  [] (!b) &amp;  (s=7) -&gt; 1.0: (s'=11);
+  [] (!b) &amp;  (s=8) -&gt; 0.933333333333: (s'=9)
+                     +0.0666666666667: (s'=16);
+  [] (!b) &amp;  (s=9) -&gt; 0.75: (s'=10)
+                     +0.25: (s'=17);
+  [] (!b) &amp;  (s=10) -&gt; 0.545454545455: (s'=11)
+                      +0.181818181818: (s'=12)
+                      +0.272727272727: (s'=18);
+  [] (!b) &amp;  (s=11) -&gt; 0.5: (s'=13)
+                      +0.5: (s'=19);
+  [] (!b) &amp;  (s=12) -&gt; 0.666666666667: (s'=13)
+                      +0.333333333333: (s'=20);
+  [] (!b) &amp;  (s=13) -&gt; 0.25: (s'=14)
+                      +0.75: (s'=21);
+  [] (!b) &amp;  (s=14) -&gt; 0.222222222222: (s'=15)
+                      +0.777777777778: (s'=22);
+  [] (!b) &amp;  (s=15) -&gt; 1.0: (s'=23);
+  [] (!b) &amp;  (s=16) -&gt; 0.967741935484: (s'=17)
+                      +0.0322580645161: (s'=32);
+  [] (!b) &amp;  (s=17) -&gt; 0.875: (s'=18)
+                      +0.125: (s'=33);
+  [] (!b) &amp;  (s=18) -&gt; 0.608695652174: (s'=19)
+                      +0.260869565217: (s'=20)
+                      +0.130434782609: (s'=34);
+  [] (!b) &amp;  (s=19) -&gt; 0.75: (s'=21)
+                      +0.25: (s'=35);
+  [] (!b) &amp;  (s=20) -&gt; 0.769230769231: (s'=21)
+                      +0.0769230769231: (s'=24)
+                      +0.153846153846: (s'=36);
+  [] (!b) &amp;  (s=21) -&gt; 0.375: (s'=22)
+                      +0.25: (s'=25)
+                      +0.375: (s'=37);
+  [] (!b) &amp;  (s=22) -&gt; 0.315789473684: (s'=23)
+                      +0.315789473684: (s'=26)
+                      +0.368421052632: (s'=38);
+  [] (!b) &amp;  (s=23) -&gt; 0.5: (s'=27)
+                      +0.5: (s'=39);
+  [] (!b) &amp;  (s=24) -&gt; 0.814814814815: (s'=25)
+                      +0.185185185185: (s'=40);
+  [] (!b) &amp;  (s=25) -&gt; 0.5: (s'=26)
+                      +0.5: (s'=41);
+  [] (!b) &amp;  (s=26) -&gt; 0.4: (s'=27)
+                      +0.1: (s'=28)
+                      +0.5: (s'=42);
+  [] (!b) &amp;  (s=27) -&gt; 0.25: (s'=29)
+                      +0.75: (s'=43);
+  [] (!b) &amp;  (s=28) -&gt; 0.47619047619: (s'=29)
+                      +0.52380952381: (s'=44);
+  [] (!b) &amp;  (s=29) -&gt; 0.125: (s'=30)
+                      +0.875: (s'=45);
+  [] (!b) &amp;  (s=30) -&gt; 0.117647058824: (s'=31)
+                      +0.882352941176: (s'=46);
+  [] (!b) &amp;  (s=31) -&gt; 1.0: (s'=47);
+  [] (!b) &amp;  (s=32) -&gt; 0.984126984127: (s'=33)
+                      +0.015873015873: (s'=64);
+  [] (!b) &amp;  (s=33) -&gt; 0.9375: (s'=34)
+                      +0.0625: (s'=65);
+  [] (!b) &amp;  (s=34) -&gt; 0.63829787234: (s'=35)
+                      +0.297872340426: (s'=36)
+                      +0.063829787234: (s'=66);
+  [] (!b) &amp;  (s=35) -&gt; 0.875: (s'=37)
+                      +0.125: (s'=67);
+  [] (!b) &amp;  (s=36) -&gt; 0.814814814815: (s'=37)
+                      +0.111111111111: (s'=40)
+                      +0.0740740740741: (s'=68);
+  [] (!b) &amp;  (s=37) -&gt; 0.4375: (s'=38)
+                      +0.375: (s'=41)
+                      +0.1875: (s'=69);
+  [] (!b) &amp;  (s=38) -&gt; 0.358974358974: (s'=39)
+                      +0.461538461538: (s'=42)
+                      +0.179487179487: (s'=70);
+  [] (!b) &amp;  (s=39) -&gt; 0.75: (s'=43)
+                      +0.25: (s'=71);
+  [] (!b) &amp;  (s=40) -&gt; 0.877192982456: (s'=41)
+                      +0.0350877192982: (s'=48)
+                      +0.0877192982456: (s'=72);
+  [] (!b) &amp;  (s=41) -&gt; 0.625: (s'=42)
+                      +0.125: (s'=49)
+                      +0.25: (s'=73);
+  [] (!b) &amp;  (s=42) -&gt; 0.47619047619: (s'=43)
+                      +0.142857142857: (s'=44)
+                      +0.142857142857: (s'=50)
+                      +0.238095238095: (s'=74);
+  [] (!b) &amp;  (s=43) -&gt; 0.375: (s'=45)
+                      +0.25: (s'=51)
+                      +0.375: (s'=75);
+  [] (!b) &amp;  (s=44) -&gt; 0.577777777778: (s'=45)
+                      +0.177777777778: (s'=52)
+                      +0.244444444444: (s'=76);
+  [] (!b) &amp;  (s=45) -&gt; 0.1875: (s'=46)
+                      +0.375: (s'=53)
+                      +0.4375: (s'=77);
+  [] (!b) &amp;  (s=46) -&gt; 0.171428571429: (s'=47)
+                      +0.4: (s'=54)
+                      +0.428571428571: (s'=78);
+  [] (!b) &amp;  (s=47) -&gt; 0.5: (s'=55)
+                      +0.5: (s'=79);
+  [] (!b) &amp;  (s=48) -&gt; 0.896551724138: (s'=49)
+                      +0.103448275862: (s'=80);
+  [] (!b) &amp;  (s=49) -&gt; 0.6875: (s'=50)
+                      +0.3125: (s'=81);
+  [] (!b) &amp;  (s=50) -&gt; 0.511627906977: (s'=51)
+                      +0.186046511628: (s'=52)
+                      +0.302325581395: (s'=82);
+  [] (!b) &amp;  (s=51) -&gt; 0.5: (s'=53)
+                      +0.5: (s'=83);
+  [] (!b) &amp;  (s=52) -&gt; 0.63829787234: (s'=53)
+                      +0.0425531914894: (s'=56)
+                      +0.31914893617: (s'=84);
+  [] (!b) &amp;  (s=53) -&gt; 0.25: (s'=54)
+                      +0.125: (s'=57)
+                      +0.625: (s'=85);
+  [] (!b) &amp;  (s=54) -&gt; 0.222222222222: (s'=55)
+                      +0.166666666667: (s'=58)
+                      +0.611111111111: (s'=86);
+  [] (!b) &amp;  (s=55) -&gt; 0.25: (s'=59)
+                      +0.75: (s'=87);
+  [] (!b) &amp;  (s=56) -&gt; 0.666666666667: (s'=57)
+                      +0.333333333333: (s'=88);
+  [] (!b) &amp;  (s=57) -&gt; 0.3125: (s'=58)
+                      +0.6875: (s'=89);
+  [] (!b) &amp;  (s=58) -&gt; 0.27027027027: (s'=59)
+                      +0.0540540540541: (s'=60)
+                      +0.675675675676: (s'=90);
+  [] (!b) &amp;  (s=59) -&gt; 0.125: (s'=61)
+                      +0.875: (s'=91);
+  [] (!b) &amp;  (s=60) -&gt; 0.315789473684: (s'=61)
+                      +0.684210526316: (s'=92);
+  [] (!b) &amp;  (s=61) -&gt; 0.0625: (s'=62)
+                      +0.9375: (s'=93);
+  [] (!b) &amp;  (s=62) -&gt; 0.0606060606061: (s'=63)
+                      +0.939393939394: (s'=94);
+  [] (!b) &amp;  (s=63) -&gt; 1.0: (s'=95);
+  [] (!b) &amp;  (s=64) -&gt; 0.984375: (s'=65)
+                      +0.015625: (s'=0);
+  [] (!b) &amp;  (s=65) -&gt; 0.939393939394: (s'=66)
+                      +0.0606060606061: (s'=1);
+  [] (!b) &amp;  (s=66) -&gt; 0.632653061224: (s'=67)
+                      +0.30612244898: (s'=68)
+                      +0.0612244897959: (s'=2);
+  [] (!b) &amp;  (s=67) -&gt; 0.882352941176: (s'=69)
+                      +0.117647058824: (s'=3);
+  [] (!b) &amp;  (s=68) -&gt; 0.80701754386: (s'=69)
+                      +0.122807017544: (s'=72)
+                      +0.0701754385965: (s'=4);
+  [] (!b) &amp;  (s=69) -&gt; 0.428571428571: (s'=70)
+                      +0.4: (s'=73)
+                      +0.171428571429: (s'=5);
+  [] (!b) &amp;  (s=70) -&gt; 0.348837209302: (s'=71)
+                      +0.488372093023: (s'=74)
+                      +0.162790697674: (s'=6);
+  [] (!b) &amp;  (s=71) -&gt; 0.777777777778: (s'=75)
+                      +0.222222222222: (s'=7);
+  [] (!b) &amp;  (s=72) -&gt; 0.868852459016: (s'=73)
+                      +0.0491803278689: (s'=80)
+                      +0.0819672131148: (s'=8);
+  [] (!b) &amp;  (s=73) -&gt; 0.611111111111: (s'=74)
+                      +0.166666666667: (s'=81)
+                      +0.222222222222: (s'=9);
+  [] (!b) &amp;  (s=74) -&gt; 0.458333333333: (s'=75)
+                      +0.145833333333: (s'=76)
+                      +0.1875: (s'=82)
+                      +0.208333333333: (s'=10);
+  [] (!b) &amp;  (s=75) -&gt; 0.368421052632: (s'=77)
+                      +0.315789473684: (s'=83)
+                      +0.315789473684: (s'=11);
+  [] (!b) &amp;  (s=76) -&gt; 0.557692307692: (s'=77)
+                      +0.230769230769: (s'=84)
+                      +0.211538461538: (s'=12);
+  [] (!b) &amp;  (s=77) -&gt; 0.179487179487: (s'=78)
+                      +0.461538461538: (s'=85)
+                      +0.358974358974: (s'=13);
+  [] (!b) &amp;  (s=78) -&gt; 0.162790697674: (s'=79)
+                      +0.488372093023: (s'=86)
+                      +0.348837209302: (s'=14);
+  [] (!b) &amp;  (s=79) -&gt; 0.6: (s'=87)
+                      +0.4: (s'=15);
+  [] (!b) &amp;  (s=80) -&gt; 0.888888888889: (s'=81)
+                      +0.015873015873: (s'=96)
+                      +0.0952380952381: (s'=16);
+  [] (!b) &amp;  (s=81) -&gt; 0.675675675676: (s'=82)
+                      +0.0540540540541: (s'=97)
+                      +0.27027027027: (s'=17);
+  [] (!b) &amp;  (s=82) -&gt; 0.490196078431: (s'=83)
+                      +0.196078431373: (s'=84)
+                      +0.0588235294118: (s'=98)
+                      +0.254901960784: (s'=18);
+  [] (!b) &amp;  (s=83) -&gt; 0.5: (s'=85)
+                      +0.1: (s'=99)
+                      +0.4: (s'=19);
+  [] (!b) &amp;  (s=84) -&gt; 0.614035087719: (s'=85)
+                      +0.0526315789474: (s'=88)
+                      +0.0701754385965: (s'=100)
+                      +0.263157894737: (s'=20);
+  [] (!b) &amp;  (s=85) -&gt; 0.238095238095: (s'=86)
+                      +0.142857142857: (s'=89)
+                      +0.142857142857: (s'=101)
+                      +0.47619047619: (s'=21);
+  [] (!b) &amp;  (s=86) -&gt; 0.208333333333: (s'=87)
+                      +0.1875: (s'=90)
+                      +0.145833333333: (s'=102)
+                      +0.458333333333: (s'=22);
+  [] (!b) &amp;  (s=87) -&gt; 0.272727272727: (s'=91)
+                      +0.181818181818: (s'=103)
+                      +0.545454545455: (s'=23);
+  [] (!b) &amp;  (s=88) -&gt; 0.64406779661: (s'=89)
+                      +0.0847457627119: (s'=104)
+                      +0.271186440678: (s'=24);
+  [] (!b) &amp;  (s=89) -&gt; 0.302325581395: (s'=90)
+                      +0.186046511628: (s'=105)
+                      +0.511627906977: (s'=25);
+  [] (!b) &amp;  (s=90) -&gt; 0.254901960784: (s'=91)
+                      +0.0588235294118: (s'=92)
+                      +0.196078431373: (s'=106)
+                      +0.490196078431: (s'=26);
+  [] (!b) &amp;  (s=91) -&gt; 0.130434782609: (s'=93)
+                      +0.260869565217: (s'=107)
+                      +0.608695652174: (s'=27);
+  [] (!b) &amp;  (s=92) -&gt; 0.301886792453: (s'=93)
+                      +0.207547169811: (s'=108)
+                      +0.490566037736: (s'=28);
+  [] (!b) &amp;  (s=93) -&gt; 0.063829787234: (s'=94)
+                      +0.297872340426: (s'=109)
+                      +0.63829787234: (s'=29);
+  [] (!b) &amp;  (s=94) -&gt; 0.0612244897959: (s'=95)
+                      +0.30612244898: (s'=110)
+                      +0.632653061224: (s'=30);
+  [] (!b) &amp;  (s=95) -&gt; 0.333333333333: (s'=111)
+                      +0.666666666667: (s'=31);
+  [] (!b) &amp;  (s=96) -&gt; 0.890625: (s'=97)
+                      +0.109375: (s'=32);
+  [] (!b) &amp;  (s=97) -&gt; 0.684210526316: (s'=98)
+                      +0.315789473684: (s'=33);
+  [] (!b) &amp;  (s=98) -&gt; 0.490566037736: (s'=99)
+                      +0.207547169811: (s'=100)
+                      +0.301886792453: (s'=34);
+  [] (!b) &amp;  (s=99) -&gt; 0.52380952381: (s'=101)
+                      +0.47619047619: (s'=35);
+  [] (!b) &amp;  (s=100) -&gt; 0.616666666667: (s'=101)
+                       +0.0666666666667: (s'=104)
+                       +0.316666666667: (s'=36);
+  [] (!b) &amp;  (s=101) -&gt; 0.244444444444: (s'=102)
+                       +0.177777777778: (s'=105)
+                       +0.577777777778: (s'=37);
+  [] (!b) &amp;  (s=102) -&gt; 0.211538461538: (s'=103)
+                       +0.230769230769: (s'=106)
+                       +0.557692307692: (s'=38);
+  [] (!b) &amp;  (s=103) -&gt; 0.333333333333: (s'=107)
+                       +0.666666666667: (s'=39);
+  [] (!b) &amp;  (s=104) -&gt; 0.650793650794: (s'=105)
+                       +0.015873015873: (s'=112)
+                       +0.333333333333: (s'=40);
+  [] (!b) &amp;  (s=105) -&gt; 0.31914893617: (s'=106)
+                       +0.0425531914894: (s'=113)
+                       +0.63829787234: (s'=41);
+  [] (!b) &amp;  (s=106) -&gt; 0.263157894737: (s'=107)
+                       +0.0701754385965: (s'=108)
+                       +0.0526315789474: (s'=114)
+                       +0.614035087719: (s'=42);
+  [] (!b) &amp;  (s=107) -&gt; 0.153846153846: (s'=109)
+                       +0.0769230769231: (s'=115)
+                       +0.769230769231: (s'=43);
+  [] (!b) &amp;  (s=108) -&gt; 0.316666666667: (s'=109)
+                       +0.0666666666667: (s'=116)
+                       +0.616666666667: (s'=44);
+  [] (!b) &amp;  (s=109) -&gt; 0.0740740740741: (s'=110)
+                       +0.111111111111: (s'=117)
+                       +0.814814814815: (s'=45);
+  [] (!b) &amp;  (s=110) -&gt; 0.0701754385965: (s'=111)
+                       +0.122807017544: (s'=118)
+                       +0.80701754386: (s'=46);
+  [] (!b) &amp;  (s=111) -&gt; 0.142857142857: (s'=119)
+                       +0.857142857143: (s'=47);
+  [] (!b) &amp;  (s=112) -&gt; 0.65625: (s'=113)
+                       +0.34375: (s'=48);
+  [] (!b) &amp;  (s=113) -&gt; 0.333333333333: (s'=114)
+                       +0.666666666667: (s'=49);
+  [] (!b) &amp;  (s=114) -&gt; 0.271186440678: (s'=115)
+                       +0.0847457627119: (s'=116)
+                       +0.64406779661: (s'=50);
+  [] (!b) &amp;  (s=115) -&gt; 0.185185185185: (s'=117)
+                       +0.814814814815: (s'=51);
+  [] (!b) &amp;  (s=116) -&gt; 0.333333333333: (s'=117)
+                       +0.015873015873: (s'=120)
+                       +0.650793650794: (s'=52);
+  [] (!b) &amp;  (s=117) -&gt; 0.0877192982456: (s'=118)
+                       +0.0350877192982: (s'=121)
+                       +0.877192982456: (s'=53);
+  [] (!b) &amp;  (s=118) -&gt; 0.0819672131148: (s'=119)
+                       +0.0491803278689: (s'=122)
+                       +0.868852459016: (s'=54);
+  [] (!b) &amp;  (s=119) -&gt; 0.0666666666667: (s'=123)
+                       +0.933333333333: (s'=55);
+  [] (!b) &amp;  (s=120) -&gt; 0.34375: (s'=121)
+                       +0.65625: (s'=56);
+  [] (!b) &amp;  (s=121) -&gt; 0.103448275862: (s'=122)
+                       +0.896551724138: (s'=57);
+  [] (!b) &amp;  (s=122) -&gt; 0.0952380952381: (s'=123)
+                       +0.015873015873: (s'=124)
+                       +0.888888888889: (s'=58);
+  [] (!b) &amp;  (s=123) -&gt; 0.0322580645161: (s'=125)
+                       +0.967741935484: (s'=59);
+  [] (!b) &amp;  (s=124) -&gt; 0.109375: (s'=125)
+                       +0.890625: (s'=60);
+  [] (!b) &amp;  (s=125) -&gt; 0.015873015873: (s'=126)
+                       +0.984126984127: (s'=61);
+  [] (!b) &amp;  (s=126) -&gt; 0.015625: (s'=127)
+                       +0.984375: (s'=62);
+  [] (!b) &amp;  (s=127) -&gt; 1.0: (s'=63);
+  // transition to start counting
+  [] (!b) -&gt; (b'=true) ;
+
+  [] (counting) &amp;  (s=0) -&gt; 1.0: (s'=1) ;
+  [] (counting) &amp;  (s=1) -&gt; 1.0: (s'=2) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a) ;
+  [] (counting) &amp;  (s=2) -&gt; 0.666666666667: (s'=3)
+                           +0.333333333333: (s'=4) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b) ;
+  [] (counting) &amp;  (s=3) -&gt; 1.0: (s'=5) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b) ;
+  [] (counting) &amp;  (s=4) -&gt; 0.857142857143: (s'=5)
+                           +0.142857142857: (s'=8) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c) ;
+  [] (counting) &amp;  (s=5) -&gt; 0.5: (s'=6) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                           +0.5: (s'=9) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c) ;
+  [] (counting) &amp;  (s=6) -&gt; 0.4: (s'=7)
+                           +0.6: (s'=10) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c) ;
+  [] (counting) &amp;  (s=7) -&gt; 1.0: (s'=11) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c) ;
+  [] (counting) &amp;  (s=8) -&gt; 0.933333333333: (s'=9)
+                           +0.0666666666667: (s'=16) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=9) -&gt; 0.75: (s'=10) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                           +0.25: (s'=17) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=10) -&gt; 0.545454545455: (s'=11)
+                            +0.181818181818: (s'=12) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.272727272727: (s'=18) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=11) -&gt; 0.5: (s'=13) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.5: (s'=19) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=12) -&gt; 0.666666666667: (s'=13)
+                            +0.333333333333: (s'=20) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=13) -&gt; 0.25: (s'=14) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.75: (s'=21) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=14) -&gt; 0.222222222222: (s'=15)
+                            +0.777777777778: (s'=22) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=15) -&gt; 1.0: (s'=23) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=16) -&gt; 0.967741935484: (s'=17)
+                            +0.0322580645161: (s'=32) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=17) -&gt; 0.875: (s'=18) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.125: (s'=33) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=18) -&gt; 0.608695652174: (s'=19)
+                            +0.260869565217: (s'=20) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.130434782609: (s'=34) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=19) -&gt; 0.75: (s'=21) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.25: (s'=35) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=20) -&gt; 0.769230769231: (s'=21)
+                            +0.0769230769231: (s'=24) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.153846153846: (s'=36) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=21) -&gt; 0.375: (s'=22) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.25: (s'=25) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.375: (s'=37) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=22) -&gt; 0.315789473684: (s'=23)
+                            +0.315789473684: (s'=26) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.368421052632: (s'=38) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=23) -&gt; 0.5: (s'=27) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.5: (s'=39) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=24) -&gt; 0.814814814815: (s'=25)
+                            +0.185185185185: (s'=40) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=25) -&gt; 0.5: (s'=26) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.5: (s'=41) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=26) -&gt; 0.4: (s'=27)
+                            +0.1: (s'=28) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.5: (s'=42) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=27) -&gt; 0.25: (s'=29) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.75: (s'=43) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=28) -&gt; 0.47619047619: (s'=29)
+                            +0.52380952381: (s'=44) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=29) -&gt; 0.125: (s'=30) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.875: (s'=45) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=30) -&gt; 0.117647058824: (s'=31)
+                            +0.882352941176: (s'=46) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=31) -&gt; 1.0: (s'=47) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=32) -&gt; 0.984126984127: (s'=33)
+                            +0.015873015873: (s'=64) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=33) -&gt; 0.9375: (s'=34) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.0625: (s'=65) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=34) -&gt; 0.63829787234: (s'=35)
+                            +0.297872340426: (s'=36) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.063829787234: (s'=66) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=35) -&gt; 0.875: (s'=37) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.125: (s'=67) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=36) -&gt; 0.814814814815: (s'=37)
+                            +0.111111111111: (s'=40) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.0740740740741: (s'=68) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=37) -&gt; 0.4375: (s'=38) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.375: (s'=41) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.1875: (s'=69) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=38) -&gt; 0.358974358974: (s'=39)
+                            +0.461538461538: (s'=42) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.179487179487: (s'=70) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=39) -&gt; 0.75: (s'=43) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.25: (s'=71) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=40) -&gt; 0.877192982456: (s'=41)
+                            +0.0350877192982: (s'=48) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.0877192982456: (s'=72) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=41) -&gt; 0.625: (s'=42) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.125: (s'=49) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.25: (s'=73) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=42) -&gt; 0.47619047619: (s'=43)
+                            +0.142857142857: (s'=44) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.142857142857: (s'=50) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.238095238095: (s'=74) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=43) -&gt; 0.375: (s'=45) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.25: (s'=51) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.375: (s'=75) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=44) -&gt; 0.577777777778: (s'=45)
+                            +0.177777777778: (s'=52) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.244444444444: (s'=76) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=45) -&gt; 0.1875: (s'=46) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.375: (s'=53) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.4375: (s'=77) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=46) -&gt; 0.171428571429: (s'=47)
+                            +0.4: (s'=54) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.428571428571: (s'=78) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=47) -&gt; 0.5: (s'=55) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.5: (s'=79) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=48) -&gt; 0.896551724138: (s'=49)
+                            +0.103448275862: (s'=80) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=49) -&gt; 0.6875: (s'=50) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.3125: (s'=81) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=50) -&gt; 0.511627906977: (s'=51)
+                            +0.186046511628: (s'=52) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.302325581395: (s'=82) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=51) -&gt; 0.5: (s'=53) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.5: (s'=83) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=52) -&gt; 0.63829787234: (s'=53)
+                            +0.0425531914894: (s'=56) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.31914893617: (s'=84) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=53) -&gt; 0.25: (s'=54) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.125: (s'=57) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.625: (s'=85) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=54) -&gt; 0.222222222222: (s'=55)
+                            +0.166666666667: (s'=58) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.611111111111: (s'=86) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=55) -&gt; 0.25: (s'=59) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.75: (s'=87) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=56) -&gt; 0.666666666667: (s'=57)
+                            +0.333333333333: (s'=88) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=57) -&gt; 0.3125: (s'=58) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.6875: (s'=89) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=58) -&gt; 0.27027027027: (s'=59)
+                            +0.0540540540541: (s'=60) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.675675675676: (s'=90) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=59) -&gt; 0.125: (s'=61) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.875: (s'=91) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=60) -&gt; 0.315789473684: (s'=61)
+                            +0.684210526316: (s'=92) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=61) -&gt; 0.0625: (s'=62) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.9375: (s'=93) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=62) -&gt; 0.0606060606061: (s'=63)
+                            +0.939393939394: (s'=94) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=63) -&gt; 1.0: (s'=95) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=64) -&gt; 0.984375: (s'=65)
+                            +0.015625: (s'=0) ;
+  [] (counting) &amp;  (s=65) -&gt; 0.939393939394: (s'=66) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.0606060606061: (s'=1) ;
+  [] (counting) &amp;  (s=66) -&gt; 0.632653061224: (s'=67)
+                            +0.30612244898: (s'=68) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.0612244897959: (s'=2) ;
+  [] (counting) &amp;  (s=67) -&gt; 0.882352941176: (s'=69) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.117647058824: (s'=3) ;
+  [] (counting) &amp;  (s=68) -&gt; 0.80701754386: (s'=69)
+                            +0.122807017544: (s'=72) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.0701754385965: (s'=4) ;
+  [] (counting) &amp;  (s=69) -&gt; 0.428571428571: (s'=70) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.4: (s'=73) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.171428571429: (s'=5) ;
+  [] (counting) &amp;  (s=70) -&gt; 0.348837209302: (s'=71)
+                            +0.488372093023: (s'=74) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.162790697674: (s'=6) ;
+  [] (counting) &amp;  (s=71) -&gt; 0.777777777778: (s'=75) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.222222222222: (s'=7) ;
+  [] (counting) &amp;  (s=72) -&gt; 0.868852459016: (s'=73)
+                            +0.0491803278689: (s'=80) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.0819672131148: (s'=8) ;
+  [] (counting) &amp;  (s=73) -&gt; 0.611111111111: (s'=74) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.166666666667: (s'=81) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.222222222222: (s'=9) ;
+  [] (counting) &amp;  (s=74) -&gt; 0.458333333333: (s'=75)
+                            +0.145833333333: (s'=76) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.1875: (s'=82) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.208333333333: (s'=10) ;
+  [] (counting) &amp;  (s=75) -&gt; 0.368421052632: (s'=77) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.315789473684: (s'=83) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.315789473684: (s'=11) ;
+  [] (counting) &amp;  (s=76) -&gt; 0.557692307692: (s'=77)
+                            +0.230769230769: (s'=84) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.211538461538: (s'=12) ;
+  [] (counting) &amp;  (s=77) -&gt; 0.179487179487: (s'=78) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.461538461538: (s'=85) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.358974358974: (s'=13) ;
+  [] (counting) &amp;  (s=78) -&gt; 0.162790697674: (s'=79)
+                            +0.488372093023: (s'=86) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.348837209302: (s'=14) ;
+  [] (counting) &amp;  (s=79) -&gt; 0.6: (s'=87) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.4: (s'=15) ;
+  [] (counting) &amp;  (s=80) -&gt; 0.888888888889: (s'=81)
+                            +0.015873015873: (s'=96) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.0952380952381: (s'=16) ;
+  [] (counting) &amp;  (s=81) -&gt; 0.675675675676: (s'=82) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.0540540540541: (s'=97) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.27027027027: (s'=17) ;
+  [] (counting) &amp;  (s=82) -&gt; 0.490196078431: (s'=83)
+                            +0.196078431373: (s'=84) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.0588235294118: (s'=98) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.254901960784: (s'=18) ;
+  [] (counting) &amp;  (s=83) -&gt; 0.5: (s'=85) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.1: (s'=99) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.4: (s'=19) ;
+  [] (counting) &amp;  (s=84) -&gt; 0.614035087719: (s'=85)
+                            +0.0526315789474: (s'=88) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.0701754385965: (s'=100) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.263157894737: (s'=20) ;
+  [] (counting) &amp;  (s=85) -&gt; 0.238095238095: (s'=86) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.142857142857: (s'=89) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.142857142857: (s'=101) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.47619047619: (s'=21) ;
+  [] (counting) &amp;  (s=86) -&gt; 0.208333333333: (s'=87)
+                            +0.1875: (s'=90) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.145833333333: (s'=102) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.458333333333: (s'=22) ;
+  [] (counting) &amp;  (s=87) -&gt; 0.272727272727: (s'=91) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.181818181818: (s'=103) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.545454545455: (s'=23) ;
+  [] (counting) &amp;  (s=88) -&gt; 0.64406779661: (s'=89)
+                            +0.0847457627119: (s'=104) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.271186440678: (s'=24) ;
+  [] (counting) &amp;  (s=89) -&gt; 0.302325581395: (s'=90) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.186046511628: (s'=105) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.511627906977: (s'=25) ;
+  [] (counting) &amp;  (s=90) -&gt; 0.254901960784: (s'=91)
+                            +0.0588235294118: (s'=92) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.196078431373: (s'=106) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.490196078431: (s'=26) ;
+  [] (counting) &amp;  (s=91) -&gt; 0.130434782609: (s'=93) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.260869565217: (s'=107) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.608695652174: (s'=27) ;
+  [] (counting) &amp;  (s=92) -&gt; 0.301886792453: (s'=93)
+                            +0.207547169811: (s'=108) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.490566037736: (s'=28) ;
+  [] (counting) &amp;  (s=93) -&gt; 0.063829787234: (s'=94) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.297872340426: (s'=109) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.63829787234: (s'=29) ;
+  [] (counting) &amp;  (s=94) -&gt; 0.0612244897959: (s'=95)
+                            +0.30612244898: (s'=110) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.632653061224: (s'=30) ;
+  [] (counting) &amp;  (s=95) -&gt; 0.333333333333: (s'=111) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.666666666667: (s'=31) ;
+  [] (counting) &amp;  (s=96) -&gt; 0.890625: (s'=97)
+                            +0.109375: (s'=32) ;
+  [] (counting) &amp;  (s=97) -&gt; 0.684210526316: (s'=98) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.315789473684: (s'=33) ;
+  [] (counting) &amp;  (s=98) -&gt; 0.490566037736: (s'=99)
+                            +0.207547169811: (s'=100) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.301886792453: (s'=34) ;
+  [] (counting) &amp;  (s=99) -&gt; 0.52380952381: (s'=101) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.47619047619: (s'=35) ;
+  [] (counting) &amp;  (s=100) -&gt; 0.616666666667: (s'=101)
+                             +0.0666666666667: (s'=104) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                             +0.316666666667: (s'=36) ;
+  [] (counting) &amp;  (s=101) -&gt; 0.244444444444: (s'=102) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                             +0.177777777778: (s'=105) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                             +0.577777777778: (s'=37) ;
+  [] (counting) &amp;  (s=102) -&gt; 0.211538461538: (s'=103)
+                             +0.230769230769: (s'=106) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                             +0.557692307692: (s'=38) ;
+  [] (counting) &amp;  (s=103) -&gt; 0.333333333333: (s'=107) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                             +0.666666666667: (s'=39) ;
+  [] (counting) &amp;  (s=104) -&gt; 0.650793650794: (s'=105)
+                             +0.015873015873: (s'=112) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                             +0.333333333333: (s'=40) ;
+  [] (counting) &amp;  (s=105) -&gt; 0.31914893617: (s'=106) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                             +0.0425531914894: (s'=113) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                             +0.63829787234: (s'=41) ;
+  [] (counting) &amp;  (s=106) -&gt; 0.263157894737: (s'=107)
+                             +0.0701754385965: (s'=108) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                             +0.0526315789474: (s'=114) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                             +0.614035087719: (s'=42) ;
+  [] (counting) &amp;  (s=107) -&gt; 0.153846153846: (s'=109) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                             +0.0769230769231: (s'=115) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                             +0.769230769231: (s'=43) ;
+  [] (counting) &amp;  (s=108) -&gt; 0.316666666667: (s'=109)
+                             +0.0666666666667: (s'=116) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                             +0.616666666667: (s'=44) ;
+  [] (counting) &amp;  (s=109) -&gt; 0.0740740740741: (s'=110) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                             +0.111111111111: (s'=117) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                             +0.814814814815: (s'=45) ;
+  [] (counting) &amp;  (s=110) -&gt; 0.0701754385965: (s'=111)
+                             +0.122807017544: (s'=118) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                             +0.80701754386: (s'=46) ;
+  [] (counting) &amp;  (s=111) -&gt; 0.142857142857: (s'=119) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                             +0.857142857143: (s'=47) ;
+  [] (counting) &amp;  (s=112) -&gt; 0.65625: (s'=113)
+                             +0.34375: (s'=48) ;
+  [] (counting) &amp;  (s=113) -&gt; 0.333333333333: (s'=114) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                             +0.666666666667: (s'=49) ;
+  [] (counting) &amp;  (s=114) -&gt; 0.271186440678: (s'=115)
+                             +0.0847457627119: (s'=116) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                             +0.64406779661: (s'=50) ;
+  [] (counting) &amp;  (s=115) -&gt; 0.185185185185: (s'=117) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                             +0.814814814815: (s'=51) ;
+  [] (counting) &amp;  (s=116) -&gt; 0.333333333333: (s'=117)
+                             +0.015873015873: (s'=120) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                             +0.650793650794: (s'=52) ;
+  [] (counting) &amp;  (s=117) -&gt; 0.0877192982456: (s'=118) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                             +0.0350877192982: (s'=121) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                             +0.877192982456: (s'=53) ;
+  [] (counting) &amp;  (s=118) -&gt; 0.0819672131148: (s'=119)
+                             +0.0491803278689: (s'=122) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                             +0.868852459016: (s'=54) ;
+  [] (counting) &amp;  (s=119) -&gt; 0.0666666666667: (s'=123) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                             +0.933333333333: (s'=55) ;
+  [] (counting) &amp;  (s=120) -&gt; 0.34375: (s'=121)
+                             +0.65625: (s'=56) ;
+  [] (counting) &amp;  (s=121) -&gt; 0.103448275862: (s'=122) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                             +0.896551724138: (s'=57) ;
+  [] (counting) &amp;  (s=122) -&gt; 0.0952380952381: (s'=123)
+                             +0.015873015873: (s'=124) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                             +0.888888888889: (s'=58) ;
+  [] (counting) &amp;  (s=123) -&gt; 0.0322580645161: (s'=125) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                             +0.967741935484: (s'=59) ;
+  [] (counting) &amp;  (s=124) -&gt; 0.109375: (s'=125)
+                             +0.890625: (s'=60) ;
+  [] (counting) &amp;  (s=125) -&gt; 0.015873015873: (s'=126) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                             +0.984126984127: (s'=61) ;
+  [] (counting) &amp;  (s=126) -&gt; 0.015625: (s'=127)
+                             +0.984375: (s'=62) ;
+  [] (counting) &amp;  (s=127) -&gt; 1.0: (s'=63) ;
+
+endmodule</content>
+    </model>
+    <model name="chain7uni.pm" type="rml">
+      <content>dtmc
+
+// partition0 : 
+// {
+//   {e, f},
+//   {c, d},
+//   {a, b},
+// }
+//
+// partition1 : 
+// {
+//   {a, d},
+//   {b, e},
+//   {c, f},
+// }
+//
+// partition2 : 
+// {
+//   {c, d},
+//   {b, e},
+//   {a, f},
+// }
+//
+
+
+// Actual code
+// -----------
+
+// number of step to count
+const int k ;
+
+//guard when counting
+formula counting = (b) &amp; (c &lt; k) ;
+
+//formulas to update interaction counters
+formula updp0a = mod(max(p0a,p0b)+1, k+1);
+formula updp0b = mod(max(p0b,p0a,p0c)+1, k+1);
+formula updp0c = mod(max(p0c,p0b,p0d)+1, k+1);
+formula updp0d = mod(max(p0d,p0c,p0e)+1, k+1);
+formula updp0e = mod(max(p0e,p0d,p0f)+1, k+1);
+formula updp0f = mod(max(p0f,p0e)+1, k+1);
+
+formula updp1a = mod(max(p1a,p1b,p1d)+1, k+1);
+formula updp1b = mod(max(p1b,p1a,p1c,p1e)+1, k+1);
+formula updp1c = mod(max(p1c,p1b,p1d,p1f)+1, k+1);
+formula updp1d = mod(max(p1d,p1c,p1e,p1a)+1, k+1);
+formula updp1e = mod(max(p1e,p1d,p1f,p1b)+1, k+1);
+formula updp1f = mod(max(p1f,p1e,p1c)+1, k+1);
+
+formula updp2a = mod(max(p2a,p2b,p2f)+1, k+1);
+formula updp2b = mod(max(p2b,p2a,p2c,p2e)+1, k+1);
+formula updp2c = mod(max(p2c,p2b,p2d)+1, k+1);
+formula updp2d = mod(max(p2d,p2c,p2e)+1, k+1);
+formula updp2e = mod(max(p2e,p2d,p2f,p2b)+1, k+1);
+formula updp2f = mod(max(p2f,p2e,p2a)+1, k+1);
+
+
+// labels to use in properties to check
+label "p0steps" = max(p0a,p0b,p0c,p0d,p0e,p0f) ;
+label "p1steps" = max(p1a,p1b,p1c,p1d,p1e,p1f) ;
+label "p2steps" = max(p2a,p2b,p2c,p2d,p2e,p2f) ;
+
+// range of the values to sort
+const int maxval = 3 ;
+
+module chain
+
+  // --------- 
+  // VARIABLES 
+  // _________ 
+
+  //state variable
+  s: [0..127] init 0 ;
+
+  // variables to store the last exec date for each interaction, for partition0
+  p0a:[0..k] init 0;
+  p0b:[0..k] init 0;
+  p0c:[0..k] init 0;
+  p0d:[0..k] init 0;
+  p0e:[0..k] init 0;
+  p0f:[0..k] init 0;
+
+  // variables to store the last exec date for each interaction, for partition1
+  p1a:[0..k] init 0;
+  p1b:[0..k] init 0;
+  p1c:[0..k] init 0;
+  p1d:[0..k] init 0;
+  p1e:[0..k] init 0;
+  p1f:[0..k] init 0;
+
+  // variables to store the last exec date for each interaction, for partition2
+  p2a:[0..k] init 0;
+  p2b:[0..k] init 0;
+  p2c:[0..k] init 0;
+  p2d:[0..k] init 0;
+  p2e:[0..k] init 0;
+  p2f:[0..k] init 0;
+
+  //boolean to switch counting 
+  b: bool init false;
+  //counter
+  c: [0..k] init 0;
+
+
+  // ----------- 
+  // TRANSITIONS 
+  // ___________ 
+
+
+  [] (!b) &amp;  (s=0) -&gt; 1.0: (s'=1);
+  [] (!b) &amp;  (s=1) -&gt; 1.0: (s'=2);
+  [] (!b) &amp;  (s=2) -&gt; 0.5: (s'=3)
+                     +0.5: (s'=4);
+  [] (!b) &amp;  (s=3) -&gt; 1.0: (s'=5);
+  [] (!b) &amp;  (s=4) -&gt; 0.5: (s'=5)
+                     +0.5: (s'=8);
+  [] (!b) &amp;  (s=5) -&gt; 0.5: (s'=6)
+                     +0.5: (s'=9);
+  [] (!b) &amp;  (s=6) -&gt; 0.5: (s'=7)
+                     +0.5: (s'=10);
+  [] (!b) &amp;  (s=7) -&gt; 1.0: (s'=11);
+  [] (!b) &amp;  (s=8) -&gt; 0.5: (s'=9)
+                     +0.5: (s'=16);
+  [] (!b) &amp;  (s=9) -&gt; 0.5: (s'=10)
+                     +0.5: (s'=17);
+  [] (!b) &amp;  (s=10) -&gt; 0.333333333333: (s'=11)
+                      +0.333333333333: (s'=12)
+                      +0.333333333333: (s'=18);
+  [] (!b) &amp;  (s=11) -&gt; 0.5: (s'=13)
+                      +0.5: (s'=19);
+  [] (!b) &amp;  (s=12) -&gt; 0.5: (s'=13)
+                      +0.5: (s'=20);
+  [] (!b) &amp;  (s=13) -&gt; 0.5: (s'=14)
+                      +0.5: (s'=21);
+  [] (!b) &amp;  (s=14) -&gt; 0.5: (s'=15)
+                      +0.5: (s'=22);
+  [] (!b) &amp;  (s=15) -&gt; 1.0: (s'=23);
+  [] (!b) &amp;  (s=16) -&gt; 0.5: (s'=17)
+                      +0.5: (s'=32);
+  [] (!b) &amp;  (s=17) -&gt; 0.5: (s'=18)
+                      +0.5: (s'=33);
+  [] (!b) &amp;  (s=18) -&gt; 0.333333333333: (s'=19)
+                      +0.333333333333: (s'=20)
+                      +0.333333333333: (s'=34);
+  [] (!b) &amp;  (s=19) -&gt; 0.5: (s'=21)
+                      +0.5: (s'=35);
+  [] (!b) &amp;  (s=20) -&gt; 0.333333333333: (s'=21)
+                      +0.333333333333: (s'=24)
+                      +0.333333333333: (s'=36);
+  [] (!b) &amp;  (s=21) -&gt; 0.333333333333: (s'=22)
+                      +0.333333333333: (s'=25)
+                      +0.333333333333: (s'=37);
+  [] (!b) &amp;  (s=22) -&gt; 0.333333333333: (s'=23)
+                      +0.333333333333: (s'=26)
+                      +0.333333333333: (s'=38);
+  [] (!b) &amp;  (s=23) -&gt; 0.5: (s'=27)
+                      +0.5: (s'=39);
+  [] (!b) &amp;  (s=24) -&gt; 0.5: (s'=25)
+                      +0.5: (s'=40);
+  [] (!b) &amp;  (s=25) -&gt; 0.5: (s'=26)
+                      +0.5: (s'=41);
+  [] (!b) &amp;  (s=26) -&gt; 0.333333333333: (s'=27)
+                      +0.333333333333: (s'=28)
+                      +0.333333333333: (s'=42);
+  [] (!b) &amp;  (s=27) -&gt; 0.5: (s'=29)
+                      +0.5: (s'=43);
+  [] (!b) &amp;  (s=28) -&gt; 0.5: (s'=29)
+                      +0.5: (s'=44);
+  [] (!b) &amp;  (s=29) -&gt; 0.5: (s'=30)
+                      +0.5: (s'=45);
+  [] (!b) &amp;  (s=30) -&gt; 0.5: (s'=31)
+                      +0.5: (s'=46);
+  [] (!b) &amp;  (s=31) -&gt; 1.0: (s'=47);
+  [] (!b) &amp;  (s=32) -&gt; 0.5: (s'=33)
+                      +0.5: (s'=64);
+  [] (!b) &amp;  (s=33) -&gt; 0.5: (s'=34)
+                      +0.5: (s'=65);
+  [] (!b) &amp;  (s=34) -&gt; 0.333333333333: (s'=35)
+                      +0.333333333333: (s'=36)
+                      +0.333333333333: (s'=66);
+  [] (!b) &amp;  (s=35) -&gt; 0.5: (s'=37)
+                      +0.5: (s'=67);
+  [] (!b) &amp;  (s=36) -&gt; 0.333333333333: (s'=37)
+                      +0.333333333333: (s'=40)
+                      +0.333333333333: (s'=68);
+  [] (!b) &amp;  (s=37) -&gt; 0.333333333333: (s'=38)
+                      +0.333333333333: (s'=41)
+                      +0.333333333333: (s'=69);
+  [] (!b) &amp;  (s=38) -&gt; 0.333333333333: (s'=39)
+                      +0.333333333333: (s'=42)
+                      +0.333333333333: (s'=70);
+  [] (!b) &amp;  (s=39) -&gt; 0.5: (s'=43)
+                      +0.5: (s'=71);
+  [] (!b) &amp;  (s=40) -&gt; 0.333333333333: (s'=41)
+                      +0.333333333333: (s'=48)
+                      +0.333333333333: (s'=72);
+  [] (!b) &amp;  (s=41) -&gt; 0.333333333333: (s'=42)
+                      +0.333333333333: (s'=49)
+                      +0.333333333333: (s'=73);
+  [] (!b) &amp;  (s=42) -&gt; 0.25: (s'=43)
+                      +0.25: (s'=44)
+                      +0.25: (s'=50)
+                      +0.25: (s'=74);
+  [] (!b) &amp;  (s=43) -&gt; 0.333333333333: (s'=45)
+                      +0.333333333333: (s'=51)
+                      +0.333333333333: (s'=75);
+  [] (!b) &amp;  (s=44) -&gt; 0.333333333333: (s'=45)
+                      +0.333333333333: (s'=52)
+                      +0.333333333333: (s'=76);
+  [] (!b) &amp;  (s=45) -&gt; 0.333333333333: (s'=46)
+                      +0.333333333333: (s'=53)
+                      +0.333333333333: (s'=77);
+  [] (!b) &amp;  (s=46) -&gt; 0.333333333333: (s'=47)
+                      +0.333333333333: (s'=54)
+                      +0.333333333333: (s'=78);
+  [] (!b) &amp;  (s=47) -&gt; 0.5: (s'=55)
+                      +0.5: (s'=79);
+  [] (!b) &amp;  (s=48) -&gt; 0.5: (s'=49)
+                      +0.5: (s'=80);
+  [] (!b) &amp;  (s=49) -&gt; 0.5: (s'=50)
+                      +0.5: (s'=81);
+  [] (!b) &amp;  (s=50) -&gt; 0.333333333333: (s'=51)
+                      +0.333333333333: (s'=52)
+                      +0.333333333333: (s'=82);
+  [] (!b) &amp;  (s=51) -&gt; 0.5: (s'=53)
+                      +0.5: (s'=83);
+  [] (!b) &amp;  (s=52) -&gt; 0.333333333333: (s'=53)
+                      +0.333333333333: (s'=56)
+                      +0.333333333333: (s'=84);
+  [] (!b) &amp;  (s=53) -&gt; 0.333333333333: (s'=54)
+                      +0.333333333333: (s'=57)
+                      +0.333333333333: (s'=85);
+  [] (!b) &amp;  (s=54) -&gt; 0.333333333333: (s'=55)
+                      +0.333333333333: (s'=58)
+                      +0.333333333333: (s'=86);
+  [] (!b) &amp;  (s=55) -&gt; 0.5: (s'=59)
+                      +0.5: (s'=87);
+  [] (!b) &amp;  (s=56) -&gt; 0.5: (s'=57)
+                      +0.5: (s'=88);
+  [] (!b) &amp;  (s=57) -&gt; 0.5: (s'=58)
+                      +0.5: (s'=89);
+  [] (!b) &amp;  (s=58) -&gt; 0.333333333333: (s'=59)
+                      +0.333333333333: (s'=60)
+                      +0.333333333333: (s'=90);
+  [] (!b) &amp;  (s=59) -&gt; 0.5: (s'=61)
+                      +0.5: (s'=91);
+  [] (!b) &amp;  (s=60) -&gt; 0.5: (s'=61)
+                      +0.5: (s'=92);
+  [] (!b) &amp;  (s=61) -&gt; 0.5: (s'=62)
+                      +0.5: (s'=93);
+  [] (!b) &amp;  (s=62) -&gt; 0.5: (s'=63)
+                      +0.5: (s'=94);
+  [] (!b) &amp;  (s=63) -&gt; 1.0: (s'=95);
+  [] (!b) &amp;  (s=64) -&gt; 0.5: (s'=65)
+                      +0.5: (s'=0);
+  [] (!b) &amp;  (s=65) -&gt; 0.5: (s'=66)
+                      +0.5: (s'=1);
+  [] (!b) &amp;  (s=66) -&gt; 0.333333333333: (s'=67)
+                      +0.333333333333: (s'=68)
+                      +0.333333333333: (s'=2);
+  [] (!b) &amp;  (s=67) -&gt; 0.5: (s'=69)
+                      +0.5: (s'=3);
+  [] (!b) &amp;  (s=68) -&gt; 0.333333333333: (s'=69)
+                      +0.333333333333: (s'=72)
+                      +0.333333333333: (s'=4);
+  [] (!b) &amp;  (s=69) -&gt; 0.333333333333: (s'=70)
+                      +0.333333333333: (s'=73)
+                      +0.333333333333: (s'=5);
+  [] (!b) &amp;  (s=70) -&gt; 0.333333333333: (s'=71)
+                      +0.333333333333: (s'=74)
+                      +0.333333333333: (s'=6);
+  [] (!b) &amp;  (s=71) -&gt; 0.5: (s'=75)
+                      +0.5: (s'=7);
+  [] (!b) &amp;  (s=72) -&gt; 0.333333333333: (s'=73)
+                      +0.333333333333: (s'=80)
+                      +0.333333333333: (s'=8);
+  [] (!b) &amp;  (s=73) -&gt; 0.333333333333: (s'=74)
+                      +0.333333333333: (s'=81)
+                      +0.333333333333: (s'=9);
+  [] (!b) &amp;  (s=74) -&gt; 0.25: (s'=75)
+                      +0.25: (s'=76)
+                      +0.25: (s'=82)
+                      +0.25: (s'=10);
+  [] (!b) &amp;  (s=75) -&gt; 0.333333333333: (s'=77)
+                      +0.333333333333: (s'=83)
+                      +0.333333333333: (s'=11);
+  [] (!b) &amp;  (s=76) -&gt; 0.333333333333: (s'=77)
+                      +0.333333333333: (s'=84)
+                      +0.333333333333: (s'=12);
+  [] (!b) &amp;  (s=77) -&gt; 0.333333333333: (s'=78)
+                      +0.333333333333: (s'=85)
+                      +0.333333333333: (s'=13);
+  [] (!b) &amp;  (s=78) -&gt; 0.333333333333: (s'=79)
+                      +0.333333333333: (s'=86)
+                      +0.333333333333: (s'=14);
+  [] (!b) &amp;  (s=79) -&gt; 0.5: (s'=87)
+                      +0.5: (s'=15);
+  [] (!b) &amp;  (s=80) -&gt; 0.333333333333: (s'=81)
+                      +0.333333333333: (s'=96)
+                      +0.333333333333: (s'=16);
+  [] (!b) &amp;  (s=81) -&gt; 0.333333333333: (s'=82)
+                      +0.333333333333: (s'=97)
+                      +0.333333333333: (s'=17);
+  [] (!b) &amp;  (s=82) -&gt; 0.25: (s'=83)
+                      +0.25: (s'=84)
+                      +0.25: (s'=98)
+                      +0.25: (s'=18);
+  [] (!b) &amp;  (s=83) -&gt; 0.333333333333: (s'=85)
+                      +0.333333333333: (s'=99)
+                      +0.333333333333: (s'=19);
+  [] (!b) &amp;  (s=84) -&gt; 0.25: (s'=85)
+                      +0.25: (s'=88)
+                      +0.25: (s'=100)
+                      +0.25: (s'=20);
+  [] (!b) &amp;  (s=85) -&gt; 0.25: (s'=86)
+                      +0.25: (s'=89)
+                      +0.25: (s'=101)
+                      +0.25: (s'=21);
+  [] (!b) &amp;  (s=86) -&gt; 0.25: (s'=87)
+                      +0.25: (s'=90)
+                      +0.25: (s'=102)
+                      +0.25: (s'=22);
+  [] (!b) &amp;  (s=87) -&gt; 0.333333333333: (s'=91)
+                      +0.333333333333: (s'=103)
+                      +0.333333333333: (s'=23);
+  [] (!b) &amp;  (s=88) -&gt; 0.333333333333: (s'=89)
+                      +0.333333333333: (s'=104)
+                      +0.333333333333: (s'=24);
+  [] (!b) &amp;  (s=89) -&gt; 0.333333333333: (s'=90)
+                      +0.333333333333: (s'=105)
+                      +0.333333333333: (s'=25);
+  [] (!b) &amp;  (s=90) -&gt; 0.25: (s'=91)
+                      +0.25: (s'=92)
+                      +0.25: (s'=106)
+                      +0.25: (s'=26);
+  [] (!b) &amp;  (s=91) -&gt; 0.333333333333: (s'=93)
+                      +0.333333333333: (s'=107)
+                      +0.333333333333: (s'=27);
+  [] (!b) &amp;  (s=92) -&gt; 0.333333333333: (s'=93)
+                      +0.333333333333: (s'=108)
+                      +0.333333333333: (s'=28);
+  [] (!b) &amp;  (s=93) -&gt; 0.333333333333: (s'=94)
+                      +0.333333333333: (s'=109)
+                      +0.333333333333: (s'=29);
+  [] (!b) &amp;  (s=94) -&gt; 0.333333333333: (s'=95)
+                      +0.333333333333: (s'=110)
+                      +0.333333333333: (s'=30);
+  [] (!b) &amp;  (s=95) -&gt; 0.5: (s'=111)
+                      +0.5: (s'=31);
+  [] (!b) &amp;  (s=96) -&gt; 0.5: (s'=97)
+                      +0.5: (s'=32);
+  [] (!b) &amp;  (s=97) -&gt; 0.5: (s'=98)
+                      +0.5: (s'=33);
+  [] (!b) &amp;  (s=98) -&gt; 0.333333333333: (s'=99)
+                      +0.333333333333: (s'=100)
+                      +0.333333333333: (s'=34);
+  [] (!b) &amp;  (s=99) -&gt; 0.5: (s'=101)
+                      +0.5: (s'=35);
+  [] (!b) &amp;  (s=100) -&gt; 0.333333333333: (s'=101)
+                       +0.333333333333: (s'=104)
+                       +0.333333333333: (s'=36);
+  [] (!b) &amp;  (s=101) -&gt; 0.333333333333: (s'=102)
+                       +0.333333333333: (s'=105)
+                       +0.333333333333: (s'=37);
+  [] (!b) &amp;  (s=102) -&gt; 0.333333333333: (s'=103)
+                       +0.333333333333: (s'=106)
+                       +0.333333333333: (s'=38);
+  [] (!b) &amp;  (s=103) -&gt; 0.5: (s'=107)
+                       +0.5: (s'=39);
+  [] (!b) &amp;  (s=104) -&gt; 0.333333333333: (s'=105)
+                       +0.333333333333: (s'=112)
+                       +0.333333333333: (s'=40);
+  [] (!b) &amp;  (s=105) -&gt; 0.333333333333: (s'=106)
+                       +0.333333333333: (s'=113)
+                       +0.333333333333: (s'=41);
+  [] (!b) &amp;  (s=106) -&gt; 0.25: (s'=107)
+                       +0.25: (s'=108)
+                       +0.25: (s'=114)
+                       +0.25: (s'=42);
+  [] (!b) &amp;  (s=107) -&gt; 0.333333333333: (s'=109)
+                       +0.333333333333: (s'=115)
+                       +0.333333333333: (s'=43);
+  [] (!b) &amp;  (s=108) -&gt; 0.333333333333: (s'=109)
+                       +0.333333333333: (s'=116)
+                       +0.333333333333: (s'=44);
+  [] (!b) &amp;  (s=109) -&gt; 0.333333333333: (s'=110)
+                       +0.333333333333: (s'=117)
+                       +0.333333333333: (s'=45);
+  [] (!b) &amp;  (s=110) -&gt; 0.333333333333: (s'=111)
+                       +0.333333333333: (s'=118)
+                       +0.333333333333: (s'=46);
+  [] (!b) &amp;  (s=111) -&gt; 0.5: (s'=119)
+                       +0.5: (s'=47);
+  [] (!b) &amp;  (s=112) -&gt; 0.5: (s'=113)
+                       +0.5: (s'=48);
+  [] (!b) &amp;  (s=113) -&gt; 0.5: (s'=114)
+                       +0.5: (s'=49);
+  [] (!b) &amp;  (s=114) -&gt; 0.333333333333: (s'=115)
+                       +0.333333333333: (s'=116)
+                       +0.333333333333: (s'=50);
+  [] (!b) &amp;  (s=115) -&gt; 0.5: (s'=117)
+                       +0.5: (s'=51);
+  [] (!b) &amp;  (s=116) -&gt; 0.333333333333: (s'=117)
+                       +0.333333333333: (s'=120)
+                       +0.333333333333: (s'=52);
+  [] (!b) &amp;  (s=117) -&gt; 0.333333333333: (s'=118)
+                       +0.333333333333: (s'=121)
+                       +0.333333333333: (s'=53);
+  [] (!b) &amp;  (s=118) -&gt; 0.333333333333: (s'=119)
+                       +0.333333333333: (s'=122)
+                       +0.333333333333: (s'=54);
+  [] (!b) &amp;  (s=119) -&gt; 0.5: (s'=123)
+                       +0.5: (s'=55);
+  [] (!b) &amp;  (s=120) -&gt; 0.5: (s'=121)
+                       +0.5: (s'=56);
+  [] (!b) &amp;  (s=121) -&gt; 0.5: (s'=122)
+                       +0.5: (s'=57);
+  [] (!b) &amp;  (s=122) -&gt; 0.333333333333: (s'=123)
+                       +0.333333333333: (s'=124)
+                       +0.333333333333: (s'=58);
+  [] (!b) &amp;  (s=123) -&gt; 0.5: (s'=125)
+                       +0.5: (s'=59);
+  [] (!b) &amp;  (s=124) -&gt; 0.5: (s'=125)
+                       +0.5: (s'=60);
+  [] (!b) &amp;  (s=125) -&gt; 0.5: (s'=126)
+                       +0.5: (s'=61);
+  [] (!b) &amp;  (s=126) -&gt; 0.5: (s'=127)
+                       +0.5: (s'=62);
+  [] (!b) &amp;  (s=127) -&gt; 1.0: (s'=63);
+  // transition to start counting
+  [] (!b) -&gt; (b'=true) ;
+
+  [] (counting) &amp;  (s=0) -&gt; 1.0: (s'=1) ;
+  [] (counting) &amp;  (s=1) -&gt; 1.0: (s'=2) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a) ;
+  [] (counting) &amp;  (s=2) -&gt; 0.5: (s'=3)
+                           +0.5: (s'=4) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b) ;
+  [] (counting) &amp;  (s=3) -&gt; 1.0: (s'=5) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b) ;
+  [] (counting) &amp;  (s=4) -&gt; 0.5: (s'=5)
+                           +0.5: (s'=8) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c) ;
+  [] (counting) &amp;  (s=5) -&gt; 0.5: (s'=6) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                           +0.5: (s'=9) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c) ;
+  [] (counting) &amp;  (s=6) -&gt; 0.5: (s'=7)
+                           +0.5: (s'=10) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c) ;
+  [] (counting) &amp;  (s=7) -&gt; 1.0: (s'=11) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c) ;
+  [] (counting) &amp;  (s=8) -&gt; 0.5: (s'=9)
+                           +0.5: (s'=16) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=9) -&gt; 0.5: (s'=10) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                           +0.5: (s'=17) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=10) -&gt; 0.333333333333: (s'=11)
+                            +0.333333333333: (s'=12) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.333333333333: (s'=18) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=11) -&gt; 0.5: (s'=13) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.5: (s'=19) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=12) -&gt; 0.5: (s'=13)
+                            +0.5: (s'=20) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=13) -&gt; 0.5: (s'=14) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.5: (s'=21) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=14) -&gt; 0.5: (s'=15)
+                            +0.5: (s'=22) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=15) -&gt; 1.0: (s'=23) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d) ;
+  [] (counting) &amp;  (s=16) -&gt; 0.5: (s'=17)
+                            +0.5: (s'=32) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=17) -&gt; 0.5: (s'=18) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.5: (s'=33) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=18) -&gt; 0.333333333333: (s'=19)
+                            +0.333333333333: (s'=20) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.333333333333: (s'=34) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=19) -&gt; 0.5: (s'=21) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.5: (s'=35) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=20) -&gt; 0.333333333333: (s'=21)
+                            +0.333333333333: (s'=24) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.333333333333: (s'=36) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=21) -&gt; 0.333333333333: (s'=22) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.333333333333: (s'=25) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.333333333333: (s'=37) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=22) -&gt; 0.333333333333: (s'=23)
+                            +0.333333333333: (s'=26) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.333333333333: (s'=38) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=23) -&gt; 0.5: (s'=27) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.5: (s'=39) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=24) -&gt; 0.5: (s'=25)
+                            +0.5: (s'=40) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=25) -&gt; 0.5: (s'=26) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.5: (s'=41) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=26) -&gt; 0.333333333333: (s'=27)
+                            +0.333333333333: (s'=28) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.333333333333: (s'=42) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=27) -&gt; 0.5: (s'=29) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.5: (s'=43) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=28) -&gt; 0.5: (s'=29)
+                            +0.5: (s'=44) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=29) -&gt; 0.5: (s'=30) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.5: (s'=45) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=30) -&gt; 0.5: (s'=31)
+                            +0.5: (s'=46) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=31) -&gt; 1.0: (s'=47) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e) ;
+  [] (counting) &amp;  (s=32) -&gt; 0.5: (s'=33)
+                            +0.5: (s'=64) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=33) -&gt; 0.5: (s'=34) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.5: (s'=65) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=34) -&gt; 0.333333333333: (s'=35)
+                            +0.333333333333: (s'=36) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.333333333333: (s'=66) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=35) -&gt; 0.5: (s'=37) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.5: (s'=67) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=36) -&gt; 0.333333333333: (s'=37)
+                            +0.333333333333: (s'=40) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.333333333333: (s'=68) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=37) -&gt; 0.333333333333: (s'=38) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.333333333333: (s'=41) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.333333333333: (s'=69) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=38) -&gt; 0.333333333333: (s'=39)
+                            +0.333333333333: (s'=42) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.333333333333: (s'=70) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=39) -&gt; 0.5: (s'=43) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.5: (s'=71) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=40) -&gt; 0.333333333333: (s'=41)
+                            +0.333333333333: (s'=48) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.333333333333: (s'=72) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=41) -&gt; 0.333333333333: (s'=42) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.333333333333: (s'=49) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.333333333333: (s'=73) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=42) -&gt; 0.25: (s'=43)
+                            +0.25: (s'=44) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.25: (s'=50) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.25: (s'=74) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=43) -&gt; 0.333333333333: (s'=45) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.333333333333: (s'=51) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.333333333333: (s'=75) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=44) -&gt; 0.333333333333: (s'=45)
+                            +0.333333333333: (s'=52) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.333333333333: (s'=76) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=45) -&gt; 0.333333333333: (s'=46) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.333333333333: (s'=53) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.333333333333: (s'=77) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=46) -&gt; 0.333333333333: (s'=47)
+                            +0.333333333333: (s'=54) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.333333333333: (s'=78) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=47) -&gt; 0.5: (s'=55) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.5: (s'=79) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=48) -&gt; 0.5: (s'=49)
+                            +0.5: (s'=80) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=49) -&gt; 0.5: (s'=50) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.5: (s'=81) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=50) -&gt; 0.333333333333: (s'=51)
+                            +0.333333333333: (s'=52) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.333333333333: (s'=82) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=51) -&gt; 0.5: (s'=53) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.5: (s'=83) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=52) -&gt; 0.333333333333: (s'=53)
+                            +0.333333333333: (s'=56) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.333333333333: (s'=84) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=53) -&gt; 0.333333333333: (s'=54) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.333333333333: (s'=57) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.333333333333: (s'=85) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=54) -&gt; 0.333333333333: (s'=55)
+                            +0.333333333333: (s'=58) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.333333333333: (s'=86) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=55) -&gt; 0.5: (s'=59) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.5: (s'=87) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=56) -&gt; 0.5: (s'=57)
+                            +0.5: (s'=88) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=57) -&gt; 0.5: (s'=58) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.5: (s'=89) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=58) -&gt; 0.333333333333: (s'=59)
+                            +0.333333333333: (s'=60) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.333333333333: (s'=90) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=59) -&gt; 0.5: (s'=61) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.5: (s'=91) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=60) -&gt; 0.5: (s'=61)
+                            +0.5: (s'=92) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=61) -&gt; 0.5: (s'=62) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.5: (s'=93) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=62) -&gt; 0.5: (s'=63)
+                            +0.5: (s'=94) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=63) -&gt; 1.0: (s'=95) &amp; (c'=c+1) &amp; (p0f'=updp0f) &amp; (p1f'=updp1f) &amp; (p2f'=updp2f) ;
+  [] (counting) &amp;  (s=64) -&gt; 0.5: (s'=65)
+                            +0.5: (s'=0) ;
+  [] (counting) &amp;  (s=65) -&gt; 0.5: (s'=66) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.5: (s'=1) ;
+  [] (counting) &amp;  (s=66) -&gt; 0.333333333333: (s'=67)
+                            +0.333333333333: (s'=68) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.333333333333: (s'=2) ;
+  [] (counting) &amp;  (s=67) -&gt; 0.5: (s'=69) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.5: (s'=3) ;
+  [] (counting) &amp;  (s=68) -&gt; 0.333333333333: (s'=69)
+                            +0.333333333333: (s'=72) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.333333333333: (s'=4) ;
+  [] (counting) &amp;  (s=69) -&gt; 0.333333333333: (s'=70) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.333333333333: (s'=73) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.333333333333: (s'=5) ;
+  [] (counting) &amp;  (s=70) -&gt; 0.333333333333: (s'=71)
+                            +0.333333333333: (s'=74) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.333333333333: (s'=6) ;
+  [] (counting) &amp;  (s=71) -&gt; 0.5: (s'=75) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.5: (s'=7) ;
+  [] (counting) &amp;  (s=72) -&gt; 0.333333333333: (s'=73)
+                            +0.333333333333: (s'=80) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.333333333333: (s'=8) ;
+  [] (counting) &amp;  (s=73) -&gt; 0.333333333333: (s'=74) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.333333333333: (s'=81) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.333333333333: (s'=9) ;
+  [] (counting) &amp;  (s=74) -&gt; 0.25: (s'=75)
+                            +0.25: (s'=76) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.25: (s'=82) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.25: (s'=10) ;
+  [] (counting) &amp;  (s=75) -&gt; 0.333333333333: (s'=77) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.333333333333: (s'=83) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.333333333333: (s'=11) ;
+  [] (counting) &amp;  (s=76) -&gt; 0.333333333333: (s'=77)
+                            +0.333333333333: (s'=84) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.333333333333: (s'=12) ;
+  [] (counting) &amp;  (s=77) -&gt; 0.333333333333: (s'=78) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.333333333333: (s'=85) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.333333333333: (s'=13) ;
+  [] (counting) &amp;  (s=78) -&gt; 0.333333333333: (s'=79)
+                            +0.333333333333: (s'=86) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.333333333333: (s'=14) ;
+  [] (counting) &amp;  (s=79) -&gt; 0.5: (s'=87) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                            +0.5: (s'=15) ;
+  [] (counting) &amp;  (s=80) -&gt; 0.333333333333: (s'=81)
+                            +0.333333333333: (s'=96) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.333333333333: (s'=16) ;
+  [] (counting) &amp;  (s=81) -&gt; 0.333333333333: (s'=82) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.333333333333: (s'=97) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.333333333333: (s'=17) ;
+  [] (counting) &amp;  (s=82) -&gt; 0.25: (s'=83)
+                            +0.25: (s'=84) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.25: (s'=98) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.25: (s'=18) ;
+  [] (counting) &amp;  (s=83) -&gt; 0.333333333333: (s'=85) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.333333333333: (s'=99) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.333333333333: (s'=19) ;
+  [] (counting) &amp;  (s=84) -&gt; 0.25: (s'=85)
+                            +0.25: (s'=88) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.25: (s'=100) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.25: (s'=20) ;
+  [] (counting) &amp;  (s=85) -&gt; 0.25: (s'=86) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.25: (s'=89) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.25: (s'=101) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.25: (s'=21) ;
+  [] (counting) &amp;  (s=86) -&gt; 0.25: (s'=87)
+                            +0.25: (s'=90) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.25: (s'=102) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.25: (s'=22) ;
+  [] (counting) &amp;  (s=87) -&gt; 0.333333333333: (s'=91) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                            +0.333333333333: (s'=103) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.333333333333: (s'=23) ;
+  [] (counting) &amp;  (s=88) -&gt; 0.333333333333: (s'=89)
+                            +0.333333333333: (s'=104) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.333333333333: (s'=24) ;
+  [] (counting) &amp;  (s=89) -&gt; 0.333333333333: (s'=90) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.333333333333: (s'=105) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.333333333333: (s'=25) ;
+  [] (counting) &amp;  (s=90) -&gt; 0.25: (s'=91)
+                            +0.25: (s'=92) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.25: (s'=106) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.25: (s'=26) ;
+  [] (counting) &amp;  (s=91) -&gt; 0.333333333333: (s'=93) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.333333333333: (s'=107) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.333333333333: (s'=27) ;
+  [] (counting) &amp;  (s=92) -&gt; 0.333333333333: (s'=93)
+                            +0.333333333333: (s'=108) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.333333333333: (s'=28) ;
+  [] (counting) &amp;  (s=93) -&gt; 0.333333333333: (s'=94) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.333333333333: (s'=109) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.333333333333: (s'=29) ;
+  [] (counting) &amp;  (s=94) -&gt; 0.333333333333: (s'=95)
+                            +0.333333333333: (s'=110) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.333333333333: (s'=30) ;
+  [] (counting) &amp;  (s=95) -&gt; 0.5: (s'=111) &amp; (c'=c+1) &amp; (p0e'=updp0e) &amp; (p1e'=updp1e) &amp; (p2e'=updp2e)
+                            +0.5: (s'=31) ;
+  [] (counting) &amp;  (s=96) -&gt; 0.5: (s'=97)
+                            +0.5: (s'=32) ;
+  [] (counting) &amp;  (s=97) -&gt; 0.5: (s'=98) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                            +0.5: (s'=33) ;
+  [] (counting) &amp;  (s=98) -&gt; 0.333333333333: (s'=99)
+                            +0.333333333333: (s'=100) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.333333333333: (s'=34) ;
+  [] (counting) &amp;  (s=99) -&gt; 0.5: (s'=101) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                            +0.5: (s'=35) ;
+  [] (counting) &amp;  (s=100) -&gt; 0.333333333333: (s'=101)
+                             +0.333333333333: (s'=104) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                             +0.333333333333: (s'=36) ;
+  [] (counting) &amp;  (s=101) -&gt; 0.333333333333: (s'=102) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                             +0.333333333333: (s'=105) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                             +0.333333333333: (s'=37) ;
+  [] (counting) &amp;  (s=102) -&gt; 0.333333333333: (s'=103)
+                             +0.333333333333: (s'=106) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                             +0.333333333333: (s'=38) ;
+  [] (counting) &amp;  (s=103) -&gt; 0.5: (s'=107) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                             +0.5: (s'=39) ;
+  [] (counting) &amp;  (s=104) -&gt; 0.333333333333: (s'=105)
+                             +0.333333333333: (s'=112) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                             +0.333333333333: (s'=40) ;
+  [] (counting) &amp;  (s=105) -&gt; 0.333333333333: (s'=106) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                             +0.333333333333: (s'=113) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                             +0.333333333333: (s'=41) ;
+  [] (counting) &amp;  (s=106) -&gt; 0.25: (s'=107)
+                             +0.25: (s'=108) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                             +0.25: (s'=114) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                             +0.25: (s'=42) ;
+  [] (counting) &amp;  (s=107) -&gt; 0.333333333333: (s'=109) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                             +0.333333333333: (s'=115) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                             +0.333333333333: (s'=43) ;
+  [] (counting) &amp;  (s=108) -&gt; 0.333333333333: (s'=109)
+                             +0.333333333333: (s'=116) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                             +0.333333333333: (s'=44) ;
+  [] (counting) &amp;  (s=109) -&gt; 0.333333333333: (s'=110) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                             +0.333333333333: (s'=117) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                             +0.333333333333: (s'=45) ;
+  [] (counting) &amp;  (s=110) -&gt; 0.333333333333: (s'=111)
+                             +0.333333333333: (s'=118) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                             +0.333333333333: (s'=46) ;
+  [] (counting) &amp;  (s=111) -&gt; 0.5: (s'=119) &amp; (c'=c+1) &amp; (p0d'=updp0d) &amp; (p1d'=updp1d) &amp; (p2d'=updp2d)
+                             +0.5: (s'=47) ;
+  [] (counting) &amp;  (s=112) -&gt; 0.5: (s'=113)
+                             +0.5: (s'=48) ;
+  [] (counting) &amp;  (s=113) -&gt; 0.5: (s'=114) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                             +0.5: (s'=49) ;
+  [] (counting) &amp;  (s=114) -&gt; 0.333333333333: (s'=115)
+                             +0.333333333333: (s'=116) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                             +0.333333333333: (s'=50) ;
+  [] (counting) &amp;  (s=115) -&gt; 0.5: (s'=117) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                             +0.5: (s'=51) ;
+  [] (counting) &amp;  (s=116) -&gt; 0.333333333333: (s'=117)
+                             +0.333333333333: (s'=120) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                             +0.333333333333: (s'=52) ;
+  [] (counting) &amp;  (s=117) -&gt; 0.333333333333: (s'=118) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                             +0.333333333333: (s'=121) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                             +0.333333333333: (s'=53) ;
+  [] (counting) &amp;  (s=118) -&gt; 0.333333333333: (s'=119)
+                             +0.333333333333: (s'=122) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                             +0.333333333333: (s'=54) ;
+  [] (counting) &amp;  (s=119) -&gt; 0.5: (s'=123) &amp; (c'=c+1) &amp; (p0c'=updp0c) &amp; (p1c'=updp1c) &amp; (p2c'=updp2c)
+                             +0.5: (s'=55) ;
+  [] (counting) &amp;  (s=120) -&gt; 0.5: (s'=121)
+                             +0.5: (s'=56) ;
+  [] (counting) &amp;  (s=121) -&gt; 0.5: (s'=122) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                             +0.5: (s'=57) ;
+  [] (counting) &amp;  (s=122) -&gt; 0.333333333333: (s'=123)
+                             +0.333333333333: (s'=124) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                             +0.333333333333: (s'=58) ;
+  [] (counting) &amp;  (s=123) -&gt; 0.5: (s'=125) &amp; (c'=c+1) &amp; (p0b'=updp0b) &amp; (p1b'=updp1b) &amp; (p2b'=updp2b)
+                             +0.5: (s'=59) ;
+  [] (counting) &amp;  (s=124) -&gt; 0.5: (s'=125)
+                             +0.5: (s'=60) ;
+  [] (counting) &amp;  (s=125) -&gt; 0.5: (s'=126) &amp; (c'=c+1) &amp; (p0a'=updp0a) &amp; (p1a'=updp1a) &amp; (p2a'=updp2a)
+                             +0.5: (s'=61) ;
+  [] (counting) &amp;  (s=126) -&gt; 0.5: (s'=127)
+                             +0.5: (s'=62) ;
+  [] (counting) &amp;  (s=127) -&gt; 1.0: (s'=63) ;
+
+endmodule</content>
+    </model>
+  </models>
+  <requirements>
+    <requirement name="partition_1" type="bltl">
+      <content>declare
+N := [3;20;1]
+optimize
+k := [6;20;2]
+end
+
+F&lt;=#(3*k) ((c=k) &amp; ( "p0steps" = N))</content>
+    </requirement>
+    <requirement name="partition_2" type="bltl">
+      <content>declare
+N := [10;20;1]
+end
+F&lt;=#(3*k) ((c=k) &amp; ("p1steps" = N))</content>
+    </requirement>
+    <requirement name="partition_3" type="bltl">
+      <content>declare
+N := [10;20;1]
+end
+F&lt;=#(3*k) ((c=k) &amp; ("p2steps" = N))</content>
+    </requirement>
+  </requirements>
+  <resources />
+</PlasmaProject>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlasmaProject name="SimpleChain">
+  <models>
+    <model name="ChainModel" type="rml">
+      <content>dtmc
+
+module chain
+	s : [0..101] init 0;
+	[] s&lt;100 -&gt; 0.90 : (s'=s+1) + 0.10 : (s'=101);
+endmodule</content>
+    </model>
+    <model name="ChainModel2" type="rml">
+      <content>dtmc
+
+const double p = 0.01;
+
+module M
+
+	//p : double init 0.0001;
+	s : [0..3] init 0;
+	
+	[] s=0 -&gt; p : (s'=1) + (1-p) : true;
+	[] s=1 -&gt; p : (s'=2) + (1-p) : true;
+	[] s=2 -&gt; p : (s'=3) + (1-p) : true;
+	
+endmodule</content>
+    </model>
+    <model name="ChainModelSampling" type="rml">
+      <content>dtmc sampling
+
+const double lambda1=0.9999;
+const double lambda2=0.0001;
+
+global nb_lambda1 : double;
+global nb_lambda2 : double;
+
+label "rate_lambda1"=0.9;
+label "rate_lambda2"=0.1;
+
+module chain
+	s : [0..101] init 0;
+	[] s&lt;100 -&gt; {lambda1} 0.90 : (s'=s+1)&amp;(nb_lambda1'=nb_lambda1+1) + {lambda2} 0.10 : (s'=101)&amp;(nb_lambda2'=nb_lambda2+1);
+endmodule</content>
+    </model>
+  </models>
+  <requirements>
+    <requirement name="observer" type="rmlobserver">
+      <content>observer chainObserver
+	score : double init 0;
+	decided : bool init false;
+
+	[] s != 101 &amp; score &lt; s -&gt; (score'=score+1);
+	[] s&gt;=100 -&gt; (decided'=true);
+endobserver</content>
+    </requirement>
+    <requirement name="bltl" type="bltl">
+      <content>F&lt;=#100 s=100</content>
+    </requirement>
+    <requirement name="observer2" type="rmlobserver">
+      <content>observer rareObserver
+	score : double init 0;
+	decided : bool init false;
+	step : int init 0;
+
+	[] score&lt;s -&gt; (score'=score+1);
+	[] true -&gt; (step'=step+1);
+	[] score=3 -&gt; (decided'=true);
+	[] step = 100 -&gt; (decided'=true);
+endobserver</content>
+    </requirement>
+    <requirement name="bltl2" type="bltl">
+      <content>declare
+K:=[100; 100; 10]
+end
+
+F&lt;=#(K) s=3</content>
+    </requirement>
+  </requirements>
+  <resources />
+</PlasmaProject>

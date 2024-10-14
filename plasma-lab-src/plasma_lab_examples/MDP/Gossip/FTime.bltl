@@ -1,0 +1,3 @@
+declare K := [40; 100; 10] end
+
+G<=#(K)true

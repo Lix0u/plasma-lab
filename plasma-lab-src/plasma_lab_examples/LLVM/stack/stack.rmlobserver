@@ -1,0 +1,28 @@
+observer rareObserver
+	score : int init 0;
+	state : int init 0;
+	decided : bool init false;
+	steps : int init 0;
+	[] P0_main_tmp17 = 100 -> (score'=14);
+
+	[] state=0 & P2_Call_pop=1 -> (state'=1)&(score'=score+1);
+	[] state=1 & P2_Call_poppedHead=1 -> (state'=2)&(score'=score+1);
+	[] state=2 & P2_Call_popped=1 -> (state'=3)&(score'=score+1);
+	
+	[] state=3 & P2_Call_popped1=1 -> (state'=4)&(score'=score+1);
+	[] state<4 & P1_Call_gotFree=1 -> (decided'=true);
+	[] state=4 & P1_Call_gotFree=1 -> (state'=5)&(score'=score+1);
+	[] state=5 & P1_Call_inLoop=1 -> (state'=6)&(score'=score+1);
+	[] state=6 & P1_Call_gotFree1=1 -> (state'=7)&(score'=score+1);
+	[] state=7 & P1_Call_gotFree2=1 -> (state'=8)&(score'=score+1);
+	[] state=8 & P1_Call_inIf=1 -> (state'=9)&(score'=score+1);
+	[] state=9 & P1_Call_gotFree3=1 -> (state'=10)&(score'=score+1);
+	[] state=10 & P1_Call_pushed=1 -> (state'=11)&(score'=score+1);
+	[] state=11 & P1_Call_pushed2=1 -> (state'=12)&(score'=score+1);
+	
+
+	[] state>=4 & state < 10 & P2_Call_popped2=1 -> (decided'=true);
+	
+	[] steps<5000 ->(steps'=steps+1);
+  	[] steps>=5000 ->(decided'=true);
+endobserver

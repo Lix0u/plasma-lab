@@ -1,0 +1,644 @@
+Welcome track28LLDouble
+PRISM
+=====
+
+Version: 4.1.dev
+Date: Sun Apr 27 16:23:06 BST 2014
+Hostname: localhost.localdomain
+Command line: prism models/track28LLDouble.pm properties/track28LLDouble.pctl -sim -simmethod ci -simsamples 100000 -simconf 0.05 -simpathlen 50 -exportresults 'results/track28LLDouble.txt2,matrix,csv'
+
+Parsing model file "models/track28LLDouble.pm"...
+
+Parsing properties file "properties/track28LLDouble.pctl"...
+
+7 properties:
+(1) P=? [ F[12000,12000] (w1=17)|(w1=20)|(w1=25)|(w1=28) ]
+(2) P=? [ F[12000,12000] (w1=17) ]
+(3) P=? [ F[12000,12000] (w1=20) ]
+(4) P=? [ F[12000,12000] (w1=25) ]
+(5) P=? [ F[12000,12000] (w1=28) ]
+(6) P=? [ F[12000,12000] "deadlockUser" ]
+(7) R{"steps"}=? [ C<=200*60 ]
+
+Type:        CTMC
+Modules:     walker 
+Variables:   stator1 stator2 stator3 stator4 stator5 stator6 stator7 stator8 stator9 stator10 stator11 stator12 stator13 stator14 stator15 stator16 stator17 stator18 stator19 stator20 stator21 stator22 stator23 stator24 stator25 stator26 stator27 stator28 w1 blockade5 blockade6 blockade15 blockade16 blockade23 blockade24 
+
+---------------------------------------------------------------------
+
+Simulating: P=? [ F[12000,12000] (w1=17)|(w1=20)|(w1=25)|(w1=28) ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 24.764 seconds (average 0.00025)
+Path length statistics: average 19, min 9, max 29
+
+Simulation method parameters: width=0.00184073765938316, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 0.90224 +/- 0.00184073765938316, based on 95.0% confidence level
+
+Result: 0.90224
+
+---------------------------------------------------------------------
+
+Simulating: P=? [ F[12000,12000] (w1=17) ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 21.893 seconds (average 0.00022)
+Path length statistics: average 19, min 9, max 29
+
+Simulation method parameters: width=7.411567693637677E-4, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 0.01451 +/- 7.411567693637677E-4, based on 95.0% confidence level
+
+Result: 0.01451
+
+---------------------------------------------------------------------
+
+Simulating: P=? [ F[12000,12000] (w1=20) ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 22.017 seconds (average 0.00022)
+Path length statistics: average 19, min 9, max 30
+
+Simulation method parameters: width=0.0020022313923141635, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 0.11837 +/- 0.0020022313923141635, based on 95.0% confidence level
+
+Result: 0.11837
+
+---------------------------------------------------------------------
+
+Simulating: P=? [ F[12000,12000] (w1=25) ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 22.295 seconds (average 0.00022)
+Path length statistics: average 19, min 9, max 29
+
+Simulation method parameters: width=0.0016379823217273208, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 0.07555 +/- 0.0016379823217273208, based on 95.0% confidence level
+
+Result: 0.07555
+
+---------------------------------------------------------------------
+
+Simulating: P=? [ F[12000,12000] (w1=28) ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 23.183 seconds (average 0.00023)
+Path length statistics: average 19, min 9, max 29
+
+Simulation method parameters: width=0.002852834695742344, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 0.69529 +/- 0.002852834695742344, based on 95.0% confidence level
+
+Result: 0.69529
+
+---------------------------------------------------------------------
+
+Simulating: P=? [ F[12000,12000] "deadlockUser" ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 22.268 seconds (average 0.00022)
+Path length statistics: average 19, min 9, max 29
+
+Simulation method parameters: width=6.47915797290795E-4, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 0.01105 +/- 6.47915797290795E-4, based on 95.0% confidence level
+
+Result: 0.01105
+
+---------------------------------------------------------------------
+
+Simulating: R{"steps"}=? [ C<=200*60 ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 22.563 seconds (average 0.00023)
+Path length statistics: average 19, min 9, max 29
+
+Simulation method parameters: width=0.0082904470851584, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 11.73907 +/- 0.0082904470851584, based on 95.0% confidence level
+
+Result: 11.73907
+
+Exporting results in matrix form to file "results/track28LLDouble.txt2"...
+
+Welcome track28LRDouble
+PRISM
+=====
+
+Version: 4.1.dev
+Date: Sun Apr 27 16:25:46 BST 2014
+Hostname: localhost.localdomain
+Command line: prism models/track28LRDouble.pm properties/track28LRDouble.pctl -sim -simmethod ci -simsamples 100000 -simconf 0.05 -simpathlen 50 -exportresults 'results/track28LRDouble.txt2,matrix,csv'
+
+Parsing model file "models/track28LRDouble.pm"...
+
+Parsing properties file "properties/track28LRDouble.pctl"...
+
+7 properties:
+(1) P=? [ F[12000,12000] (w1=17)|(w1=20)|(w1=25)|(w1=28) ]
+(2) P=? [ F[12000,12000] (w1=17) ]
+(3) P=? [ F[12000,12000] (w1=20) ]
+(4) P=? [ F[12000,12000] (w1=25) ]
+(5) P=? [ F[12000,12000] (w1=28) ]
+(6) P=? [ F[12000,12000] "deadlockUser" ]
+(7) R{"steps"}=? [ C<=200*60 ]
+
+Type:        CTMC
+Modules:     walker 
+Variables:   stator1 stator2 stator3 stator4 stator5 stator6 stator7 stator8 stator9 stator10 stator11 stator12 stator13 stator14 stator15 stator16 stator17 stator18 stator19 stator20 stator21 stator22 stator23 stator24 stator25 stator26 stator27 stator28 w1 blockade5 blockade6 blockade18 blockade19 blockade26 blockade27 
+
+---------------------------------------------------------------------
+
+Simulating: P=? [ F[12000,12000] (w1=17)|(w1=20)|(w1=25)|(w1=28) ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 24.409 seconds (average 0.00024)
+Path length statistics: average 19, min 9, max 29
+
+Simulation method parameters: width=0.001942448054471546, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 0.88959 +/- 0.001942448054471546, based on 95.0% confidence level
+
+Result: 0.88959
+
+---------------------------------------------------------------------
+
+Simulating: P=? [ F[12000,12000] (w1=17) ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 22.915 seconds (average 0.00023)
+Path length statistics: average 19, min 9, max 30
+
+Simulation method parameters: width=0.0020641767647235467, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 0.12706 +/- 0.0020641767647235467, based on 95.0% confidence level
+
+Result: 0.12706
+
+---------------------------------------------------------------------
+
+Simulating: P=? [ F[12000,12000] (w1=20) ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 24.024 seconds (average 0.00024)
+Path length statistics: average 19, min 9, max 29
+
+Simulation method parameters: width=0.0010497522688108758, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 0.02956 +/- 0.0010497522688108758, based on 95.0% confidence level
+
+Result: 0.02956
+
+---------------------------------------------------------------------
+
+Simulating: P=? [ F[12000,12000] (w1=25) ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 22.566 seconds (average 0.00023)
+Path length statistics: average 19, min 9, max 30
+
+Simulation method parameters: width=0.002940092628924088, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 0.65805 +/- 0.002940092628924088, based on 95.0% confidence level
+
+Result: 0.65805
+
+---------------------------------------------------------------------
+
+Simulating: P=? [ F[12000,12000] (w1=28) ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 23.015 seconds (average 0.00023)
+Path length statistics: average 19, min 9, max 31
+
+Simulation method parameters: width=0.0016559619246824166, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 0.07737 +/- 0.0016559619246824166, based on 95.0% confidence level
+
+Result: 0.07737
+
+---------------------------------------------------------------------
+
+Simulating: P=? [ F[12000,12000] "deadlockUser" ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 23.618 seconds (average 0.00024)
+Path length statistics: average 19, min 9, max 30
+
+Simulation method parameters: width=7.883724422568256E-4, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 0.01645 +/- 7.883724422568256E-4, based on 95.0% confidence level
+
+Result: 0.01645
+
+---------------------------------------------------------------------
+
+Simulating: R{"steps"}=? [ C<=200*60 ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 23.761 seconds (average 0.00024)
+Path length statistics: average 19, min 9, max 31
+
+Simulation method parameters: width=0.008819003253920875, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 11.77507 +/- 0.008819003253920875, based on 95.0% confidence level
+
+Result: 11.77507
+
+Exporting results in matrix form to file "results/track28LRDouble.txt2"...
+
+Welcome track28RLDouble
+PRISM
+=====
+
+Version: 4.1.dev
+Date: Sun Apr 27 16:28:32 BST 2014
+Hostname: localhost.localdomain
+Command line: prism models/track28RLDouble.pm properties/track28RLDouble.pctl -sim -simmethod ci -simsamples 100000 -simconf 0.05 -simpathlen 50 -exportresults 'results/track28RLDouble.txt2,matrix,csv'
+
+Parsing model file "models/track28RLDouble.pm"...
+
+Parsing properties file "properties/track28RLDouble.pctl"...
+
+7 properties:
+(1) P=? [ F[12000,12000] (w1=17)|(w1=20)|(w1=25)|(w1=28) ]
+(2) P=? [ F[12000,12000] (w1=17) ]
+(3) P=? [ F[12000,12000] (w1=20) ]
+(4) P=? [ F[12000,12000] (w1=25) ]
+(5) P=? [ F[12000,12000] (w1=28) ]
+(6) P=? [ F[12000,12000] "deadlockUser" ]
+(7) R{"steps"}=? [ C<=200*60 ]
+
+Type:        CTMC
+Modules:     walker 
+Variables:   stator1 stator2 stator3 stator4 stator5 stator6 stator7 stator8 stator9 stator10 stator11 stator12 stator13 stator14 stator15 stator16 stator17 stator18 stator19 stator20 stator21 stator22 stator23 stator24 stator25 stator26 stator27 stator28 w1 blockade9 blockade10 blockade15 blockade16 blockade23 blockade24 
+
+---------------------------------------------------------------------
+
+Simulating: P=? [ F[12000,12000] (w1=17)|(w1=20)|(w1=25)|(w1=28) ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 24.695 seconds (average 0.00025)
+Path length statistics: average 19, min 9, max 29
+
+Simulation method parameters: width=0.001927639448229981, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 0.8915 +/- 0.001927639448229981, based on 95.0% confidence level
+
+Result: 0.8915
+
+---------------------------------------------------------------------
+
+Simulating: P=? [ F[12000,12000] (w1=17) ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 23.507 seconds (average 0.00024)
+Path length statistics: average 19, min 9, max 29
+
+Simulation method parameters: width=0.00164562248768664, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 0.07632 +/- 0.00164562248768664, based on 95.0% confidence level
+
+Result: 0.07632
+
+---------------------------------------------------------------------
+
+Simulating: P=? [ F[12000,12000] (w1=20) ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 23.112 seconds (average 0.00023)
+Path length statistics: average 19, min 9, max 30
+
+Simulation method parameters: width=0.0029416373481112967, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 0.6573 +/- 0.0029416373481112967, based on 95.0% confidence level
+
+Result: 0.6573
+
+---------------------------------------------------------------------
+
+Simulating: P=? [ F[12000,12000] (w1=25) ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 23.56 seconds (average 0.00024)
+Path length statistics: average 19, min 9, max 30
+
+Simulation method parameters: width=0.0010480291283188478, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 0.02946 +/- 0.0010480291283188478, based on 95.0% confidence level
+
+Result: 0.02946
+
+---------------------------------------------------------------------
+
+Simulating: P=? [ F[12000,12000] (w1=28) ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 22.519 seconds (average 0.00023)
+Path length statistics: average 19, min 9, max 29
+
+Simulation method parameters: width=0.002066672640476341, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 0.12742 +/- 0.002066672640476341, based on 95.0% confidence level
+
+Result: 0.12742
+
+---------------------------------------------------------------------
+
+Simulating: P=? [ F[12000,12000] "deadlockUser" ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 22.951 seconds (average 0.00023)
+Path length statistics: average 19, min 9, max 29
+
+Simulation method parameters: width=7.954074341444885E-4, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 0.01675 +/- 7.954074341444885E-4, based on 95.0% confidence level
+
+Result: 0.01675
+
+---------------------------------------------------------------------
+
+Simulating: R{"steps"}=? [ C<=200*60 ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 22.506 seconds (average 0.00023)
+Path length statistics: average 19, min 9, max 29
+
+Simulation method parameters: width=0.008822909072422724, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 11.77588 +/- 0.008822909072422724, based on 95.0% confidence level
+
+Result: 11.77588
+
+Exporting results in matrix form to file "results/track28RLDouble.txt2"...
+
+Welcome track28RRDouble
+PRISM
+=====
+
+Version: 4.1.dev
+Date: Sun Apr 27 16:31:16 BST 2014
+Hostname: localhost.localdomain
+Command line: prism models/track28RRDouble.pm properties/track28RRDouble.pctl -sim -simmethod ci -simsamples 100000 -simconf 0.05 -simpathlen 50 -exportresults 'results/track28RRDouble.txt2,matrix,csv'
+
+Parsing model file "models/track28RRDouble.pm"...
+
+Parsing properties file "properties/track28RRDouble.pctl"...
+
+7 properties:
+(1) P=? [ F[12000,12000] (w1=17)|(w1=20)|(w1=25)|(w1=28) ]
+(2) P=? [ F[12000,12000] (w1=17) ]
+(3) P=? [ F[12000,12000] (w1=20) ]
+(4) P=? [ F[12000,12000] (w1=25) ]
+(5) P=? [ F[12000,12000] (w1=28) ]
+(6) P=? [ F[12000,12000] "deadlockUser" ]
+(7) R{"steps"}=? [ C<=200*60 ]
+
+Type:        CTMC
+Modules:     walker 
+Variables:   stator1 stator2 stator3 stator4 stator5 stator6 stator7 stator8 stator9 stator10 stator11 stator12 stator13 stator14 stator15 stator16 stator17 stator18 stator19 stator20 stator21 stator22 stator23 stator24 stator25 stator26 stator27 stator28 w1 blockade9 blockade10 blockade18 blockade19 blockade26 blockade27 
+
+---------------------------------------------------------------------
+
+Simulating: P=? [ F[12000,12000] (w1=17)|(w1=20)|(w1=25)|(w1=28) ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 24.687 seconds (average 0.00025)
+Path length statistics: average 19, min 9, max 29
+
+Simulation method parameters: width=0.0018460144778020032, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 0.90161 +/- 0.0018460144778020032, based on 95.0% confidence level
+
+Result: 0.90161
+
+---------------------------------------------------------------------
+
+Simulating: P=? [ F[12000,12000] (w1=17) ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 22.402 seconds (average 0.00022)
+Path length statistics: average 19, min 9, max 29
+
+Simulation method parameters: width=0.002849349650132716, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 0.69661 +/- 0.002849349650132716, based on 95.0% confidence level
+
+Result: 0.69661
+
+---------------------------------------------------------------------
+
+Simulating: P=? [ F[12000,12000] (w1=20) ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 22.21 seconds (average 0.00022)
+Path length statistics: average 19, min 9, max 29
+
+Simulation method parameters: width=0.001617700895830315, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 0.07353 +/- 0.001617700895830315, based on 95.0% confidence level
+
+Result: 0.07353
+
+---------------------------------------------------------------------
+
+Simulating: P=? [ F[12000,12000] (w1=25) ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 22.225 seconds (average 0.00022)
+Path length statistics: average 19, min 9, max 29
+
+Simulation method parameters: width=0.001998931838264123, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 0.11792 +/- 0.001998931838264123, based on 95.0% confidence level
+
+Result: 0.11792
+
+---------------------------------------------------------------------
+
+Simulating: P=? [ F[12000,12000] (w1=28) ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 22.073 seconds (average 0.00022)
+Path length statistics: average 19, min 9, max 29
+
+Simulation method parameters: width=7.2999578416398E-4, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 0.01407 +/- 7.2999578416398E-4, based on 95.0% confidence level
+
+Result: 0.01407
+
+---------------------------------------------------------------------
+
+Simulating: P=? [ F[12000,12000] "deadlockUser" ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 22.463 seconds (average 0.00022)
+Path length statistics: average 19, min 9, max 29
+
+Simulation method parameters: width=6.206461508751891E-4, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 0.01013 +/- 6.206461508751891E-4, based on 95.0% confidence level
+
+Result: 0.01013
+
+---------------------------------------------------------------------
+
+Simulating: R{"steps"}=? [ C<=200*60 ]
+
+Simulation method: CI (Confidence Interval)
+Simulation method parameters: width=unknown, confidence=0.05, number of samples=100000
+Simulation parameters: max path length=50
+
+Sampling progress: [ 100% ]
+
+Sampling complete: 100000 iterations in 22.79 seconds (average 0.00023)
+Path length statistics: average 19, min 9, max 29
+
+Simulation method parameters: width=0.008369879684191055, confidence=0.05, number of samples=100000
+
+Simulation result details: confidence interval is 11.74163 +/- 0.008369879684191055, based on 95.0% confidence level
+
+Result: 11.74163
+
+Exporting results in matrix form to file "results/track28RRDouble.txt2"...
+

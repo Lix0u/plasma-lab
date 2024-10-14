@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlasmaProject name="RepairModel">
+  <models>
+    <model name="Rider1" type="rml">
+      <content>// Repair model based on Example 1 of (Ridder 2005)
+// Property: X (!(state1=0 &amp; state2=0 &amp; state3=0) U &lt;=#10000 state1=n &amp; state2 = n &amp; state3=n)
+// True probabilty: 7.79675941302816E-6 for n=3
+//                          1.17735 10-7 for n=4
+ctmc sampling
+
+const double lambda1 = 2.0454519;
+const double lambda2 = 0.010962372;
+const double lambda3 = 1.0954182;
+const double lambda4 = 0.66550255;
+const double lambda5 = 1.1998414;
+const double lambda6 = 0.98282355;
+
+const int n=3;	// 4 components per type
+const double epsilon = 0.1;
+const double mu = 1.0;
+
+module type1
+state1 : [0..n] init 0;
+[] state1 &lt; n -&gt; {lambda1} (n-state1)*epsilon*epsilon : (state1'=state1+1);	// lambda = 1.8
+[] state1 &gt;= 2 -&gt; {lambda2} mu : (state1'=0);	// lambda = 0.002
+endmodule
+
+module type2
+state2 : [0..n] init 0;
+[] state2 &lt; n -&gt; {lambda3} (n-state2)*epsilon : (state2'=state2+1);	// lambda = 1.2
+[] state2 &gt;= 2 &amp; state1 &lt; 2 -&gt; {lambda4} mu : (state2'=0);	// lambda = 0.88
+endmodule
+
+module type3
+state3 : [0..n] init 0;
+[] state3 &lt; n -&gt; {lambda5} (n-state3)*epsilon : (state3'=state3+1);	// lambda = 1.3
+[] state3 &gt; 0 &amp; state2 &lt; 2 &amp; state1 &lt; 2 -&gt; {lambda6} mu : (state3'=state3-1);	// lambda = 0.87
+endmodule
+
+label "start" = (state1=0 &amp; state2=0 &amp; state3=0);
+label "failure"= (state1=n &amp; state2=n &amp; state3=n);</content>
+    </model>
+    <model name="Rider1_CE" type="rml">
+      <content>ctmc sampling
+
+//const double lambda1 = 1.1533414;
+//const double lambda2 = 0.14348543;
+//const double lambda3 = 1.4468045;
+//const double lambda4 = 0.5338646;
+//const double lambda5 = 2.3233902;
+//const double lambda6 = 0.39911368;
+
+const double lambda1 = 2.0454519;
+const double lambda2 = 0.010962372;
+const double lambda3 = 1.0954182;
+const double lambda4 = 0.66550255;
+const double lambda5 = 1.1998414;
+const double lambda6 = 0.98282355;
+
+global nb_lambda1 : int init 0;
+global nb_lambda2 : int init 0;
+global nb_lambda3 : int init 0;
+global nb_lambda4 : int init 0;
+global nb_lambda5 : int init 0;
+global nb_lambda6 : int init 0;
+
+label "rate_lambda1" = (n-state1)*epsilon*epsilon;
+label "rate_lambda2" = mu;
+label "rate_lambda3" = (n-state2)*epsilon;
+label "rate_lambda4" = mu;
+label "rate_lambda5" = (n-state3)*epsilon;
+label "rate_lambda6" = mu;
+
+const int n=3;
+const double epsilon = 0.1;
+const double mu = 1.0;
+
+module type1
+state1 : [0..n] init 0;
+[] state1 &lt; n -&gt; {lambda1} (n-state1)*epsilon*epsilon : (state1'=state1+1) &amp; (nb_lambda1'=nb_lambda1+1);
+[] state1 &gt;= 2 -&gt; {lambda2} mu : (state1'=0) &amp; (nb_lambda2'=nb_lambda2+1);
+endmodule
+
+module type2
+state2 : [0..n] init 0;
+[] state2 &lt; n -&gt; {lambda3} (n-state2)*epsilon : (state2'=state2+1) &amp; (nb_lambda3'=nb_lambda3+1);
+[] state2 &gt;= 2 &amp; state1 &lt; 2 -&gt; {lambda4} mu : (state2'=0) &amp; (nb_lambda4'=nb_lambda4+1);
+endmodule
+
+module type3
+state3 : [0..n] init 0;
+[] state3 &lt; n -&gt; {lambda5} (n-state3)*epsilon : (state3'=state3+1) &amp; (nb_lambda5'=nb_lambda5+1);
+[] state3 &gt; 0 &amp; state2 &lt; 2 &amp; state1 &lt; 2 -&gt; {lambda6} mu : (state3'=state3-1) &amp; (nb_lambda6'=nb_lambda6+1);
+endmodule
+
+label "start" = (state1=0 &amp; state2=0 &amp; state3=0);
+label "failure"= (state1=n &amp; state2=n &amp; state3=n);</content>
+    </model>
+    <model name="Rider3" type="rml">
+      <content>// Repair model based on Example 3 of (Ridder 2005)
+// True probabilty: 7.488 10-7
+
+ctmc
+
+const n1 = 5;
+const n2 = 4;
+const n3 = 6;
+const n4 = 3;
+const n5 = 7;
+const n6 = 5;
+
+const double epsilon = 0.001;
+const double f1 = 2.5*epsilon;
+const double f2 = epsilon;
+const double f3 = 5*epsilon;
+const double f4 = 3*epsilon;
+const double f5 = epsilon;
+const double f6 = 5*epsilon;
+
+const double r1 = 1.0;
+const double r2 = 1.5;
+const double r3 = 1.0;
+const double r4 = 2.0;
+const double r5 = 1.0;
+const double r6 = 1.5;
+
+module type1
+state1 : [0..n1] init 0; 			// state is the number of components that failed
+[] state1 &lt; n1 -&gt; (n1-state1)*f1 : (state1'=state1+1);	// fail
+[] state1 &gt; 0 -&gt; r1 : (state1'=state1-1);		// repair
+endmodule
+
+module type2
+state2 : [0..n2] init 0; 			
+[] state2 &lt; n2 -&gt; (n2-state2)*f2 : (state2'=state2+1);	
+[] state2 &gt; 0 &amp; state1 = 0 -&gt; r2 : (state2'=state2-1);	// repair if type1 has not failed
+endmodule
+
+module type3
+state3 : [0..n3] init 0;
+[] state3 &lt; n3 -&gt; (n3-state3)*f3 : (state3'=state3+1);
+[] state3 &gt; 0 &amp; state2 = 0 &amp; state1 = 0 -&gt; r3 : (state3'=state3-1);	// repair if type1 and type2 have not failed
+endmodule
+
+module type4
+state4 : [0..n4] init 0;
+[] state4 &lt; n4 -&gt; (n4-state4)*f4 : (state4'=state4+1);
+[] state4 &gt; 0 &amp; state3 = 0 &amp; state2 =0 &amp; state1 = 0 -&gt; r4 : (state4'=state4-1);	// repair if type1 and type2 and type3 have not failed
+endmodule
+
+module type5
+state5 : [0..n5] init 0;
+[] state5 &lt; n5 -&gt; (n5-state5)*f5 : (state5'=state5+1);
+[] state5 &gt; 0 &amp; state4 = 0 &amp; state3 = 0 &amp; state2 =0 &amp; state1 = 0 -&gt; r5 : (state5'=state5-1);	// repair if type1 and type2 and type3 and type4 have not failed
+endmodule
+
+module type6
+state6 : [0..n6] init 0;
+[] state6 &lt; n6 -&gt; (n6-state6)*f6 : (state6'=state6+1);
+[] state6 &gt; 0 &amp; state5 = 0 &amp; state4 = 0 &amp; state3 = 0 &amp; state2 =0 &amp; state1 = 0 -&gt; r6 : (state6'=state6-1);	// repair if other types have not failed
+endmodule
+
+
+label "start" = (state1=0 &amp; state2 = 0 &amp; state3 =0 &amp; state4 = 0 &amp; state5=0);
+label "failure"= (state1=n1 | state2=n2 | state3=n3 | state4=n4 | state5=n5 | state6=n6);</content>
+    </model>
+    <model name="Rider3_CE" type="rml">
+      <content>// Repair model based on Example 3 of (Ridder 2005)
+
+ctmc sampling
+
+const n1 = 5;
+const n2 = 4;
+const n3 = 6;
+const n4 = 3;
+const n5 = 7;
+const n6 = 5;
+
+const double epsilon = 0.001;
+const double f1 = 2.5*epsilon;
+const double f2 = epsilon;
+const double f3 = 5*epsilon;
+const double f4 = 3*epsilon;
+const double f5 = epsilon;
+const double f6 = 5*epsilon;
+
+const double r1 = 1.0;
+const double r2 = 1.5;
+const double r3 = 1.0;
+const double r4 = 2.0;
+const double r5 = 1.0;
+const double r6 = 1.5;
+
+const double lambda1 = 1;
+const double lambda2 = 1;
+const double lambda3 = 1;
+const double lambda4 = 1;
+const double lambda5 = 1;
+const double lambda6 = 1;
+const double lambda7 = 1;
+const double lambda8 = 1;
+const double lambda9 = 1;
+const double lambda10 = 1;
+const double lambda11 = 1;
+const double lambda12 = 1;
+
+global nb_lambda1 : int init 0;
+global nb_lambda2 : int init 0;
+global nb_lambda3 : int init 0;
+global nb_lambda4 : int init 0;
+global nb_lambda5 : int init 0;
+global nb_lambda6 : int init 0;
+global nb_lambda7 : int init 0;
+global nb_lambda8 : int init 0;
+global nb_lambda9 : int init 0;
+global nb_lambda10 : int init 0;
+global nb_lambda11 : int init 0;
+global nb_lambda12 : int init 0;
+
+label "rate_lambda1" = (n1-state1)*f1;
+label "rate_lambda2" = r1;
+label "rate_lambda3" = (n2-state2)*f2;
+label "rate_lambda4" = r2;
+label "rate_lambda5" = (n3-state3)*f3;
+label "rate_lambda6" = r3;
+label "rate_lambda7" = (n4-state4)*f4;
+label "rate_lambda8" = r4;
+label "rate_lambda9" = (n5-state5)*f5;
+label "rate_lambda10" = r5;
+label "rate_lambda11" = (n6-state6)*f6;
+label "rate_lambda12" = r6;
+
+module type1
+state1 : [0..n1] init 0; 			// state is the number of components that failed
+[] state1 &lt; n1 -&gt; {lambda1} (n1-state1)*f1 : (state1'=state1+1) &amp; (nb_lambda1'=nb_lambda1+1);	// fail
+[] state1 &gt; 0 -&gt; {lambda2} r1 : (state1'=state1-1) &amp; (nb_lambda2'=nb_lambda2+1);		// repair
+endmodule
+
+module type2
+state2 : [0..n2] init 0; 			
+[] state2 &lt; n2 -&gt; {lambda3} (n2-state2)*f2 : (state2'=state2+1) &amp; (nb_lambda3'=nb_lambda3+1);	
+[] state2 &gt; 0 &amp; state1 = 0 -&gt; {lambda4} r2 : (state2'=state2-1) &amp; (nb_lambda4'=nb_lambda4+1);	// repair if type1 has not failed
+endmodule
+
+module type3
+state3 : [0..n3] init 0;
+[] state3 &lt; n3 -&gt; {lambda5} (n3-state3)*f3 : (state3'=state3+1) &amp; (nb_lambda5'=nb_lambda5+1);
+[] state3 &gt; 0 &amp; state2 = 0 &amp; state1 = 0 -&gt; {lambda6} r3 : (state3'=state3-1) &amp; (nb_lambda6'=nb_lambda6+1);	// repair if type1 and type2 have not failed
+endmodule
+
+module type4
+state4 : [0..n4] init 0;
+[] state4 &lt; n4 -&gt; {lambda7} (n4-state4)*f4 : (state4'=state4+1) &amp; (nb_lambda7'=nb_lambda7+1);
+[] state4 &gt; 0 &amp; state3 = 0 &amp; state2 =0 &amp; state1 = 0 -&gt; {lambda8} r4 : (state4'=state4-1) &amp; (nb_lambda8'=nb_lambda8+1);		// repair if type1 and type2 and type3 have not failed
+endmodule
+
+module type5
+state5 : [0..n5] init 0;
+[] state5 &lt; n5 -&gt; {lambda9} (n5-state5)*f5 : (state5'=state5+1) &amp; (nb_lambda9'=nb_lambda9+1);
+[] state5 &gt; 0 &amp; state4 = 0 &amp; state3 = 0 &amp; state2 =0 &amp; state1 = 0 -&gt; {lambda10} r5 : (state5'=state5-1) &amp; (nb_lambda10'=nb_lambda10+1);	// repair if type1 and type2 and type3 and type4 have not failed
+endmodule
+
+module type6
+state6 : [0..n6] init 0;
+[] state6 &lt; n6 -&gt; {lambda11} (n6-state6)*f6 : (state6'=state6+1) &amp; (nb_lambda11'=nb_lambda11+1);
+[] state6 &gt; 0 &amp; state5 = 0 &amp; state4 = 0 &amp; state3 = 0 &amp; state2 =0 &amp; state1 = 0 -&gt; {lambda12} r6 : (state6'=state6-1) &amp; (nb_lambda12'=nb_lambda12+1);	// repair if other types have not failed
+endmodule
+
+
+label "start" = (state1=0 &amp; state2 = 0 &amp; state3 =0 &amp; state4 = 0 &amp; state5=0);
+label "failure"= (state1=n1 | state2=n2 | state3=n3 | state4=n4 | state5=n5 | state6=n6);</content>
+    </model>
+    <model name="Rider2" type="rml">
+      <content>// Repair model based on Example 2 of (Ridder 2005)
+// True probabilty: 1.916 10-6
+
+ctmc
+
+const n = 4;
+
+const double epsilon = 0.001;
+const double mu = 1.0;
+
+module type1
+state1 : [0..n] init 0; 				// state is the number of components that failed
+[] state1 &lt; n -&gt; (n-state1)*epsilon : (state1'=state1+1);	// fail
+[] state1 &gt;= 2 -&gt; mu : (state1'=0);			// repair
+endmodule
+
+module type2
+state2 : [0..n] init 0; 			
+[] state2 &lt; n -&gt; (n-state2)*epsilon : (state2'=state2+1);	
+[] state2 &gt;=2 &amp; state1 &lt; 2 -&gt; mu : (state2'=0);
+endmodule
+
+module type3
+state3 : [0..n] init 0;
+[] state3 &lt; n -&gt; (n-state3)*epsilon : (state3'=state3+1);
+[] state3 &gt; 0 &amp; state2 &lt; 2 &amp; state1 &lt; 2 -&gt; mu : (state3'=state3-1);
+endmodule
+
+module type4
+state4 : [0..n] init 0;
+[] state4 &lt; n -&gt; (n-state4)*epsilon : (state4'=state4+1);
+[] state4 &gt; 0 &amp; state3 = 0 &amp; state2 &lt;2 &amp; state1 &lt; 2 -&gt; mu : (state4'=state4-1);
+endmodule
+
+module type5
+state5 : [0..n] init 0;
+[] state5 &lt; n -&gt; (n-state5)*epsilon : (state5'=state5+1);
+[] state5 &gt; 0 &amp; state4 = 0 &amp; state3 = 0 &amp; state2 &lt; 2 &amp; state1 &lt; 2 -&gt; mu : (state5'=state5-1);
+endmodule
+
+label "start" = (state1=0 &amp; state2 = 0 &amp; state3 =0 &amp; state4 = 0 &amp; state5=0);
+label "failure"= (state1=n | state2=n | state3=n | state4=n | state5=n);</content>
+    </model>
+    <model name="Rider2_CE" type="rml">
+      <content>ctmc sampling
+
+const n = 4;
+
+const double epsilon = 0.001;
+const double mu = 1.0;
+
+const double lambda1 = 1.0;
+const double lambda2 = 1.0;
+const double lambda3 = 1.0;
+const double lambda4 = 1.0;
+const double lambda5 = 1.0;
+const double lambda6 = 1.0;
+const double lambda7 = 1.0;
+const double lambda8 = 1.0;
+const double lambda9 = 1.0;
+const double lambda10 = 1.0;
+
+global nb_lambda1 : int init 0;
+global nb_lambda2 : int init 0;
+global nb_lambda3 : int init 0;
+global nb_lambda4 : int init 0;
+global nb_lambda5 : int init 0;
+global nb_lambda6 : int init 0;
+global nb_lambda7 : int init 0;
+global nb_lambda8 : int init 0;
+global nb_lambda9 : int init 0;
+global nb_lambda10 : int init 0;
+
+label "rate_lambda1" = (n-state1)*epsilon;
+label "rate_lambda2" = mu;
+label "rate_lambda3" = (n-state2)*epsilon;
+label "rate_lambda4" = mu;
+label "rate_lambda5" = (n-state3)*epsilon;
+label "rate_lambda6" = mu;
+label "rate_lambda7" = (n-state4)*epsilon;
+label "rate_lambda8" = mu;
+label "rate_lambda9" = (n-state5)*epsilon;
+label "rate_lambda10" = mu;
+
+module type1
+state1 : [0..n] init 0;
+[] state1 &lt; n -&gt; {lambda1} (n-state1)*epsilon : (state1'=state1+1) &amp; (nb_lambda1'=nb_lambda1+1);
+[] state1 &gt;= 2 -&gt; {lambda2} mu : (state1'=0) &amp; (nb_lambda2'=nb_lambda2+1);
+endmodule
+
+module type2
+state2 : [0..n] init 0; 			
+[] state2 &lt; n -&gt; {lambda3} (n-state2)*epsilon : (state2'=state2+1) &amp; (nb_lambda3'=nb_lambda3+1);
+[] state2 &gt;= 2 &amp; state1 &lt; 2 -&gt; {lambda4} mu : (state2'=0) &amp; (nb_lambda4'=nb_lambda4+1);
+endmodule
+
+module type3
+state3 : [0..n] init 0;
+[] state3 &lt; n -&gt; {lambda5} (n-state3)*epsilon : (state3'=state3+1) &amp; (nb_lambda5'=nb_lambda5+1);
+[] state3 &gt; 0 &amp; state2 &lt; 2 &amp; state1 &lt; 2 -&gt; {lambda6} mu : (state3'=state3-1) &amp; (nb_lambda6'=nb_lambda6+1);
+endmodule
+
+module type4
+state4 : [0..n] init 0;
+[] state4 &lt; n -&gt; {lambda7} (n-state4)*epsilon : (state4'=state4+1) &amp; (nb_lambda7'=nb_lambda7+1);
+[] state4 &gt; 0 &amp; state3 = 0 &amp; state2 &lt; 2 &amp; state1 &lt; 2 -&gt; {lambda8} mu : (state4'=state4-1) &amp; (nb_lambda8'=nb_lambda8+1);
+endmodule
+
+module type5
+state5 : [0..n] init 0;
+[] state5 &lt; n -&gt; {lambda9} (n-state5)*epsilon : (state5'=state5+1) &amp; (nb_lambda9'=nb_lambda9+1);
+[] state5 &gt; 0 &amp; state4 = 0 &amp; state3 = 0 &amp; state2 &lt; 2 &amp; state1 &lt; 2 -&gt; {lambda10} mu : (state5'=state5-1) &amp; (nb_lambda10'=nb_lambda10+1);
+endmodule
+
+label "start" = (state1=0 &amp; state2 = 0 &amp; state3 =0 &amp; state4 = 0 &amp; state5=0);
+label "failure"= (state1=n | state2=n | state3=n | state4=n | state5=n);</content>
+    </model>
+  </models>
+  <requirements>
+    <requirement name="Rider_prop" type="bltl">
+      <content>X( (!"start") U&lt;=#10000 "failure")</content>
+    </requirement>
+    <requirement name="observer1" type="rmlobserver">
+      <content>// X&lt;=#1 (!"initial" U&lt;=#300 "failure")
+// for n=4
+observer rareObserver
+	score : double init 0;
+	xtime : [0..300] init 0;
+	x : [0..1] init 0;
+	decided : bool init false;
+
+	[] (xtime&lt;300) -&gt; (xtime'=xtime+1); 
+	[] (state1+state2+state3=0) &amp; (x=0) -&gt; (x'=1);
+	[] ((state1+state2+state3=0) &amp; (x=1)) | (state1+state2+state3=12) | (xtime=300) -&gt; (decided'=true);
+	[] (state1+state2+state3&gt;0) -&gt; (score'=state1+state2+state3);
+	
+endobserver</content>
+    </requirement>
+  </requirements>
+  <resources />
+</PlasmaProject>

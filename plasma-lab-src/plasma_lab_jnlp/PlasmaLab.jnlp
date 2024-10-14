@@ -1,0 +1,40 @@
+
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+" codebase="http://plasma-lab.gforge.inria.fr/plasma_lab_jnlp/" href="PlasmaLab.jnlp">
+
+	<information>
+		<title>PLASMA-LAB</title>
+		<vendor>INRIA</vendor>
+        	<homepage href="https://project.inria.fr/plasma-lab/"/>
+        	<description>PLASMA Lab is a compact, efficient and flexible platform for statistical model checking of stochastic models. </description>		
+		<icon kind="shortcut" href="images/PLASMA128.png" width="128" height="128"/>
+		<icon kind="shortcut" href="images/PLASMA64.png" width="64" height="64"/>
+		<icon kind="shortcut" href="images/PLASMA32.png" width="32" height="32"/>
+		<icon kind="shortcut" href="images/PLASMA16.png" width="16" height="16"/>
+		<icon href="images/PLASMAsplash.png" kind="splash"/>
+		<offline-allowed />
+		<shortcut>
+		    <desktop/>
+		    <menu submenu="PlasmaLab"/>
+		</shortcut>
+	</information>
+
+
+	<security>
+		<all-permissions />
+	</security>
+
+	<resources>
+		<j2se version="1.5+" href="http://java.sun.com/products/autodl/j2se"/>
+		<jar href="http://maven.inria.fr/artifactory/simple/plasmalab-public-release/fr/inria/plasmalab/fr.inria.plasmalab.plasmalab/1.3.8/fr.inria.plasmalab.plasmalab-1.3.8.jar" main="true" download="eager"/>
+	</resources>
+
+	<application-desc main-class="fr.inria.plasmalab.ui.PlasmaLabGUI">
+		<argument>-jnlp</argument>
+		<argument>http://plasma-lab.gforge.inria.fr/plasma_lab_jnlp/jnlp.conf</argument>
+	</application-desc>
+    <update check="always" policy="prompt-update"/>
+
+</jnlp>
+			
+

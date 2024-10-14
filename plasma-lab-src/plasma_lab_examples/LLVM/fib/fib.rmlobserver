@@ -1,0 +1,22 @@
+observer rareObserver
+	score : int init 0;
+	decided : bool init false;
+	steps : int init 0;
+	[] (P1_t1_tmp9 + P2_t2_tmp9 = 5)& (P1_t1_tmp4=P2_t2_tmp4)-> (score '= 1);
+ 	[] P1_t1_tmp9 + P2_t2_tmp9 = 13 & (P1_t1_tmp4=P2_t2_tmp4) -> (score '= 2);
+	[] P1_t1_tmp9 + P2_t2_tmp9 =34 & (P1_t1_tmp4=P2_t2_tmp4)-> (score '= 3);
+	[] P1_t1_tmp9 + P2_t2_tmp9 = 89 & (P1_t1_tmp4=P2_t2_tmp4)-> (score '= 4);
+	[] P1_t1_tmp9 + P2_t2_tmp9 = 144 & (P1_t1_tmp4=P2_t2_tmp4)-> (score '= 5); 
+	[] P1_t1_tmp9 + P2_t2_tmp9 = 233 & (P1_t1_tmp4=P2_t2_tmp4)-> (score '= 6); 	
+	[] P1_t1_tmp9 + P2_t2_tmp9 = 377 & (P1_t1_tmp4=P2_t2_tmp4)-> (score '= 7);		
+	[] P1_t1_tmp9 + P2_t2_tmp9 = 987 & (P1_t1_tmp4=P2_t2_tmp4)-> (score '= 8);
+	[] P1_t1_tmp9 + P2_t2_tmp9 = 4187 & (P1_t1_tmp4=P2_t2_tmp4)-> (score '= 9);
+	[] P1_t1_tmp9 + P2_t2_tmp9 = 10946 & (P1_t1_tmp4=P2_t2_tmp4)-> (score '= 10);
+	[] P1_t1_tmp9 + P2_t2_tmp9 = 121393 & (P1_t1_tmp4=P2_t2_tmp4)-> (score '= 11);
+	[] P1_t1_tmp9 + P2_t2_tmp9 = 514229 & (P1_t1_tmp4=P2_t2_tmp4)-> (score '= 12);
+	[] P1_t1_tmp9 + P2_t2_tmp9 = 1346269 & (P1_t1_tmp4=P2_t2_tmp4)-> (score '= 13);
+	[] P0_Call_VERIFIERError=1 -> (score'=14);
+	[] steps<5000 ->(steps'=steps+1);
+  	[] steps>=5000 ->(decided'=true);
+	
+endobserver

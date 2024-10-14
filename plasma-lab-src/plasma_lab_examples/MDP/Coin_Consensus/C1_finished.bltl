@@ -1,0 +1,9 @@
+// Optimize constant K for each model
+// If used, affects all other properties
+declare
+B := 5000//[0;5000;200]
+optimize
+K := 4//[2; 8; 2]
+end
+
+F<=#(B) "finished"

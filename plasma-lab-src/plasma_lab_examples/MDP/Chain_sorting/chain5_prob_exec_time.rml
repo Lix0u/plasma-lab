@@ -1,0 +1,115 @@
+mdp
+
+const k =20 ;
+const N;
+const M;
+const L;
+
+label "p0doesNsteps" = max(p0a,p0b,p0c,p0d) = N;
+label "p1doesMsteps" = max(p1a,p1b,p1c,p1d) = M;
+label "p2doesLsteps" = max(p2a,p2b,p2c,p2d) = L;
+
+// behavior of the model to evaluate
+
+module number0
+   prop0: bool init false;
+   [i] (!prop0) -> (prop0'=true);
+   [a] (prop0) -> (prop0'=false);
+endmodule
+
+module number1 = number0 [ prop0=prop1, i=a, a=b ] endmodule
+
+module number2 = number0 [ prop0=prop2, i=b, a=c ] endmodule
+
+module number3 = number0 [ prop0=prop3, i=c, a=d ] endmodule
+
+module number4 = number0 [ prop0=prop4, i=d, a=o ] endmodule
+
+
+// added counters for evaluating parallelism
+
+// global counters
+module global_count
+  c: [0..k+1] init 0; 
+  counting: bool init false;
+
+  [a] !counting & (c<k) -> true;
+  [b] !counting & (c<k) -> true;
+  [c] !counting & (c<k) -> true;
+  [d] !counting & (c<k) -> true;
+
+  [] !counting -> (counting'=true);
+  [a] counting & (c<k) -> (c'=c+1);
+  [b] counting & (c<k) -> (c'=c+1);
+  [c] counting & (c<k) -> (c'=c+1);
+  [d] counting & (c<k) -> (c'=c+1);
+endmodule
+
+
+// probabilistic execution times for each interaction
+module inter_duration
+   dur_a: [0..2] init 1 ;
+   dur_b: [0..2] init 1 ;
+   dur_c: [0..2] init 1 ;
+   dur_d: [0..2] init 1 ;
+
+   [a] (true) -> 0.5: (dur_a' = 1) + 0.5: (dur_a' = 2) ;
+   [b] (true) -> 0.5: (dur_b' = 1) + 0.5: (dur_b' = 2) ;
+   [c] (true) -> 0.5: (dur_c' = 1) + 0.5: (dur_c' = 2) ;
+   [d] (true) -> 0.5: (dur_d' = 1) + 0.5: (dur_d' = 2) ;
+endmodule
+
+
+// count execution steps for each partition
+
+module count_part0
+   p0a : [0..2*k] init 0;
+   p0b : [0..2*k] init 0;
+   p0c : [0..2*k] init 0;
+   p0d : [0..2*k] init 0;
+
+   [a] !counting -> true;
+   [b] !counting -> true;
+   [c] !counting -> true;
+   [d] !counting -> true;
+
+   [a] counting ->  (p0a'=max(p0a,p0b)     + dur_a)  ; 
+   [b] counting ->  (p0b'=max(p0a,p0b,p0c) + dur_b)  ; 
+   [c] counting ->  (p0c'=max(p0b,p0c,p0d) + dur_c)  ; 
+   [d] counting ->  (p0d'=max(p0c,p0d)     + dur_d)  ; 
+endmodule
+
+
+module count_part1
+   p1a : [0..k] init 0;
+   p1b : [0..k] init 0;
+   p1c : [0..k] init 0;
+   p1d : [0..k] init 0;
+
+   [a] !counting -> true;
+   [b] !counting -> true;
+   [c] !counting -> true;
+   [d] !counting -> true;
+
+   [a] counting -> (p1a'=max(p1a,p1b,p1c)     + dur_a) ;
+   [b] counting -> (p1b'=max(p1a,p1b,p1c,p1d) + dur_b) ;
+   [c] counting -> (p1c'=max(p1a,p1b,p1c,p1d) + dur_c) ;
+   [d] counting -> (p1d'=max(p1b,p1c,p1d)     + dur_d) ;
+endmodule
+
+module count_part2
+   p2a : [0..k] init 0;
+   p2b : [0..k] init 0;
+   p2c : [0..k] init 0;
+   p2d : [0..k] init 0;
+
+   [a] !counting -> true;
+   [b] !counting -> true;
+   [c] !counting -> true;
+   [d] !counting -> true;
+
+   [a] counting -> (p2a'=max(p2a,p2b,p2d) + dur_a) ;
+   [b] counting -> (p2b'=max(p2a,p2b,p2c) + dur_b) ;
+   [c] counting -> (p2c'=max(p2b,p2c,p2d) + dur_c) ;
+   [d] counting -> (p2d'=max(p2a,p2c,p2d) + dur_d) ;
+endmodule

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlasmaProject name="LeaderSyncRare">
+  <models>
+    <model name="leader20_6" type="rml">
+      <content>// synchronous leader election protocol  (itai &amp; Rodeh)
+// dxp/gxn 25/01/01
+
+dtmc
+
+// CONSTANTS
+const N = 20; // number of processes
+const K = 6; // range of probabilistic choice
+
+// counter module used to count the number of processes that have been read
+// and to know when a process has decided
+module counter
+	
+	// counter (c=i  means process j reading process (i-1)+j next)
+	c : [1..N-1];
+	
+	// reading
+	[read] c&lt;N-1 -&gt; (c'=c+1);
+	// finished reading
+	[read] c=N-1 -&gt; (c'=c);
+	//decide
+	[done] u1|u2|u3|u4|u5|u6|u7|u8|u9|u10|u11|u12|u13|u14|u15|u16|u17|u18|u19|u20 -&gt; (c'=c);
+	// pick again reset counter 
+	[retry] !(u1|u2|u3|u4|u5|u6|u7|u8|u9|u10|u11|u12|u13|u14|u15|u16|u17|u18|u19|u20) -&gt; (c'=1);
+	// loop (when finished to avoid deadlocks)
+	[loop] s1=3 -&gt; (c'=c);
+	
+endmodule
+
+//  processes form a ring and suppose:
+// process 1 reads process 2
+// process 2 reads process 3
+// process 3 reads process 1
+module process1
+	
+	// local state
+	s1 : [0..3];
+	// s1=0 make random choice
+	// s1=1 reading
+	// s1=2 deciding
+	// s1=3 finished
+	
+	// has a unique id so far (initially true)
+	u1 : bool;
+	
+	// value to be sent to next process in the ring (initially sets this to its own value)
+	v1 : [0..K-1];
+	
+	// random choice
+	p1 : [0..K-1];
+	
+	// pick value
+	[pick] s1=0 -&gt; 1/K : (s1'=1) &amp; (p1'=0) &amp; (v1'=0) &amp; (u1'=true)
+	             + 1/K : (s1'=1) &amp; (p1'=1) &amp; (v1'=1) &amp; (u1'=true)
+	             + 1/K : (s1'=1) &amp; (p1'=2) &amp; (v1'=2) &amp; (u1'=true)
+	             + 1/K : (s1'=1) &amp; (p1'=3) &amp; (v1'=3) &amp; (u1'=true)
+	             + 1/K : (s1'=1) &amp; (p1'=4) &amp; (v1'=4) &amp; (u1'=true)
+	             + 1/K : (s1'=1) &amp; (p1'=5) &amp; (v1'=5) &amp; (u1'=true);
+	// read
+	[read] s1=1 &amp;  u1 &amp; c&lt;N-1 -&gt; (u1'=(p1!=v2)) &amp; (v1'=v2);
+	[read] s1=1 &amp; !u1 &amp; c&lt;N-1 -&gt; (u1'=false) &amp; (v1'=v2) &amp; (p1'=0);
+	// read and move to decide
+	[read] s1=1 &amp;  u1 &amp; c=N-1 -&gt; (s1'=2) &amp; (u1'=(p1!=v2)) &amp; (v1'=0) &amp; (p1'=0);
+	[read] s1=1 &amp; !u1 &amp; c=N-1 -&gt; (s1'=2) &amp; (u1'=false) &amp; (v1'=0);
+	// deciding
+	// done
+	[done] s1=2 -&gt; (s1'=3) &amp; (u1'=false) &amp; (v1'=0) &amp; (p1'=0);
+	//retry
+	[retry] s1=2 -&gt; (s1'=0) &amp; (u1'=false) &amp; (v1'=0) &amp; (p1'=0);
+	// loop (when finished to avoid deadlocks)
+	[loop] s1=3 -&gt; (s1'=3);
+	
+endmodule
+
+// construct remaining processes through renaming
+module process2 = process1 [ s1=s2,p1=p2,v1=v2,u1=u2,v2=v3 ] endmodule
+module process3 = process1 [ s1=s3,p1=p3,v1=v3,u1=u3,v2=v4 ] endmodule
+module process4 = process1 [ s1=s4,p1=p4,v1=v4,u1=u4,v2=v5 ] endmodule
+module process5 = process1 [ s1=s5,p1=p5,v1=v5,u1=u5,v2=v6 ] endmodule
+module process6 = process1 [ s1=s6,p1=p6,v1=v6,u1=u6,v2=v7 ] endmodule
+module process7 = process1 [ s1=s7,p1=p7,v1=v7,u1=u7,v2=v8 ] endmodule
+module process8 = process1 [ s1=s8,p1=p8,v1=v8,u1=u8,v2=v9 ] endmodule
+module process9 = process1 [ s1=s9,p1=p9,v1=v9,u1=u9,v2=v10 ] endmodule
+module process10 = process1 [ s1=s10,p1=p10,v1=v10,u1=u10,v2=v11 ] endmodule
+module process11 = process1 [ s1=s11,p1=p11,v1=v11,u1=u11,v2=v12 ] endmodule
+module process12 = process1 [ s1=s12,p1=p12,v1=v12,u1=u12,v2=v13 ] endmodule
+module process13 = process1 [ s1=s13,p1=p13,v1=v13,u1=u13,v2=v14 ] endmodule
+module process14 = process1 [ s1=s14,p1=p14,v1=v14,u1=u14,v2=v15 ] endmodule
+module process15 = process1 [ s1=s15,p1=p15,v1=v15,u1=u15,v2=v16 ] endmodule
+module process16 = process1 [ s1=s16,p1=p16,v1=v16,u1=u16,v2=v17 ] endmodule
+module process17 = process1 [ s1=s17,p1=p17,v1=v17,u1=u17,v2=v18 ] endmodule
+module process18 = process1 [ s1=s18,p1=p18,v1=v18,u1=u18,v2=v19 ] endmodule
+module process19 = process1 [ s1=s19,p1=p19,v1=v19,u1=u19,v2=v20 ] endmodule
+module process20 = process1 [ s1=s20,p1=p20,v1=v20,u1=u20,v2=v1 ] endmodule
+
+
+// expected number of rounds
+//rewards "num_rounds"
+//	[pick] true : 1;
+//endrewards
+
+// labels
+label "elected" = s1=3&amp;s2=3&amp;s3=3&amp;s4=3&amp;s5=3&amp;s6=3&amp;s7=3&amp;s8=3&amp;s9=3&amp;s10=3&amp;s11=3&amp;s12=3&amp;s13=3&amp;s14=3&amp;s15=3&amp;s16=3&amp;s17=3&amp;s18=3&amp;s19=3&amp;s20=3;</content>
+    </model>
+  </models>
+  <requirements>
+    <requirement name="observer" type="rmlobserver">
+      <content>const int N=20; //number of electors
+const int L=20; //number of rounds
+
+observer rareObserver
+	score : double init 0;
+	cl : clock;
+	s : [0..L*(N+1)] init 0;
+	decided : bool init false;
+
+	[] (s1&lt;3 | s2&lt;3 | s3&lt;3 | s4&lt;3 | s5&lt;3 | s6&lt;3 | s7&lt;3 | s8&lt;3 | s9&lt;3 | s10&lt;3 | s11&lt;3 | s12&lt;3 | s13&lt;3 | s14&lt;3 | s15&lt;3 | s16&lt;3 | s17&lt;3 | s18&lt;3 | s19&lt;3 | s20&lt;3) &amp; s&lt;L*(N+1) -&gt; (s'=s+1) &amp; (score'=score+1);
+	[] !(s1&lt;3 | s2&lt;3 | s3&lt;3 | s4&lt;3 | s5&lt;3 | s6&lt;3 | s7&lt;3 | s8&lt;3 | s9&lt;3 | s10&lt;3 | s11&lt;3 | s12&lt;3 | s13&lt;3 | s14&lt;3 | s15&lt;3 | s16&lt;3 | s17&lt;3 | s18&lt;3 | s19&lt;3 | s20&lt;3) | cl=L*(N+1) -&gt; (decided'=true); //Score property=L*(N+1)
+
+endobserver</content>
+    </requirement>
+    <requirement name="property" type="bltl">
+      <content>G&lt;=#420 ! (s1=3&amp;s2=3&amp;s3=3&amp;s4=3&amp;s5=3&amp;s6=3&amp;s7=3&amp;s8=3&amp;s9=3&amp;s10=3&amp;s11=3&amp;s12=3&amp;s13=3&amp;s14=3&amp;s15=3&amp;s16=3&amp;s17=3&amp;s18=3&amp;s19=3&amp;s20=3)</content>
+    </requirement>
+  </requirements>
+  <resources />
+</PlasmaProject>

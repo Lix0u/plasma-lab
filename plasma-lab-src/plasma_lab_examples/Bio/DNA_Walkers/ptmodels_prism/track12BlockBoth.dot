@@ -1,0 +1,35 @@
+digraph G {
+
+	node[fontsize=18];
+	edge[fontsize=18];
+	A1 [shape=circle,xlabel="A1",label="••",pos="0.000000,0.000000!"];
+	A2 [shape=circle,xlabel="A2",label="•",pos="0.000000,-0.746947!"];
+	A3 [shape=circle,xlabel="A3",label="•",pos="0.000000,-1.493894!"];
+	A4 [shape=circle,xlabel="A4",label="•",pos="0.000000,-2.240841!"];
+	A5 [shape=circle,xlabel="A5",label=" ",pos="-0.746947,-2.614314!"];
+	B5 [shape=circle,xlabel="B5",label="•",pos="-0.746947,-1.601814!"];
+	A6 [shape=circle,xlabel="A6",label="•",pos="-1.493894,-2.987788!"];
+	A7 [shape=circle,xlabel="A7",label="•",pos="-2.240841,-3.361261!"];
+	A8 [shape=circle,xlabel="A8",label="•",pos="-2.987788,-3.734735!"];
+	A9 [shape=circle,xlabel="A9",label=" ",pos="0.746947,-2.614314!"];
+	B9 [shape=circle,xlabel="B9",label="•",pos="0.746947,-1.601814!"];
+	A10 [shape=circle,xlabel="A10",label="•",pos="1.493894,-2.987788!"];
+	A11 [shape=circle,xlabel="A11",label="•",pos="2.240841,-3.361261!"];
+	A12 [shape=circle,xlabel="A12",label="•",pos="2.987788,-3.734735!"];
+	tb5 [shape=rect,fixedsize=true,height=0.12,width=0.5,style=filled,fillcolor=black,xlabel="",label="",pos="-0.746947,-2.108064!"];
+	tAb5 [shape=rect,fixedsize=true,height=0.12,width=0.5,style=filled,fillcolor=black,xlabel="",label="",pos="-0.746947,-1.095564!"];
+	tb9 [shape=rect,fixedsize=true,height=0.12,width=0.5,style=filled,fillcolor=black,xlabel="",label="",pos="0.746947,-2.108064!"];
+	tAb9 [shape=rect,fixedsize=true,height=0.12,width=0.5,style=filled,fillcolor=black,xlabel="",label="",pos="0.746947,-1.095564!"];
+	tloop8 [shape=rect,fixedsize=true,height=0.12,width=0.5,style=filled,fillcolor="#D0D0D0",xlabel="",label="",pos="-2.987788,-4.484735!"];
+	tloop12 [shape=rect,fixedsize=true,height=0.12,width=0.5,style=filled,fillcolor="#D0D0D0",xlabel="",label="",pos="2.987788,-4.484735!"];
+	B5 -> tb5;
+	B5 -> tAb5;
+	B9 -> tb9;
+	B9 -> tAb9;
+	A8 -> tloop8 [xlabel="2"];
+	A12 -> tloop12 [xlabel="2"];
+	tb5 -> A5;
+	tb9 -> A9;
+	tloop8 -> A8 [xlabel="2"];
+	tloop12 -> A12 [xlabel="2"];
+}

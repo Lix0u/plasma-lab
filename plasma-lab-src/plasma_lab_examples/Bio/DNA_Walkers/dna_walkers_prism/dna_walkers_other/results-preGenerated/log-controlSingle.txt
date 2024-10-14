@@ -1,0 +1,67 @@
+Welcome control
+PRISM
+=====
+
+Version: 4.1.dev
+Date: Sun Apr 27 17:12:40 BST 2014
+Hostname: localhost.localdomain
+Command line: prism models/control.pm properties/control.pctl -prop 1 -transientmethod unif -exportresults 'results/control-1.txt,matrix,csv'
+
+Parsing model file "models/control.pm"...
+
+Parsing properties file "properties/control.pctl"...
+
+4 properties:
+(1) P=? [ F[12000,12000] (w1=2) ]
+(2) P=? [ F[12000,12000] (w1=8) ]
+(3) P=? [ F[12000,12000] "deadlockUser" ]
+(4) R{"steps"}=? [ C<=200*60 ]
+
+Type:        CTMC
+Modules:     walker 
+Variables:   stator1 stator2 stator3 stator4 stator5 stator6 stator7 stator8 w1 
+
+---------------------------------------------------------------------
+
+Model checking: P=? [ F[12000,12000] (w1=2) ]
+
+Building model...
+
+Computing reachable states...
+
+Reachability (BFS): 8 iterations in 0.00 seconds (average 0.000125, setup 0.00)
+
+Time for model construction: 0.024 seconds.
+
+Type:        CTMC
+States:      172 (1 initial)
+Transitions: 458
+
+Rate matrix: 1068 nodes (11 terminal), 458 minterms, vars: 12r/12c
+
+Computing probabilities...
+Engine: Hybrid
+
+Number of non-absorbing states: 172 of 172 (100.0%)
+
+Building hybrid MTBDD matrix... [levels=12, nodes=1808] [84.8 KB]
+Adding explicit sparse matrices... [levels=12, num=1, compact] [2.0 KB]
+Creating vector for diagonals... [dist=49, compact] [0.7 KB]
+Allocating iteration vectors... [3 x 1.3 KB]
+TOTAL: [91.5 KB]
+
+Uniformisation: q.t = 0.018819 x 12000.000000 = 225.828012
+Fox-Glynn: left = 0, right = 310
+
+Starting iterations...
+
+Iterative method: 310 iterations in 0.00 seconds (average 0.000003, setup 0.00)
+
+Value in the initial state: 0.0026150564535500315
+
+Time for model checking: 0.005 seconds.
+
+Result: 0.0026150564535500315 (value in the initial state)
+
+Exporting results in matrix form to file "results/control-1.txt"...
+

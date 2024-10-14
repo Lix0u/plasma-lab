@@ -1,0 +1,72 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>fr.inria.plasmalab.bio</artifactId>
+  <name>fr.inria.plasmalab.bio :: Biological models</name>
+  
+  <parent>
+  	<groupId>fr.inria.plasmalab</groupId>
+  	<artifactId>fr.inria.plasmalab.root</artifactId>
+  	<version>1.4.5-SNAPSHOT</version>
+	<relativePath>..</relativePath>
+  </parent>
+  
+  <build>
+    <outputDirectory>target/classes</outputDirectory>
+    <sourceDirectory>src</sourceDirectory>
+    
+    <plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Manifest-Version>1.0</Manifest-Version>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+			<!-- Signing jar produced -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jarsigner-plugin</artifactId>
+				<version>1.2</version>
+				<executions>
+					<execution>
+                    <phase>package</phase>
+						<id>sign</id>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<keystore>../src/plasmaKeyStore</keystore>
+					<alias>kevin.corre@inria.fr</alias>
+					<storepass>julescesar</storepass>
+					<keypass>roiarthur</keypass>
+				</configuration>
+			</plugin>
+		</plugins>
+  </build>
+  
+	<dependencies>
+		<dependency>
+			<groupId>jspf.core</groupId>
+			<artifactId>jspf.core</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jdom</groupId>
+			<artifactId>jdom2</artifactId>
+			<version>2.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.inria.plasmalab</groupId>
+			<artifactId>fr.inria.plasmalab.workflow</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+  
+</project>

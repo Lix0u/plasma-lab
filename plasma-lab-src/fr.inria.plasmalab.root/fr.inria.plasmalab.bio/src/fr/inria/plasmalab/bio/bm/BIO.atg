@@ -1,0 +1,146 @@
+import java.util.HashMap;
+import fr.inria.plasmalab.bio.BioState;
+
+/**
+ * BIO language ATG file
+ * @author Sean Sedwards
+ * @version 6/12/2012
+ */
+COMPILER BIO
+
+public HashMap<String,Integer> species = new HashMap<String,Integer>();
+public HashMap<String,Integer> variables = new HashMap<String,Integer>();
+public HashMap<String,Double> constants = new HashMap<String,Double>();
+public Reaction reactions;
+public int speciescount = 0, reactioncount = 0;
+public UpdateVect [] dependents;
+
+public BioState state;
+
+void addDependent(int index, Reaction r)
+{
+	UpdateVect v;
+	for (v = dependents[index]; v != null; v = v.next) if (v.reaction == r) return;
+	v = new UpdateVect(r);
+	v.next = dependents[index];
+	dependents[index] = v;
+}
+
+void createDependents()
+{
+	dependents = new UpdateVect[speciescount+1];
+	for (int i = 1; i <= speciescount; i++)
+	{	// all the species (excluding time)
+		for (Reaction r = reactions; r != null; r = r.next)
+		{	// all the reations
+			switch(r.kind)
+			{
+				case Reaction.gille:	// three dependents
+					addDependent(r.r3, r);
+				case Reaction.gillc:	// two dependents
+				case Reaction.gillf:
+					addDependent(r.r2, r);
+				case Reaction.gillb:	// one dependent
+				case Reaction.gilld:
+				case Reaction.gillg:
+					addDependent(r.r1, r);
+				case Reaction.gilla:	// not dependent
+				default:
+			}
+		}
+	}
+	for (Reaction r = reactions; r != null; r = r.next)
+	{	// all the reactions
+		for (ChangeVect v = r.action; v != null; v = v.next)
+		{	// all the changes of a reaction
+			r.addDependent(dependents[v.index]);
+		}
+	}
+}
+
+// keyword IGNORECASE here.
+
+CHARACTERS
+   letter = 'A'..'Z' + 'a'..'z'.
+   digit = "0123456789".
+   cr = '\r'.
+   lf = '\n'.
+   tab = '\t'.
+
+TOKENS
+   ident = letter {letter | digit | '_' }.
+   integer = digit {digit}.
+   float = digit { digit } '.' digit { digit } [('e'|'E')[('+'|'-')] digit [digit[digit]]].
+
+PRAGMAS
+//   switch = '$' { digit | letter }. (. Optional semantic action .)
+
+   COMMENTS FROM "/*" TO "*/" NESTED
+   COMMENTS FROM "//" TO lf
+
+   IGNORE tab + cr + lf
+
+PRODUCTIONS
+
+BIO =
+  { ConstantList }
+  SpeciesList { SpeciesList }
+  Reaction { Reaction }	(. createDependents(); .)
+  .
+
+ConstantList = "constant" ConstDecl { ',' ConstDecl }.
+  
+ConstDecl =				(. double val; .)
+  ident					(. String key = t.val; .)
+  '=' Number<out val>	(. if (constants.containsKey(key)) SemErr("redefinition of " + key); .)
+   						(. else constants.put(key,val); .)
+  .
+  
+SpeciesList = "species" SpecDecl { ',' SpecDecl }.
+  
+SpecDecl =				(. int val = 0; .)
+  ident					(. String key = t.val; .)
+  [ '=' integer			(. val = Integer.parseInt(t.val); .)
+  ]						(. if (species.containsKey(key)) SemErr("redefinition of " + key); .)
+   						(. else { species.put(key,val); variables.put(key,++speciescount); } .) 
+  .
+  
+Reaction =				(. Reaction r = new Reaction(reactioncount++); r.next = reactions; reactions = r; .) 			
+  Reactants<r>  [ RateConst<out r.rateconstant> ] "->" Products<r>.
+  
+Reactants<Reaction r> =
+  ( '*'						(. r.kind = Reaction.gilla; .)
+  | Species<out r.r1>		(. r.kind = Reaction.gillb; r.action = new ChangeVect(r.r1,-1); .)
+  [ '+' Species<out r.r2>	(. if (r.r1 == r.r2) { r.kind = Reaction.gilld; r.action.change--; } .) 
+  							(. else { r.kind = Reaction.gillc; r.addChange(r.r2,-1); } .)
+  [ '+' Species<out r.r3>	(. if (r.r1 != r.r2 && r.r3 != r.r1 && r.r3 != r.r2) { r.kind = Reaction.gille; .)
+                         	(. r.addChange(r.r3,-1); } else if (r.r1 == r.r2 && r.r3 == r.r1) .)
+                         	(. { r.kind = Reaction.gillg; r.action.change--; } else { r.kind = Reaction.gillf; .)
+                         	(. if (r.r3 == r.r2) { r.r2 = r.r1; r.r1 = r.r3; r.action.change--; } else r.action.next.change--; } .)
+  ]]
+  ).
+  
+Species<out int index> =	(. index = -1; .)
+  ident						(. if (!variables.containsKey(t.val)) SemErr("expecting species"); .)
+       						(. else index = variables.get(t.val); .)
+  . 
+  
+Products<Reaction r> =		(. int prod; .) 
+  ( '*'
+  | Species<out prod>		(. r.addChange(prod,1); .)
+  { '+' Species<out prod>	(. r.addChange(prod,1); .)
+  } )						(. if (r.action == null) SemErr("illegal reaction"); .)
+  .
+
+RateConst<out double val> =	(. val = 0; .)
+  ( Number<out val>
+  | ident					(. if(!constants.containsKey(t.val)) SemErr("expecting constant"); .)
+         					(. else val = constants.get(t.val); .)
+  ).
+
+Number<out double val> =
+  ( integer | float )		(. val = Double.parseDouble(t.val); .)
+  .
+
+END BIO.
+

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlasmaProject name="Genosc">
+  <models>
+    <model name="Genosc.bio" type="bio">
+      <file>Genosc.bio</file>
+    </model>
+    <model name="Genosc.rml" type="rml">
+      <file>Genosc.rml</file>
+    </model>
+  </models>
+  <requirements>
+    <requirement name="prop" type="bltl">
+      <file>prop.bltl</file>
+    </requirement>
+  </requirements>
+  <resources />
+</PlasmaProject>

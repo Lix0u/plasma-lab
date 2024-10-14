@@ -1,0 +1,11 @@
+ctmc
+const double imm=100000;
+module m1
+	A1: [0..2] init 2;
+	A2: [0..2] init 1;
+	[step] (A1>=2) & (A2>=1) -> 6e-06 : (A1'=(A1-2)) & (A2'=(A2+1));
+	[step] (A2>=2) -> 1e-09 : (A2'=A2);
+endmodule
+rewards "steps"
+	[step] true : 1;
+endrewards

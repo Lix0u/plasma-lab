@@ -1,0 +1,19 @@
+#!/bin/sh
+#OAR -l nodes=1/core=8,walltime=00:04:00
+#OAR -O /temp_dd/igrida-fs1/kcorre/SCRATCH/plasma.%jobid%.output
+#OAR -E /temp_dd/igrida-fs1/kcorre/SCRATCH/plasma.%jobid%.error
+set -xv
+
+echo
+echo OAR_WORKDIR : $OAR_WORKDIR
+echo
+echo "cat \$OAR_NODE_FILE :"
+cat $OAR_NODE_FILE
+echo
+
+echo "=============== RUN ==============="
+java -jar ~/fr.inria.plasmalab.plasmalabservice-1.2.12.jar -r 131.254.11.234 -t 8 -dev plasmalab.conf
+echo "Running ..."
+
+echo "Done"
+echo "==================================="

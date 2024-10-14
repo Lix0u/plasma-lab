@@ -1,0 +1,9 @@
+// Optimize constant K for each model
+// If used, affects all other properties
+declare
+B := 5000
+optimize
+K := 4
+end
+
+F<=# (B) "finished" & "all_coins_equal_1"

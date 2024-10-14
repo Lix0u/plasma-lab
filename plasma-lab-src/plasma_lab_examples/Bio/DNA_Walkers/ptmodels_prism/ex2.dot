@@ -1,0 +1,11 @@
+digraph G {
+
+	node[fontsize=18];
+	edge[fontsize=18];
+	A1 [shape=circle,xlabel="A1",label="••",pos="0.000000,0.000000!"];
+	A2 [shape=circle,xlabel="A2",label="•",pos="1.493894,0.000000!"];
+	A3 [shape=circle,xlabel="A3",label="•",pos="2.987788,0.000000!"];
+	tloop3 [shape=rect,fixedsize=true,height=0.12,width=0.5,style=filled,fillcolor="#D0D0D0",xlabel="",label="",pos="2.987788,0.750000!"];
+	A3 -> tloop3 [xlabel="2"];
+	tloop3 -> A3 [xlabel="2"];
+}

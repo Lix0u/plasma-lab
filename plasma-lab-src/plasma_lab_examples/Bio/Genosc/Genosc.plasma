@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlasmaProject name="Genosc">
+  <models>
+    <model name="Genosc.bio" type="bio">
+      <content>constant alphaA=50,alpha_A=500,alphaR=0.01,alpha_R=50,betaA=50,betaR=5    // enzymatic
+constant gammaA=1,gammaR=1,gammaC=2                    // bimolecular
+constant deltaA=1,deltaR=0.2,deltaMA=10,deltaMR=0.5,thetaA=50,thetaR=100// decay
+
+species DA=1,D_A,DR=1,D_R,MA,MR,A,R,C
+
+A + DA gammaA-&gt; D_A
+D_A thetaA-&gt; A + DA
+A + DR gammaR-&gt; D_R
+D_R thetaR-&gt; A + DR
+D_A alpha_A-&gt; MA + D_A
+DA alphaA-&gt; MA + DA
+D_R alpha_R-&gt; MR + D_R
+DR alphaR-&gt; MR + DR
+MA betaA-&gt; MA + A
+MR betaR-&gt; MR + R
+A + R gammaC-&gt; C
+C //deltaA
+0.5-&gt; R
+A deltaA-&gt; *
+R deltaR-&gt; *
+MA deltaMA-&gt; *
+MR deltaMR-&gt; *
+//plot A,R,C</content>
+    </model>
+    <model name="Genosc.rml" type="rml">
+      <content>// Based on genetic oscillator of Vilar, Kueh, Barkai, Leibler PNAS 2002
+
+ctmc
+const int MAX_VALUE = 10000;
+const int alpha_A = 50;
+const int Alpha_A = 500;
+const double alpha_R = 0.01;
+const int Alpha_R = 50;
+const int beta_A = 50;
+const int beta_R = 5;
+const int delta_MA = 10;
+const double delta_MR = 0.5;
+const int delta_A = 1;
+const double delta_R = 0.2;
+const int gamma_A = 1;
+const int gamma_R = 1;
+const int gamma_C = 2;
+const int theta_A = 50;
+const int theta_R = 100;
+
+module genosc1
+DA : [0..MAX_VALUE] init 1;
+D_A : [0..MAX_VALUE] init 0;
+DR : [0..MAX_VALUE] init 1;
+D_R : [0..MAX_VALUE] init 0;
+MA : [0..MAX_VALUE] init 0;
+MR : [0..MAX_VALUE] init 0;
+A : [0..MAX_VALUE] init 0;
+R : [0..MAX_VALUE] init 0;
+C : [0..MAX_VALUE] init 0;
+
+[] true -&gt; DA*alpha_A : (MA'=MA+1);
+[] true -&gt; A*DA*gamma_A : (DA'=DA-1) &amp; (D_A'=D_A+1) &amp; (A'=A-1);
+[] true -&gt; D_A*Alpha_A : (MA'=MA+1);
+[] true -&gt; DR*alpha_R : (MR'=MR+1);
+[] true -&gt; D_R*Alpha_R : (MR'=MR+1);
+[] true -&gt; MA*beta_A : (A'=A+1);
+[] true -&gt; MR*beta_R : (R'=R+1);
+[] true -&gt; A*R*gamma_C : (A'=A-1) &amp; (R'=R-1) &amp; (C'=C+1);
+[] true -&gt; C*delta_A : (R'=R+1) &amp; (C'=C-1);
+[] true -&gt; A*delta_A : (A'=A-1);
+[] true -&gt; R*delta_R : (R'=R-1);
+[] true -&gt; MA*delta_MA : (MA'=MA-1);
+[] true -&gt; MR*delta_MR : (MR'=MR-1);
+[] true -&gt; D_R*theta_R : (DR'=DR+1) &amp; (D_R'=D_R-1) &amp; (A'=A+1);
+[] true -&gt; A*DR*gamma_R : (DR'=DR-1) &amp; (D_R'=D_R+1) &amp; (A'=A-1);
+[] true -&gt; D_A*theta_A : (DA'=DA+1) &amp; (D_A'=D_A-1) &amp; (A'=A+1);
+endmodule</content>
+    </model>
+  </models>
+  <requirements>
+    <requirement name="prop" type="bltl">
+      <content>F&lt;=#20 A = 10</content>
+    </requirement>
+  </requirements>
+  <resources />
+</PlasmaProject>

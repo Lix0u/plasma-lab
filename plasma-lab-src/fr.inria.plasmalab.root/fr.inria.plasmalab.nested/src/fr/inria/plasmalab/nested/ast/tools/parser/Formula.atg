@@ -1,0 +1,199 @@
+import java.util.HashMap;
+
+import fr.inria.plasmalab.nested.ast.*;
+import fr.inria.plasmalab.nested.ast.nodes.*;
+import fr.inria.plasmalab.nested.ast.operators.*;
+import fr.inria.plasmalab.workflow.concrete.Variable;
+
+// Set the name of your grammar here (and at the end of this grammar):
+COMPILER Formula
+
+//static final String [] typestring = { "undefined", "number", "bool"};
+//static final String [] resultstring = { "false", "undecided", "true"};
+static final String numerror = "expecting number", boolerror = "expecting Boolean", proberror = "must be in (0,1)";//, poserror = "expecting positive value";
+static final boolean debug = false;
+
+Expr root;
+HashMap<String,Variable> varMap = new HashMap<String, Variable>();
+
+public HashMap<String,Variable> getVarMap(){
+	return varMap;
+}
+
+public Expr getRoot(){
+	return root;
+}
+
+class BoundExpr { 
+	/* It is a union style structure: 
+	   We expect exactly one of the two fields must be not null
+	*/
+	// public TimeExpr time = null;
+	// public StepExpr step = null;
+	public double time = Double.NaN;
+	public int step = -1;
+}
+
+
+// keyword IGNORECASE here.
+
+CHARACTERS
+   letter = 'A'..'Z' + 'a'..'z'.
+   digit = "0123456789".
+   cr = '\r'.
+   lf = '\n'.
+   tab = '\t'.
+
+
+TOKENS
+   ident = (letter | '_') {letter | digit | '_' | '.' }.
+   integer = digit {digit}.
+   float = digit {digit} '.' digit { digit } [ ('e' | 'E') [('-' | '+')] digit { digit }].
+
+
+PRAGMAS
+
+
+// Add pragma declarations here.
+// Example:
+//   switch = '$' { digit | letter }. (. Optional semantic action .)
+
+
+   COMMENTS FROM "/*" TO "*/" NESTED
+   COMMENTS FROM "//" TO lf
+
+
+   IGNORE cr + lf + tab
+
+
+PRODUCTIONS
+Formula<out Expr expr> =							(.expr = null; /* Expr pexpr = null; */ .)
+							
+  (Expression<out expr> 							(. root = expr; .)
+					   )
+.
+
+Expression<out Expr result>					(.	Expr r; result = null;
+                           					  	double proba = Double.NaN;									
+                           						BinOp pathBop = null;	UnOp pathop = null;	
+ 												BoundExpr bound = null;// = new BoundExpr(); 
+ 																								.)
+  = Implication<out result> 
+  [				
+     ( "U"									(. pathBop = BinOp.Until;			.)
+     | "W"									(. pathBop = BinOp.WeakUntil;		.)
+     ) Bound <out bound>
+      Expression<out r>						(.	if (Double.isNaN(bound.time))										
+      												result = new Temp2(result, pathBop, bound.step, r);				
+      											else																
+      												result = new Temp2(result, pathBop, bound.time, r);				.)
+ 	]
+  | (	( "F"								(. pathop = UnOp.Future;   .)
+    	| "G"								(. pathop = UnOp.Globally; .)
+    	) Bound <out bound>
+    	
+    | "X" 									(. pathop = UnOp.Next; bound = new BoundExpr(); bound.step = 1;			 .) 
+    	  [Bound <out bound>]					 
+    ) Expression<out r>						(.	if (Double.isNaN(bound.time))
+     												result = new Temp1(pathop, bound.step, r);
+     											else 										
+     												result = new Temp1(pathop, bound.time, r);						.)
+    | "Pr" ">=" Number<out proba>
+    	 "[" Expression<out r> "]"			(. result = new Proba(r, proba); .)
+   .
+   
+
+Bound<out BoundExpr bound> =				(. bound = new BoundExpr(); .) //double doublebound = Double.NaN; .)
+	"<=" ('#'
+    		(//ident							(. throw new RuntimeException("Bound Variables are allowed with Nested Probabilities."); .)
+    										//(. varMap.put(t.val, new Variable(t.val)); bound.step = new Ident(t.val); .)
+      		//|
+      		integer							(. bound.step = Integer.parseInt(t.val); .)//(. bound.step = new IntExpr(Integer.parseInt(t.val));.)
+            )
+    	 //| Number<out doublebound>			(. bound.time = doublebound; .)
+    	 //| ident							(. throw new RuntimeException("Bound Variables are allowed with Nested Probabilities."); .)
+    	        							//(. varMap.put(t.val, new Variable(t.val)); bound.time = new Ident(t.val); .)
+         )
+.
+
+
+ 
+Implication<out Expr result>				(. Expr right; .)
+ = Disjunction<out result> [ 
+   "=>" Disjunction<out right>				(. result = new Expr2(result, BinOp.Imp, right); .)
+   ].
+ 
+Disjunction<out Expr result>				(. Expr right; .)
+ = Conjunction<out result> {
+   "|" Conjunction<out right>				(. result = new Expr2(result, BinOp.Or, right); .)
+   }.
+ 
+Conjunction<out Expr result>				(. Expr right; .)
+ = Equality<out result> {
+   "&" Equality<out right>					(. result = new Expr2(result, BinOp.And, right); .)
+   }.
+ 
+Equality<out Expr result> 	 				(. Expr right; BinOp op; UnOp neg = null; .)
+ = [ "!"									(. neg = UnOp.Not	; .)
+   ] RelExp<out result> [
+    ( "="									(. op = BinOp.Eq; .)
+    | "!="									(. op = BinOp.Neq; .)
+    )
+   RelExp<out right>						(. result = new Expr2(result, op, right); .)
+   ]										(. result = neg == null ? result : new Expr1(neg, result); .)
+   .
+   
+RelExp<out Expr result>						(. Expr right;	BinOp relop;	.)
+ = NumExp<out result> 						
+   [( ">"									(. relop = BinOp.Gt; .)
+    | "<"									(. relop = BinOp.Lt; .)
+    | ">="									(. relop = BinOp.Ge; .)
+    | "<="									(. relop = BinOp.Le; .)
+    ) NumExp<out right>						(. result = new Expr2(result, relop, right); .)
+   ].
+
+NumExp<out Expr result>						(. Expr right;	BinOp op;	.)
+ = Term<out result> {						
+    ( "+"									(. op = BinOp.Add;		.)
+  	| "-"									(. op = BinOp.Min; 	.)
+    ) Term<out right>    					(. result = new Expr2(result, op, right);	.)
+  }.
+ 
+Term<out Expr result>						(. Expr right; 	BinOp op; .)
+ = Factor<out result> {						
+    ( "*"									(. op = BinOp.Mul; .)
+    | "/"									(. op = BinOp.Div; .)
+    ) Factor<out right>						(. result = new Expr2(result, op, right); .)
+   }.
+
+Factor<out Expr result>						(. result = null; UnOp neg = null; double value; .)
+ = ["-"										(. neg = UnOp.Neg; .)
+   ] 
+    ( "(" Expression<out result> ")"		//(. result = new ParenthesisExpr(result);.)
+   	| ident									(. result = new Ident(t.val); .)
+    | Number<out value>						(. result = new Floating(value);.)
+    | "true"								(. result = new Bool(true);		.)
+    | "false"								(. result = new Bool(false); 	.)
+   )										(. result = neg == null ? result : new Expr1(neg, result);	.)
+   .
+
+Number<out double result> = 				(. result = Double.NaN; .) //Double.Nan value was originally reported here   
+ 	(float | integer)						(. if (Double.isNaN(t.value)) try { t.value = result = Double.parseDouble(t.val); } .)
+                    						(. catch(Exception e) { SemErr(numerror);} else result = t.value; .)
+ 	                 			// try { result = Double.parseDouble(t.val); } catch(Exception e) { SemErr(numerror); } .)
+ .
+ /*
+BLTLVars <> = 
+	"BLTL" "Vars:"{BLTLVar}
+ .
+BLTLVar <> =								(. String ident; .)
+	ident									(. ident = t.val; .)
+	 "=" "[" Number<out double x> ";" Number<out double y> "]" "by" Number<out double z>
+											(. Variable v = varMap.get(ident); .)
+											(. v.setMin(x); .)
+											(. v.setMax(y); .)
+											(. v.setInc(z); .)
+ .
+ */
+END Formula.
+

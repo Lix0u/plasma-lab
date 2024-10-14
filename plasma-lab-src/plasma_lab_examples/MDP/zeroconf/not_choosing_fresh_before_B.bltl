@@ -1,0 +1,7 @@
+declare
+Bound := [0;50;50]
+optimize
+K := [2;8;2]
+end
+
+!(l=4 & ip=2) U <=# 10000 t>Bound

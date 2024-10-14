@@ -1,0 +1,79 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>fr.inria.plasmalab.service</artifactId>
+	<name>fr.inria.plasmalab.service</name>
+
+	<parent>
+		<groupId>fr.inria.plasmalab</groupId>
+		<artifactId>fr.inria.plasmalab.root</artifactId>
+		<version>1.4.5-SNAPSHOT</version>
+	<relativePath>..</relativePath>
+	</parent>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+						<manifestEntries>
+							<Main-Class>fr.inria.plasmalab.service.PlasmaService</Main-Class>
+							<SplashScreen-Image>images/PLASMAsplash.png</SplashScreen-Image>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.restlet.jse</groupId>
+			<artifactId>org.restlet.ext.slf4j</artifactId>
+			<version>2.3.4</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.inria.plasmalab</groupId>
+			<artifactId>fr.inria.plasmalab.workflow</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.inria.plasmalab</groupId>
+			<artifactId>fr.inria.plasmalab.distributed</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.inria.plasmalab</groupId>
+			<artifactId>fr.inria.plasmalab.controler</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>jspf.core</groupId>
+			<artifactId>jspf.core</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.beust</groupId>
+			<artifactId>jcommander</artifactId>
+			<version>1.35</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.18</version>
+		</dependency>
+	</dependencies>
+
+</project>

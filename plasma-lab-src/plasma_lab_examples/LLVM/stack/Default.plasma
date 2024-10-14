@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlasmaProject name="Default">
+  <models>
+    <model name="data_0" type="llvm">
+      <content>sim -S -X -C --poptions procs:3
+/home/caramon/Postdoc/fmifmu/trunk/PlasmaLabLLVM/examples/stack/stackN.ll</content>
+    </model>
+  </models>
+  <requirements>
+    <requirement name="data_1" type="rmlobserver">
+      <content>observer rareObserver
+        score : int init 0;
+        state : int init 0;
+        decided : bool init false;
+        steps : int init 0;
+        [] P0_main_tmp17 = 100 -&gt; (score'=14);
+
+        [] state=0 &amp; P2_Call_pop=1 -&gt; (state'=1)&amp;(score'=score+1);
+        [] state=1 &amp; P2_Call_poppedHead=1 -&gt; (state'=2)&amp;(score'=score+1);
+        [] state=2 &amp; P2_Call_popped=1 -&gt; (state'=3)&amp;(score'=score+1);
+        
+        [] state=3 &amp; P2_Call_popped1=1 -&gt; (state'=4)&amp;(score'=score+1);
+        [] state&lt;4 &amp; P1_Call_gotFree=1 -&gt; (decided'=true);
+        [] state=4 &amp; P1_Call_gotFree=1 -&gt; (state'=5)&amp;(score'=score+1);
+        [] state=5 &amp; P1_Call_gotFree1=1 -&gt; (state'=6)&amp;(score'=score+1);
+        [] state=6 &amp; P1_Call_gotFree2=1 -&gt; (state'=7)&amp;(score'=score+1);
+        [] state=7 &amp; P1_Call_gotFree3=1 -&gt; (state'=8)&amp;(score'=score+1);
+        
+
+        [] state&gt;=4 &amp; P2_Call_popped2=1 -&gt; (decided'=true);
+        
+        [] steps&lt;5000 -&gt;(steps'=steps+1);
+        [] steps&gt;=5000 -&gt;(decided'=true);
+endobserver</content>
+    </requirement>
+  </requirements>
+  <resources />
+</PlasmaProject>

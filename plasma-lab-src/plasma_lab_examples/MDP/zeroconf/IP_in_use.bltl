@@ -1,0 +1,11 @@
+// N = 20, 1000
+// K = 2, 4, 6, 8
+// reset = true, false 
+
+optimize 
+N := [20;1000;980];
+K := [2;8;2]
+//, reset=[true;false])
+end
+
+F<=#1000 (l=4 & ip=1)

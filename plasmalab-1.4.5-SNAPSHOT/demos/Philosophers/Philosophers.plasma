@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlasmaProject name="Philosophers">
+  <models>
+    <model name="philo3" type="rml">
+      <content>// Randomised dining philosophers based on (Pnueli, Zuck 1986)
+
+dtmc
+
+formula lfree = p2&gt;=0 &amp; p2&lt;=4 | p2=6 | p2=10;
+formula rfree = p3&gt;=0 &amp; p3&lt;=3 | p3=5 | p3=7;
+
+module phil1
+p1: [0..10];
+[] p1=0 -&gt; 0.2 : (p1'=0) + 0.8 : (p1'=1);
+[] p1=1 -&gt; 0.5 : (p1'=2) + 0.5 : (p1'=3);
+[] p1=2 &amp;  lfree -&gt; (p1'=4);
+[] p1=2 &amp; !lfree -&gt; (p1'=2);
+[] p1=3 &amp;  rfree -&gt; (p1'=5);
+[] p1=3 &amp; !rfree -&gt; (p1'=3);
+[] p1=4 &amp;  rfree -&gt; (p1'=8);
+[] p1=4 &amp; !rfree -&gt; (p1'=6);
+[] p1=5 &amp;  lfree -&gt; (p1'=8);
+[] p1=5 &amp; !lfree -&gt; (p1'=7);
+[] p1=6  -&gt; (p1'=1);
+[] p1=7  -&gt; (p1'=1);
+[] p1=8  -&gt; (p1'=9);
+[] p1=9  -&gt; (p1'=10);
+[] p1=10 -&gt; (p1'=0);
+endmodule
+
+module phil2  = phil1 [p1=p2,  p2=p3,  p3=p1]  endmodule
+module phil3 = phil1 [p1=p3, p2=p1,  p3=p2] endmodule
+
+// labels
+label "hungry" = ((p1&gt;0)&amp;(p1&lt;8))|((p2&gt;0)&amp;(p2&lt;8))|((p3&gt;0)&amp;(p3&lt;8));
+label "eat" = ((p1&gt;=8)&amp;(p1&lt;=9))|((p2&gt;=8)&amp;(p2&lt;=9))|((p3&gt;=8)&amp;(p3&lt;=9));</content>
+    </model>
+  </models>
+  <requirements>
+    <requirement name="obs_simple" type="rmlobserver">
+      <file>obs_simple.obs</file>
+    </requirement>
+    <requirement name="obs_timed" type="rmlobserver">
+      <file>obs_timed.obs</file>
+    </requirement>
+    <requirement name="liveness" type="bltl">
+      <content>F&lt;=#1000 ("hungry" &amp;(X&lt;=#1 F&lt;=#1000 "eat"))</content>
+    </requirement>
+  </requirements>
+  <resources />
+</PlasmaProject>

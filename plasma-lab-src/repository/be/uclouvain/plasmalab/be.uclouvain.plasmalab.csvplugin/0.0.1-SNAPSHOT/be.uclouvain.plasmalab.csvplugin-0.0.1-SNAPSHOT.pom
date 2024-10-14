@@ -1,0 +1,64 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>be.uclouvain.plasmalab</groupId>
+  <artifactId>be.uclouvain.plasmalab.csvplugin</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>be.uclouvain.plasmalab.csvplugin</name>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  
+    <build>
+ 	    <plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.1.2</version>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Manifest-Version>1.0</Manifest-Version>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+			     <artifactId>maven-assembly-plugin</artifactId>
+       			 <version>3.1.1</version>
+        		 <configuration>
+          		 <descriptorRefs>
+            		<descriptorRef>jar-with-dependencies</descriptorRef>
+          		 </descriptorRefs>
+        		 </configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+  <dependencies>
+		<dependency>
+		    <groupId>net.sf.opencsv</groupId>
+    		<artifactId>opencsv</artifactId>
+    		<version>2.3</version>
+		</dependency>
+	 	<dependency>
+			<groupId>jspf.core</groupId>
+			<artifactId>jspf.core</artifactId>
+			<version>1.0.2</version>
+	 	</dependency>
+		<dependency>
+			<groupId>fr.inria.plasmalab</groupId>
+			<artifactId>fr.inria.plasmalab.workflow</artifactId>
+			<version>1.4.5-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.18</version>
+		</dependency>
+  </dependencies>
+</project>

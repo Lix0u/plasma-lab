@@ -1,0 +1,124 @@
+<!-- License : Copyright -->
+<!-- Project : fr.inria.plasmalab -->
+<!-- Copyright : INRIA -->
+<!-- Authors : Corre Kevin <kevin.corre@inria.fr> -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>fr.inria.plasmalab.plugin_bltl</artifactId>
+	<name>fr.inria.plasmalab :: Plasma Lab BLTL plugin</name>
+	<packaging>jar</packaging>
+
+	<parent>
+		<groupId>fr.inria.plasmalab</groupId>
+		<artifactId>fr.inria.plasmalab.root</artifactId>
+		<version>1.4.5-SNAPSHOT</version>
+	<relativePath>..</relativePath>
+	</parent>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Manifest-Version>1.0</Manifest-Version>
+							<Main-Class>fr.inria.plasmalab.ui.PlasmaLabGUI</Main-Class>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.1</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<artifactSet>
+							  <includes>
+							    <include>fr.inria.plasmalab:fr.inria.plasmalab.bltl</include>
+							    <include>fr.inria.plasmalab:fr.inria.plasmalab.altl</include>
+							    <include>fr.inria.plasmalab:fr.inria.plasmalab.gcsl</include>
+							    <include>fr.inria.plasmalab:fr.inria.plasmalab.rmlbis</include>
+							    <include>sedsoft:*</include>
+							    <inlcude>org.antlr</inlcude>
+							  </includes>
+							  <excludes>
+								<exclude>META-INF/*.SF</exclude>
+								<exclude>META-INF/*.DSA</exclude>
+								<exclude>META-INF/*.RSA</exclude>
+							  </excludes>
+							</artifactSet>
+<!-- 							<filters> -->
+<!-- 								<filter> -->
+<!-- 									<artifact>*:*</artifact> -->
+<!-- 									<excludes> -->
+<!-- 										<exclude>META-INF/*.SF</exclude> -->
+<!-- 										<exclude>META-INF/*.DSA</exclude> -->
+<!-- 										<exclude>META-INF/*.RSA</exclude> -->
+<!-- 									</excludes> -->
+<!-- 								</filter> -->
+<!-- 							</filters> -->
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Signing jar produced -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jarsigner-plugin</artifactId>
+				<version>1.2</version>
+				<executions>
+					<execution>
+                    <phase>package</phase>
+						<id>sign</id>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<keystore>../src/plasmaKeyStore</keystore>
+					<alias>kevin.corre@inria.fr</alias>
+					<storepass>julescesar</storepass>
+					<keypass>roiarthur</keypass>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>fr.inria.plasmalab</groupId>
+			<artifactId>fr.inria.plasmalab.bltl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.inria.plasmalab</groupId>
+			<artifactId>fr.inria.plasmalab.altl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.inria.plasmalab</groupId>
+			<artifactId>fr.inria.plasmalab.rmlbis</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.inria.plasmalab</groupId>
+			<artifactId>fr.inria.plasmalab.gcsl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+</project>

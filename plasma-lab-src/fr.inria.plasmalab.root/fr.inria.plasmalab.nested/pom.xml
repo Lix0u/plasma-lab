@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>fr.inria.plasmalab.nested</artifactId>
+	<name>fr.inria.plasmalab.nested</name>
+  
+  <parent>
+  	<groupId>fr.inria.plasmalab</groupId>
+  	<artifactId>fr.inria.plasmalab.root</artifactId>
+  	<version>1.4.5-SNAPSHOT</version>
+	<relativePath>..</relativePath>
+  </parent>
+  
+  <build>
+    <outputDirectory>target/classes</outputDirectory>
+    <sourceDirectory>src</sourceDirectory>
+  </build>
+  
+	<dependencies>
+		<dependency>
+			<groupId>jspf.core</groupId>
+			<artifactId>jspf.core</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jdom</groupId>
+			<artifactId>jdom2</artifactId>
+			<version>2.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.inria.plasmalab</groupId>
+			<artifactId>fr.inria.plasmalab.workflow</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.inria.plasmalab</groupId>
+			<artifactId>fr.inria.plasmalab.algorithm</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.inria.plasmalab</groupId>
+			<artifactId>fr.inria.plasmalab.sequential</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+  
+</project>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>fr.inria.plasmalab</groupId>
+	<artifactId>fr.inria.plasmalab.root</artifactId>
+	<version>1.4.5-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>fr.inria.plasmalab.root</name>
+	<url>https://project.inria.fr/plasma-lab/</url>
+
+
+	<scm>
+		<developerConnection>scm:git:ssh://scm.gforge.inria.fr/gitroot/plasma-lab/plasma-lab.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+
+	<modules>
+		<module>fr.inria.plasmalab.algorithm</module>
+		<module>fr.inria.plasmalab.altl</module>
+		<module>fr.inria.plasmalab.bio</module>
+		<!-- <module>../fr.inria.plasmalab.bioscala</module> -->
+		<module>fr.inria.plasmalab.bltl</module>
+  		<module>fr.inria.plasmalab.bltl_unknown</module>
+		<module>fr.inria.plasmalab.comparison</module>
+		<!-- <module>../fr.inria.plasmalab.caesar</module> -->
+		<module>fr.inria.plasmalab.common-cli</module>
+		<module>fr.inria.plasmalab.controler</module>
+		<module>fr.inria.plasmalab.cusum</module>
+		<module>fr.inria.plasmalab.distributed</module>
+		<module>fr.inria.plasmalab.gcsl</module>
+		<module>fr.inria.plasmalab.importancesplitting</module>
+		<module>fr.inria.plasmalab.importancesampling</module>
+		<module>fr.inria.plasmalab.llvm</module>
+		<module>fr.inria.plasmalab.matlab</module>
+		<module>fr.inria.plasmalab.montecarlo</module>
+		<module>fr.inria.plasmalab.nested</module>
+		<!-- <module>../fr.inria.plasmalab.plugin_algo</module> -->
+		<module>fr.inria.plasmalab.plugin_bltl</module>
+		<module>fr.inria.plasmalab.rmlbis</module>
+		<module>fr.inria.plasmalab.sequential</module>
+		<module>fr.inria.plasmalab.service</module>
+		<module>fr.inria.plasmalab.smartsampling</module>
+        <module>fr.inria.plasmalab.smcunknown</module>
+		<module>fr.inria.plasmalab.systemc</module>
+		<module>fr.inria.plasmalab.terminal</module>
+		<module>fr.inria.plasmalab.text_data</module>
+		<module>fr.inria.plasmalab.ui</module>
+		<module>fr.inria.plasmalab.uiterminal</module>
+		<module>fr.inria.plasmalab.workflow</module>
+		<!-- the 3 following modules produce shaded jar, we maybe don't need to 
+			compile them here instead they can be compiled manually -->
+		<!-- <module>../fr.inria.plasmalab.plasmalab</module> -->
+		<!-- <module>../fr.inria.plasmalab.plasmalabservice</module> -->
+		<!-- <module>../fr.inria.plasmalab.plasmalabterminal</module> -->
+	</modules>
+
+	<properties>
+		<vendor.name>INRIA</vendor.name>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<build.number>1</build.number>
+	</properties>
+
+	<build>
+		<plugins>
+       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.5.3</version>
+        <configuration>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+        </configuration>
+      </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.0</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<aggregate>true</aggregate>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<descriptors>
+						<descriptor>src/assembly/assembly.xml</descriptor>
+					</descriptors>
+					<finalName>fr.inria.plasmalab-${pom.version}</finalName>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.mycila</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<header>src/etc/header.txt</header>
+					<excludes>
+						<exclude>**/README</exclude>
+						<exclude>src/test/resources/**</exclude>
+						<exclude>src/main/resources/**</exclude>
+						<exclude>License</exclude>
+						<exclude>pom.xml</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	
+	<!-- <pluginRepositories> -->
+	<!-- <pluginRepository> -->
+	<!-- <id>scala-tools.org</id> -->
+	<!-- <name>Scala-tools Maven2 Repository</name> -->
+	<!-- <url>http://scala-tools.org/repo-releases</url> -->
+	<!-- </pluginRepository> -->
+	<!-- </pluginRepositories> -->
+
+	<distributionManagement>
+<!-- 		<site> -->
+<!-- 			<id>gforge</id> -->
+<!-- 			<url>scp://scm.gforge.inria.fr/home/groups/plasma-lab/htdocs/plasma_lab_api/</url> -->
+<!-- 		</site> -->
+		<repository>
+        	<id>maven.inria.fr</id>
+        	<name>maven.inria.fr-releases</name>
+        	<url>http://maven.inria.fr/artifactory/plasmalab-public-release</url>
+    	</repository>
+	    <snapshotRepository>
+        	<id>maven.inria.fr</id>
+        	<name>maven.inria.fr-snapshots</name>
+        	<url>http://maven.inria.fr/artifactory/plasmalab-public-snapshot</url>
+    	</snapshotRepository>
+	</distributionManagement>
+	<profiles>
+		<profile>
+			<id>doclint-java8-disable</id>
+			<activation>
+				<jdk>[1.8,)</jdk>
+			</activation>
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<configuration>
+							<additionalparam>-Xdoclint:none</additionalparam>
+							<aggregate>true</aggregate>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>

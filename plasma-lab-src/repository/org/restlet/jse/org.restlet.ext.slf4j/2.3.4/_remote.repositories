@@ -1,0 +1,5 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Thu Jul 11 16:59:00 CEST 2019
+org.restlet.ext.slf4j-2.3.4-sources.jar>maven-restlet=
+org.restlet.ext.slf4j-2.3.4.pom>maven-restlet=
+org.restlet.ext.slf4j-2.3.4.jar>maven-restlet=

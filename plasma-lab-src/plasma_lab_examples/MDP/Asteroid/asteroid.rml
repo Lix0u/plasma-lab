@@ -1,0 +1,29 @@
+mdp
+
+global error : bool;
+
+module asteroid
+	
+	x: [1..100];
+	y: [1..100];
+	dx: [1..10];
+	dy: [1..10];
+
+	[] true -> 0.9:(error' = false) + 0.1:(error'=true);
+	[step] !error -> (x'= x+dx) & (y'=y+dy);
+	[prestep] error -> 0.5:(dx'=dx+1) + 0.5:(dx'=dx-1);
+	[prestep] error -> 0.5:(dy'=dy+1) + 0.5:(dy'=dy-1);
+
+endmodule
+
+module a2 = asteroid[x=x2, y=y2, dx=dx2, dy=dy2] endmodule
+module a3 = asteroid[x=x3, y=y3, dx=dx3, dy=dy3] endmodule
+module a4 = asteroid[x=x4, y=y4, dx=dx4, dy=dy4] endmodule
+module a5 = asteroid[x=x5, y=y5, dx=dx5, dy=dy5] endmodule
+module a6 = asteroid[x=x6, y=y6, dx=dx6, dy=dy6] endmodule
+module a7 = asteroid[x=x7, y=y7, dx=dx7, dy=dy7] endmodule
+module a8 = asteroid[x=x8, y=y8, dx=dx8, dy=dy8] endmodule
+module a9 = asteroid[x=x9, y=y9, dx=dx9, dy=dy9] endmodule
+module a10 = asteroid[x=x10, y=y10, dx=dx10, dy=dy10] endmodule
+
+label "collision" = ((x=x2)&(y=y2))|((x=x3)&(y=y3))|((x=x4)&(y=y4))|((x2=x3)&(y2=y3))|((x2=x4)&(y2=y4))|((x3=x4)&(y3=y4));

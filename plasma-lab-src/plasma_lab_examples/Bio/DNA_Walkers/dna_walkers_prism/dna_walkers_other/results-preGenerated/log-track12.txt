@@ -1,0 +1,258 @@
+Welcome track12Block1
+PRISM
+=====
+
+Version: 4.1.dev
+Date: Sun Apr 27 16:19:07 BST 2014
+Hostname: localhost.localdomain
+Command line: prism models/track12Block1.pm properties/track12Block1.pctl -transientmethod fau -faudelta 1E-10 -fauepsilon 1E-8 -exportresults 'results/track12Block1.txt,matrix,csv'
+
+Parsing model file "models/track12Block1.pm"...
+
+Parsing properties file "properties/track12Block1.pctl"...
+
+5 properties:
+(1) P=? [ F[12000,12000] (w1=8)|(w1=12) ]
+(2) P=? [ F[12000,12000] (w1=8) ]
+(3) P=? [ F[12000,12000] (w1=12) ]
+(4) P=? [ F[12000,12000] "deadlockUser" ]
+(5) R{"steps"}=? [ C<=200*60 ]
+
+Type:        CTMC
+Modules:     walker 
+Variables:   stator1 stator2 stator3 stator4 stator5 stator6 stator7 stator8 stator9 stator10 stator11 stator12 w1 blockade5 
+
+---------------------------------------------------------------------
+
+Model checking: P=? [ F[12000,12000] (w1=8)|(w1=12) ]
+Starting transient probability computation using fast adaptive uniformisation...
+
+Total probability lost is : 8.807057597648438E-7
+Maximal number of states stored during analysis : 2714
+
+Model checking completed in 1.008 secs.
+
+Result (probability): 0.9709029078632705
+
+---------------------------------------------------------------------
+
+Model checking: P=? [ F[12000,12000] (w1=8) ]
+Starting transient probability computation using fast adaptive uniformisation...
+
+Total probability lost is : 8.807057597648438E-7
+Maximal number of states stored during analysis : 2714
+
+Model checking completed in 0.35 secs.
+
+Result (probability): 0.21156962121156225
+
+---------------------------------------------------------------------
+
+Model checking: P=? [ F[12000,12000] (w1=12) ]
+Starting transient probability computation using fast adaptive uniformisation...
+
+Total probability lost is : 8.807057597648438E-7
+Maximal number of states stored during analysis : 2714
+
+Model checking completed in 0.294 secs.
+
+Result (probability): 0.7593332866517084
+
+---------------------------------------------------------------------
+
+Model checking: P=? [ F[12000,12000] "deadlockUser" ]
+Starting transient probability computation using fast adaptive uniformisation...
+
+Total probability lost is : 8.807057597648438E-7
+Maximal number of states stored during analysis : 2714
+
+Model checking completed in 0.294 secs.
+
+Result (probability): 8.39868575305348E-4
+
+---------------------------------------------------------------------
+
+Model checking: R{"steps"}=? [ C<=200*60 ]
+Starting transient probability computation using fast adaptive uniformisation...
+
+Total probability lost is : 8.781482860875656E-7
+Maximal number of states stored during analysis : 2714
+
+Model checking completed in 0.578 secs.
+
+Result (expected steps): 7.056681916682237
+
+Exporting results in matrix form to file "results/track12Block1.txt"...
+
+Welcome track12Block2
+PRISM
+=====
+
+Version: 4.1.dev
+Date: Sun Apr 27 16:19:11 BST 2014
+Hostname: localhost.localdomain
+Command line: prism models/track12Block2.pm properties/track12Block2.pctl -transientmethod fau -faudelta 1E-10 -fauepsilon 1E-8 -exportresults 'results/track12Block2.txt,matrix,csv'
+
+Parsing model file "models/track12Block2.pm"...
+
+Parsing properties file "properties/track12Block2.pctl"...
+
+5 properties:
+(1) P=? [ F[12000,12000] (w1=8)|(w1=12) ]
+(2) P=? [ F[12000,12000] (w1=8) ]
+(3) P=? [ F[12000,12000] (w1=12) ]
+(4) P=? [ F[12000,12000] "deadlockUser" ]
+(5) R{"steps"}=? [ C<=200*60 ]
+
+Type:        CTMC
+Modules:     walker 
+Variables:   stator1 stator2 stator3 stator4 stator5 stator6 stator7 stator8 stator9 stator10 stator11 stator12 w1 blockade5 blockade6 
+
+---------------------------------------------------------------------
+
+Model checking: P=? [ F[12000,12000] (w1=8)|(w1=12) ]
+Starting transient probability computation using fast adaptive uniformisation...
+
+Total probability lost is : 9.273045720181727E-7
+Maximal number of states stored during analysis : 2659
+
+Model checking completed in 2.424 secs.
+
+Result (probability): 0.9591269210204676
+
+---------------------------------------------------------------------
+
+Model checking: P=? [ F[12000,12000] (w1=8) ]
+Starting transient probability computation using fast adaptive uniformisation...
+
+Total probability lost is : 9.273045720181727E-7
+Maximal number of states stored during analysis : 2659
+
+Model checking completed in 1.826 secs.
+
+Result (probability): 0.14542864584390006
+
+---------------------------------------------------------------------
+
+Model checking: P=? [ F[12000,12000] (w1=12) ]
+Starting transient probability computation using fast adaptive uniformisation...
+
+Total probability lost is : 9.273045720181727E-7
+Maximal number of states stored during analysis : 2659
+
+Model checking completed in 1.734 secs.
+
+Result (probability): 0.8136982751765677
+
+---------------------------------------------------------------------
+
+Model checking: P=? [ F[12000,12000] "deadlockUser" ]
+Starting transient probability computation using fast adaptive uniformisation...
+
+Total probability lost is : 9.273045720181727E-7
+Maximal number of states stored during analysis : 2659
+
+Model checking completed in 1.745 secs.
+
+Result (probability): 0.00158040590322948
+
+---------------------------------------------------------------------
+
+Model checking: R{"steps"}=? [ C<=200*60 ]
+Starting transient probability computation using fast adaptive uniformisation...
+
+Total probability lost is : 9.247870879081077E-7
+Maximal number of states stored during analysis : 2659
+
+Model checking completed in 1.884 secs.
+
+Result (expected steps): 6.9550618738533165
+
+Exporting results in matrix form to file "results/track12Block2.txt"...
+
+Welcome track12BlockBoth
+PRISM
+=====
+
+Version: 4.1.dev
+Date: Sun Apr 27 16:19:21 BST 2014
+Hostname: localhost.localdomain
+Command line: prism models/track12BlockBoth.pm properties/track12BlockBoth.pctl -transientmethod fau -faudelta 1E-10 -fauepsilon 1E-8 -exportresults 'results/track12BlockBoth.txt,matrix,csv'
+
+Parsing model file "models/track12BlockBoth.pm"...
+
+Parsing properties file "properties/track12BlockBoth.pctl"...
+
+5 properties:
+(1) P=? [ F[12000,12000] (w1=8)|(w1=12) ]
+(2) P=? [ F[12000,12000] (w1=8) ]
+(3) P=? [ F[12000,12000] (w1=12) ]
+(4) P=? [ F[12000,12000] "deadlockUser" ]
+(5) R{"steps"}=? [ C<=200*60 ]
+
+Type:        CTMC
+Modules:     walker 
+Variables:   stator1 stator2 stator3 stator4 stator5 stator6 stator7 stator8 stator9 stator10 stator11 stator12 w1 blockade5 blockade9 
+
+---------------------------------------------------------------------
+
+Model checking: P=? [ F[12000,12000] (w1=8)|(w1=12) ]
+Starting transient probability computation using fast adaptive uniformisation...
+
+Total probability lost is : 9.608532643978762E-7
+Maximal number of states stored during analysis : 2608
+
+Model checking completed in 2.357 secs.
+
+Result (probability): 0.9203765600100253
+
+---------------------------------------------------------------------
+
+Model checking: P=? [ F[12000,12000] (w1=8) ]
+Starting transient probability computation using fast adaptive uniformisation...
+
+Total probability lost is : 9.608532643978762E-7
+Maximal number of states stored during analysis : 2608
+
+Model checking completed in 1.793 secs.
+
+Result (probability): 0.4601882800050134
+
+---------------------------------------------------------------------
+
+Model checking: P=? [ F[12000,12000] (w1=12) ]
+Starting transient probability computation using fast adaptive uniformisation...
+
+Total probability lost is : 9.608532643978762E-7
+Maximal number of states stored during analysis : 2608
+
+Model checking completed in 1.772 secs.
+
+Result (probability): 0.4601882800050131
+
+---------------------------------------------------------------------
+
+Model checking: P=? [ F[12000,12000] "deadlockUser" ]
+Starting transient probability computation using fast adaptive uniformisation...
+
+Total probability lost is : 9.608532643978762E-7
+Maximal number of states stored during analysis : 2608
+
+Model checking completed in 1.779 secs.
+
+Result (probability): 6.277237542363855E-4
+
+---------------------------------------------------------------------
+
+Model checking: R{"steps"}=? [ C<=200*60 ]
+Starting transient probability computation using fast adaptive uniformisation...
+
+Total probability lost is : 9.57976507565128E-7
+Maximal number of states stored during analysis : 2608
+
+Model checking completed in 1.906 secs.
+
+Result (expected steps): 6.564509160338409
+
+Exporting results in matrix form to file "results/track12BlockBoth.txt"...
+

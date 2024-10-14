@@ -1,0 +1,7 @@
+declare K:=[5;10;5]
+
+optimize p1:=[0;5;1] 
+
+end
+
+F<=#(K) "eat"

@@ -1,0 +1,7 @@
+declare
+N := [3;20;1]
+optimize
+k := [6;20;2]
+end
+
+F<=#(3*k) ((c=k) & ( "p0steps" = N))

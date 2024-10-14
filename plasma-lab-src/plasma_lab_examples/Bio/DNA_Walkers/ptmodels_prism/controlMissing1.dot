@@ -1,0 +1,15 @@
+digraph G {
+
+	node[fontsize=18];
+	edge[fontsize=18];
+	A1 [shape=circle,xlabel="A1",label="••",pos="0.000000,0.000000!"];
+	A2 [shape=circle,xlabel="A2",label="•",pos="0.373473,-0.746947!"];
+	A3 [shape=circle,xlabel="A3",label="•",pos="0.746947,-1.493894!"];
+	A5 [shape=circle,xlabel="A5",label="•",pos="1.493894,-2.987788!"];
+	A6 [shape=circle,xlabel="A6",label="•",pos="1.867367,-3.734735!"];
+	A7 [shape=circle,xlabel="A7",label="•",pos="2.240841,-4.481681!"];
+	A8 [shape=circle,xlabel="A8",label="•",pos="2.614314,-5.228628!"];
+	tloop8 [shape=rect,fixedsize=true,height=0.12,width=0.5,style=filled,fillcolor="#D0D0D0",xlabel="",label="",pos="2.614314,-5.978628!"];
+	A8 -> tloop8 [xlabel="2"];
+	tloop8 -> A8 [xlabel="2"];
+}

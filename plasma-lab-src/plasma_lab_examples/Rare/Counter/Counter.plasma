@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlasmaProject name="Counter">
+  <models>
+    <model name="counter4.rml" type="rml">
+      <file>/home/ltraonou/Developpement/Plasma/plasma-lab/plasma_lab_examples/Rare/Counter/counter4.rml</file>
+    </model>
+  </models>
+  <requirements>
+    <requirement name="counter4_property" type="bltl">
+      <file>/home/ltraonou/Developpement/Plasma/plasma-lab/plasma_lab_examples/Rare/Counter/counter4_property</file>
+    </requirement>
+    <requirement name="counter4_observer" type="rmlobserver">
+      <file>/home/ltraonou/Developpement/Plasma/plasma-lab/plasma_lab_examples/Rare/Counter/observer.obs</file>
+    </requirement>
+  </requirements>
+  <resources />
+</PlasmaProject>

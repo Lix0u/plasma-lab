@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlasmaProject name="LLVMRare">
+  <models>
+    <model name="Fib" type="llvm">
+      <content>/home/caramon/Development/Lodin/release/sim -S -X -C --poptions procs:3
+fib.ll</content>
+    </model>
+  </models>
+  <requirements>
+    <requirement name="SumGreaterThan" type="bltl">
+      <content>declare K:=[2;144;5]
+end
+F&lt;=#5000 P1_t1_tmp9  +  P2_t2_tmp9 &gt;=K</content>
+    </requirement>
+    <requirement name="Observer" type="rmlobserver">
+      <content>//F&lt;=#5000 P1_t1_tmp9  +  P2_t2_tmp9 &gt;=K
+
+observer rareObserver
+	score : int init 0;
+	decided : bool init false;
+	[] (P1_t1_tmp9 + P2_t2_tmp9 = 5)&amp;(P1_t1_tmp4=0)&amp; (P1_t1_tmp4=P2_t2_tmp4)-&gt; (score '= 1);
+ 	[] P1_t1_tmp9 + P2_t2_tmp9 = 13 &amp;(P1_t1_tmp4=1)&amp; (P1_t1_tmp4=P2_t2_tmp4) -&gt; (score '= 2);
+	[] P1_t1_tmp9 + P2_t2_tmp9 =34 &amp;(P1_t1_tmp4=2)&amp; (P1_t1_tmp4=P2_t2_tmp4)-&gt; (score '= 3);
+	[] P1_t1_tmp9 + P2_t2_tmp9 = 89 &amp;(P1_t1_tmp4=3)&amp; (P1_t1_tmp4=P2_t2_tmp4)-&gt; (score '= 4);
+	[] P1_t1_tmp9 + P2_t2_tmp9 = 144 &amp;(P1_t1_tmp4=4)&amp; (P1_t1_tmp4=P2_t2_tmp4)-&gt; (score '= 5); 
+	[] P0_Call_VERIFIERError=1 -&gt; (score'=6);
+endobserver</content>
+    </requirement>
+    <requirement name="data_0" type="bltl">
+      <content>F&lt;=#5000 P0_Call_VERIFIERError</content>
+    </requirement>
+  </requirements>
+  <resources />
+</PlasmaProject>

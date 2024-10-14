@@ -1,0 +1,4 @@
+//Liveness property.
+// A crash doesn't occurs for 1000 years.
+
+G<=1000 !"crash"

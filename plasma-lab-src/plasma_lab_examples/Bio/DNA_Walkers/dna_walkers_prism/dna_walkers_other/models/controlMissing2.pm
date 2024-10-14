@@ -1,0 +1,63 @@
+	ctmc
+ 
+				const double failureRate=0.3;
+ 
+ 	module walker
+ 
+		stator1		: [0 .. 1] init 1;
+		stator2		: [0 .. 1] init 0;
+		stator3		: [0 .. 1] init 0;
+		stator4		: [0 .. 1] init 0;
+		stator5		: [0 .. 1] init 0;
+		stator6		: [0 .. 1] init 0;
+ 
+		w1 : [0 .. 6] init 1;	// w1=0 is sinkstat for deadlocks
+ 
+ 
+ 
+ 
+ 
+		[step] w1=1 & stator2=0	-> 0.0029999999999999996 : (w1'=2) & (stator2'=1);
+		[step] w1=1 & stator3=0	-> 5.9999999999999995E-5 : (w1'=3) & (stator3'=1);
+ 
+		[step] w1=2 & stator1=0	-> 0.009 : (w1'=1) & (stator1'=1);
+		[step] w1=2 & stator3=0	-> 0.009 : (w1'=3) & (stator3'=1);
+ 
+		[step] w1=3 & stator1=0	-> 1.7999999999999998E-4 : (w1'=1) & (stator1'=1);
+		[step] w1=3 & stator2=0	-> 0.009 : (w1'=2) & (stator2'=1);
+		[step] w1=3 & stator4=0	-> 8.999999999999999E-5 : (w1'=4) & (stator4'=1);
+ 
+		[step] w1=4 & stator3=0	-> 8.999999999999999E-5 : (w1'=3) & (stator3'=1);
+		[step] w1=4 & stator5=0	-> 0.009 : (w1'=5) & (stator5'=1);
+		[step] w1=4 & stator6=0	-> 1.7999999999999997E-5 : (w1'=6) & (stator6'=1);
+ 
+		[step] w1=5 & stator4=0	-> 0.009 : (w1'=4) & (stator4'=1);
+		[step] w1=5 & stator6=0	-> 9.0E-4 : (w1'=6) & (stator6'=1);
+		[]	w1 = 1	->	.000000001	: 	(w1'=1);
+		[]	w1 = 2	->	.000000001	: 	(w1'=2);
+		[]	w1 = 3	->	.000000001	: 	(w1'=3);
+		[]	w1 = 4	->	.000000001	: 	(w1'=4);
+		[]	w1 = 5	->	.000000001	: 	(w1'=5);
+		[]	w1 = 6	->	.000000001	: 	(w1'=6);
+	endmodule
+ 
+	rewards "steps"
+ 
+		[step] true : 1;
+ 
+	endrewards
+ 
+	rewards "time"
+ 
+		 true : 1;
+ 
+	endrewards
+ 
+ 
+label "deadlockUser" =  
+( w1=1 & stator2=1 & stator3=1)
+| ( w1=2 & stator1=1 & stator3=1)
+| ( w1=3 & stator1=1 & stator2=1 & stator4=1)
+| ( w1=4 & stator3=1 & stator5=1 & stator6=1)
+| ( w1=5 & stator4=1 & stator6=1)
+;

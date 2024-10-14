@@ -1,0 +1,24 @@
+constant alphaA=50,alpha_A=500,alphaR=0.01,alpha_R=50,betaA=50,betaR=5    // enzymatic
+constant gammaA=1,gammaR=1,gammaC=2                    // bimolecular
+constant deltaA=1,deltaR=0.2,deltaMA=10,deltaMR=0.5,thetaA=50,thetaR=100// decay
+
+species DA=1,D_A,DR=1,D_R,MA,MR,A,R,C
+
+A + DA gammaA-> D_A
+D_A thetaA-> A + DA
+A + DR gammaR-> D_R
+D_R thetaR-> A + DR
+D_A alpha_A-> MA + D_A
+DA alphaA-> MA + DA
+D_R alpha_R-> MR + D_R
+DR alphaR-> MR + DR
+MA betaA-> MA + A
+MR betaR-> MR + R
+A + R gammaC-> C
+C //deltaA
+0.5-> R
+A deltaA-> *
+R deltaR-> *
+MA deltaMA-> *
+MR deltaMR-> *
+//plot A,R,C

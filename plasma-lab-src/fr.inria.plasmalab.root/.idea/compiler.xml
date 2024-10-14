@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="fr.inria.plasmalab.common-cli" />
+        <module name="fr.inria.plasmalab.service" />
+        <module name="fr.inria.plasmalab.bltl" />
+        <module name="fr.inria.plasmalab.altl" />
+        <module name="fr.inria.plasmalab.uiterminal" />
+        <module name="fr.inria.plasmalab.text_data" />
+        <module name="fr.inria.plasmalab.controler" />
+        <module name="fr.inria.plasmalab.montecarlo" />
+        <module name="fr.inria.plasmalab.ui" />
+        <module name="fr.inria.plasmalab.plugin_bltl" />
+        <module name="fr.inria.plasmalab.sequential" />
+        <module name="fr.inria.plasmalab.llvm" />
+        <module name="fr.inria.plasmalab.importancesplitting" />
+        <module name="fr.inria.plasmalab.systemc" />
+        <module name="fr.inria.plasmalab.cusum" />
+        <module name="fr.inria.plasmalab.gcsl" />
+        <module name="fr.inria.plasmalab.algorithm" />
+        <module name="fr.inria.plasmalab.bio" />
+        <module name="fr.inria.plasmalab.comparison" />
+        <module name="fr.inria.plasmalab.csvsimulator" />
+        <module name="fr.inria.plasmalab.workflow" />
+        <module name="fr.inria.plasmalab.rmlbis" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>

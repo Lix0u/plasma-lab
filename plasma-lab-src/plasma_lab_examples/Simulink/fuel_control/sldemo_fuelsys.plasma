@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlasmaProject name="Fuel_System">
+  <models>
+    <model name="sldemo_fuelsys" type="matlab">
+      <content>./sldemo_fuelsys_estasys.mdl</content>
+    </model>
+    <model name="sldemo_fuelsys_optim" type="matlab">
+      <content>./sldemo_fuelsys_estasys.mdl
+sldemo_fuelsys_estasys/Nominal_Speed =300=&gt; [200;500;100]</content>
+    </model>
+  </models>
+  <requirements>
+    <requirement name="fuel_low" type="bltl">
+      <content>!(F&lt;=100 (G&lt;=0.999 fuel = 0))</content>
+    </requirement>
+    <requirement name="data_0" type="bltl">
+      <content>Nominal_Speed_sig &gt;= 400</content>
+    </requirement>
+    <requirement name="data_1" type="bltl">
+      <content>F&lt;=1000 false</content>
+    </requirement>
+  </requirements>
+  <resources />
+</PlasmaProject>

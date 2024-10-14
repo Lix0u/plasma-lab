@@ -1,0 +1,43 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>fr.inria.plasmalab.workflow</artifactId>
+  <name>fr.inria.plasmalab.workflow</name>
+  
+  <parent>
+  	<groupId>fr.inria.plasmalab</groupId>
+  	<artifactId>fr.inria.plasmalab.root</artifactId>
+  	<version>1.4.5-SNAPSHOT</version>
+	<relativePath>..</relativePath>
+  </parent>
+  
+  <build>
+    <outputDirectory>target/classes</outputDirectory>
+    <sourceDirectory>src</sourceDirectory>
+  </build>
+  
+  <dependencies>
+	<dependency>
+		<groupId>jspf.core</groupId>
+		<artifactId>jspf.core</artifactId>
+		<version>1.0.2</version>
+	</dependency>
+	<dependency>
+		<groupId>org.jdom</groupId>
+		<artifactId>jdom2</artifactId>
+		<version>2.0.3</version>
+	</dependency>
+	<dependency>
+		<groupId>com.fasterxml.jackson.core</groupId>
+		<artifactId>jackson-annotations</artifactId>
+		<version>2.4.4</version>
+	</dependency>
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-api</artifactId>
+		<version>1.7.16</version>
+	</dependency>
+  </dependencies>
+  
+
+
+</project>

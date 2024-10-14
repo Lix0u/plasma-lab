@@ -1,0 +1,15 @@
+// observer for F<=#30 p1>8
+
+observer rareObserver
+	score : int init 0;
+	c : clock;
+	decided : bool init false;
+
+	[] p1=1 & score=0 -> (score'=1);
+	[] (p1=2 | p1=3) & (score=1) -> (score'=2);
+	[] (p1=4 | p1=5) & (score=2) -> (score'=3);
+	[] p1=8 & score=3 -> (score'=4);
+	[] p1>8 & score=4 -> (score'=5);
+	[] c=30 | score=5 -> (decided'=true);	
+
+endobserver

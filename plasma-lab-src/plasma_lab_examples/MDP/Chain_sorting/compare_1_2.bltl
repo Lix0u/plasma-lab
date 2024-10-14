@@ -1,0 +1,6 @@
+optimize 
+  k:=20;
+  L:=[6;20;1];
+  M:=[6;20;1]
+end
+F<=#(3*k)  ( (c=k) & ( "p1doesMsteps" ) & ( "p2doesLsteps"))

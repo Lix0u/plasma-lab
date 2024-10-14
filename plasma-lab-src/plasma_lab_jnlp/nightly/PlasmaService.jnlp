@@ -1,0 +1,38 @@
+
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0+" codebase="http://plasma-lab.gforge.inria.fr/plasma_lab_jnlp/nightly/" href="PlasmaService.jnlp">
+
+	<information>
+		<title>PLASMA-LAB-Service</title>
+		<vendor>INRIA</vendor>
+        <description>This client connect itself to a PlasmaLab instance requesting computing help via a RMI Registry.</description>				
+		<icon href="images/PLASMA128.png" width="128"
+		    height="128"/>
+		<icon href="images/PLASMA64.png" width="64"
+		    height="64"/>
+		<icon href="images/PLASMA32.png" width="32"
+		    height="32"/>
+		<icon href="images/PLASMA16.png" width="16"
+		    height="16"/>
+		<icon href="images/PLASMAsplash.png" kind="splash"/>
+	
+	<offline-allowed />
+	</information>
+
+	<security>
+		<all-permissions />
+	</security>
+
+	<resources>
+		<j2se version="1.5+" href="http://java.sun.com/products/autodl/j2se"/>
+		<jar href="http://maven.inria.fr/artifactory/simple/plasmalab-public-snapshot/fr/inria/plasmalab/fr.inria.plasmalab.plasmalabservice/1.3.9-SNAPSHOT/fr.inria.plasmalab.plasmalabservice-1.3.9-SNAPSHOT.jar" main="true" download="eager"/>
+	</resources>
+
+	<application-desc main-class="fr.inria.plasmalab.service.PlasmaService">	
+		<argument>-jnlp</argument>
+		<argument>http://plasma-lab.gforge.inria.fr/plasma_lab_jnlp/nightly/jnlp.conf</argument>
+		<argument>-ui</argument>
+	</application-desc>
+
+</jnlp>
+		

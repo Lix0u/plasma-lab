@@ -1,0 +1,5 @@
+declare
+L := [1;15;1]
+end
+
+F<=#(L*(N+1)) "elected"

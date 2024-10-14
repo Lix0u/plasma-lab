@@ -1,0 +1,6 @@
+#NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
+#Sun Jul 14 16:18:18 CEST 2019
+jspf.core-1.0.2.jar>maven-inria-release=
+jspf.core-1.0.2.jar>=
+jspf.core-1.0.2.pom>maven-inria-release=
+jspf.core-1.0.2.pom>=

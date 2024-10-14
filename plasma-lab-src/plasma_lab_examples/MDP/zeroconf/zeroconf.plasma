@@ -1,0 +1,857 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlasmaProject name="zeroconf">
+  <models>
+    <model name="zeroconf" type="rml">
+      <content>// IPv4: PTA model with digitial clocks
+// one concrete host attempting to choose an ip address 
+// when a number of (abstract) hosts have already got ip addresses
+// gxn/dxp/jzs 02/05/03
+
+// reset or noreset model
+//moved after mdp declaration
+//const bool reset;
+
+//-------------------------------------------------------------
+
+// we suppose that
+// - the abstract hosts have already picked their addresses 
+//   and always defend their addresses
+// - the concrete host never picks the same ip address twice 
+//   (this can happen only with a verys small probability)
+
+// under these assumptions we do not need message types because:
+// 1) since messages to the concrete host will never be a probe, 
+//    this host will react to all messages in the same way
+// 2) since the abstract hosts always defend their addresses, 
+//    all messages from the host will get an arp reply if the ip matches
+
+// following from the above assumptions we require only three abstract IP addresses
+// (0,1 and 2) which correspond to the following sets of IP addresses:
+
+// 0 - the IP addresses of the abstract hosts which the concrete host 
+//     previously tried to configure
+// 1 - an IP address of an abstract host which the concrete host is 
+//     currently trying to configure
+// 2 - a fresh IP address which the concrete host is currently trying to configure
+
+// if the host picks an address that is being used it may end up picking another ip address
+// in which case there may still be messages corresponding to the old ip address
+// to be sent both from and to the host which the host should now disregard
+// (since it will never pick the same ip address)
+
+// to deal with this situation: when a host picks a new ip address we reconfigure the 
+// messages that are still be be sent or are being sent by changing the ip address to 0 
+// (an old ip address of the host)
+
+// all the messages from the abstract hosts for the 'old' address (in fact the
+// set of old addresses since it may have started again more than once)  
+// can arrive in any order since they are equivalent to the host - it ignores then all
+
+// also the messages for the old and new address will come from different hosts
+// (the ones with that ip address) which we model by allowing them to arrive in any order
+// i.e. not neccessarily in the order they where sent
+
+//-------------------------------------------------------------
+// model is an mdp
+mdp
+
+// reset or noreset model
+const bool reset = true;
+
+//-------------------------------------------------------------
+// VARIABLES
+const int N = 1000; // number of abstract hosts
+const int K = 2; // number of probes to send
+const double loss = 0.1; // probability of message loss
+
+// PROBABILITIES
+const double old = N/65024; // probability pick an ip address being used
+const double new = (1-old); // probability pick a new ip address
+
+// TIMING CONSTANTS
+const int CONSEC = 2;  // time interval between sending consecutive probles 
+const int TRANSTIME = 1; // upper bound on transmission time delay
+const int LONGWAIT = 60; // minimum time delay after a high number of address collisions
+const int DEFEND = 10;
+
+const int TIME_MAX_X = 60; // max value of clock x
+const int TIME_MAX_Y = 10; // max value of clock y
+const int TIME_MAX_Z = 1;  // max value of clock z
+
+// OTHER CONSTANTS
+const int MAXCOLL = 10;  // maximum number of collisions before long wait
+// size of buffers for other hosts
+const int B0 = 20;  // buffer size for one abstract host
+const int B1 = 8;  // buffer sizes for all abstract hosts
+
+//-------------------------------------------------------------
+// ENVIRONMENT - models: medium, output buffer of concrete host and all other hosts
+module environment
+	
+	// buffer of concrete host
+	b_ip7 : [0..2]; // ip address of message in buffer position 8
+	b_ip6 : [0..2]; // ip address of message in buffer position 7
+	b_ip5 : [0..2]; // ip address of message in buffer position 6
+	b_ip4 : [0..2]; // ip address of message in buffer position 5
+	b_ip3 : [0..2]; // ip address of message in buffer position 4
+	b_ip2 : [0..2]; // ip address of message in buffer position 3
+	b_ip1 : [0..2]; // ip address of message in buffer position 2
+	b_ip0 : [0..2]; // ip address of message in buffer position 1
+	n : [0..8]; // number of places in the buffer used (from host)
+	
+	// messages to be sent from abstract hosts to concrete host
+	n0  : [0..B0]; // number of messages which do not have the host's current ip address
+	n1  : [0..B1]; // number of messages which have the host's current ip address
+	
+	b : [0..2]; // local state
+	// 0 - idle
+	// 1 - sending message from concrete host 
+	// 2 - sending message from abstract host
+	
+	z : [0..1]; // clock of environment (needed for the time to send a message)
+	
+	ip_mess : [0..2]; // ip in the current message being sent
+	// 0 - different from concrete host
+	// 1 - same as the concrete host and in use
+	// 2 - same as the concrete host and not in use
+	
+	// RESET/RECONFIG: when host is about to choose new ip address
+	// suppose that the host cannot choose the same ip address
+	// (since happens with very small probability). 
+	// Therefore all messages will have a different ip address, 
+	// i.e. all n1 messages become n0 ones.
+	// Note this include any message currently being sent (ip is set to zero 0)
+	[reset] true -&gt; (n1'=0) &amp; (n0'=min(B0,n0+n1)) // abstract buffers 
+	               &amp; (ip_mess'=0) // message being set
+	               &amp; (n'=(reset)?0:n) // concrete buffer (remove this update to get NO_RESET model)
+	               &amp; (b_ip7'=0) 
+	               &amp; (b_ip6'=0) 
+	               &amp; (b_ip5'=0) 
+	               &amp; (b_ip4'=0) 
+	               &amp; (b_ip3'=0) 
+	               &amp; (b_ip2'=0) 
+	               &amp; (b_ip1'=0) 
+	               &amp; (b_ip0'=0);
+	// note: prevent anything else from happening when reconfiguration needs to take place
+	
+	// time passage (only if no messages to send or sending a message)
+	[time] l&gt;0 &amp; b=0 &amp; n=0 &amp; n0=0 &amp; n1=0 -&gt; (b'=b); // cannot send a message
+	[time] l&gt;0 &amp; b&gt;0 &amp; z&lt;1 -&gt; (z'=min(z+1,TIME_MAX_Z)); // sending a message
+	
+	// get messages to be sent (so message has same ip address as host)
+	[send] l&gt;0 &amp; n=0 -&gt; (b_ip0'=ip) &amp; (n'=n+1);
+	[send] l&gt;0 &amp; n=1 -&gt; (b_ip1'=ip) &amp; (n'=n+1);
+	[send] l&gt;0 &amp; n=2 -&gt; (b_ip2'=ip) &amp; (n'=n+1);
+	[send] l&gt;0 &amp; n=3 -&gt; (b_ip3'=ip) &amp; (n'=n+1);
+	[send] l&gt;0 &amp; n=4 -&gt; (b_ip4'=ip) &amp; (n'=n+1);
+	[send] l&gt;0 &amp; n=5 -&gt; (b_ip5'=ip) &amp; (n'=n+1);
+	[send] l&gt;0 &amp; n=6 -&gt; (b_ip6'=ip) &amp; (n'=n+1);
+	[send] l&gt;0 &amp; n=7 -&gt; (b_ip7'=ip) &amp; (n'=n+1);
+	[send] l&gt;0 &amp; n=8 -&gt; (n'=n); // buffer full so lose message
+	
+	// start sending message from host
+	[] l&gt;0 &amp; b=0 &amp; n&gt;0 -&gt; (1-loss) : (b'=1) &amp; (ip_mess'=b_ip0) 
+	                                &amp; (n'=n-1)
+	                                &amp; (b_ip7'=0) 
+	                                &amp; (b_ip6'=b_ip7) 
+	                                &amp; (b_ip5'=b_ip6) 
+	                                &amp; (b_ip4'=b_ip5) 
+	                                &amp; (b_ip3'=b_ip4) 
+	                                &amp; (b_ip2'=b_ip3) 
+	                                &amp; (b_ip1'=b_ip2) 
+	                                &amp; (b_ip0'=b_ip1) // send message
+	                         + loss : (n'=n-1)
+	                                &amp; (b_ip7'=0) 
+	                                &amp; (b_ip6'=b_ip7) 
+	                                &amp; (b_ip5'=b_ip6) 
+	                                &amp; (b_ip4'=b_ip5) 
+	                                &amp; (b_ip3'=b_ip4) 
+	                                &amp; (b_ip2'=b_ip3) 
+	                                &amp; (b_ip1'=b_ip2) 
+	                                &amp; (b_ip0'=b_ip1); // lose message
+	
+	// start sending message to host
+	[] l&gt;0 &amp; b=0 &amp; n0&gt;0 -&gt; (1-loss) : (b'=2) &amp; (ip_mess'=0) &amp; (n0'=n0-1) + loss : (n0'=n0-1); // different ip
+	[] l&gt;0 &amp; b=0 &amp; n1&gt;0 -&gt; (1-loss) : (b'=2) &amp; (ip_mess'=1) &amp; (n1'=n1-1) + loss : (n1'=n1-1); // same ip
+	
+	// finish sending message from host
+	[] l&gt;0 &amp; b=1 &amp; ip_mess=0 -&gt; (b'=0) &amp; (z'=0) &amp; (n0'=min(n0+1,B0)) &amp; (ip_mess'=0);
+	[] l&gt;0 &amp; b=1 &amp; ip_mess=1 -&gt; (b'=0) &amp; (z'=0) &amp; (n1'=min(n1+1,B1)) &amp; (ip_mess'=0);
+	[] l&gt;0 &amp; b=1 &amp; ip_mess=2 -&gt; (b'=0) &amp; (z'=0) &amp; (ip_mess'=0);
+	
+	// finish sending message to host
+	[rec] l&gt;0 &amp; b=2 -&gt; (b'=0) &amp; (z'=0) &amp; (ip_mess'=0);
+	
+endmodule
+
+//-------------------------------------------------------------
+// CONCRETE HOST
+module host0
+	
+	x : [0..TIME_MAX_X]; // first clock of the host
+	y : [0..TIME_MAX_Y]; // second clock of the host
+	
+	coll : [0..MAXCOLL]; // number of address collisions
+	probes : [0..K]; // counter (number of probes sent)
+	mess : [0..1]; // need to send a message or not
+	defend : [0..1]; // defend (if =1, try to defend IP address)
+	
+	ip : [1..2]; // ip address (1 - in use &amp; 2 - fresh)
+	
+	l : [0..4] init 1; // location
+	// 0 : RECONFIGURE 
+	// 1 : RANDOM
+	// 2 : WAITSP
+	// 3 : WAITSG 
+	// 4 : USE
+	
+	// RECONFIGURE
+	[reset] l=0 -&gt; (l'=1);
+	
+	// RANDOM (choose IP address)
+	[rec] (l=1) -&gt; true; // get message (ignore since have no ip address)
+	// small number of collisions (choose straight away)
+	[] l=1 &amp; coll&lt;MAXCOLL -&gt; 1/3*old : (l'=2) &amp; (ip'=1) &amp; (x'=0) 
+		                     + 1/3*old : (l'=2) &amp; (ip'=1) &amp; (x'=1) 
+		                     + 1/3*old : (l'=2) &amp; (ip'=1) &amp; (x'=2) 
+		                     + 1/3*new : (l'=2) &amp; (ip'=2) &amp; (x'=0) 
+		                     + 1/3*new : (l'=2) &amp; (ip'=2) &amp; (x'=1) 
+		                     + 1/3*new : (l'=2) &amp; (ip'=2) &amp; (x'=2); 
+	// large number of collisions: (wait for LONGWAIT)
+	[time] l=1 &amp; coll=MAXCOLL &amp; x&lt;LONGWAIT -&gt; (x'=min(x+1,TIME_MAX_X));
+	[]     l=1 &amp; coll=MAXCOLL &amp; x=LONGWAIT -&gt; 1/3*old : (l'=2) &amp; (ip'=1) &amp; (x'=0) 
+			                                   + 1/3*old : (l'=2) &amp; (ip'=1) &amp; (x'=1) 
+			                                   + 1/3*old : (l'=2) &amp; (ip'=1) &amp; (x'=2) 
+			                                   + 1/3*new : (l'=2) &amp; (ip'=2) &amp; (x'=0) 
+			                                   + 1/3*new : (l'=2) &amp; (ip'=2) &amp; (x'=1) 
+			                                   + 1/3*new : (l'=2) &amp; (ip'=2) &amp; (x'=2);
+	
+	// WAITSP 
+	// let time pass
+	[time]  l=2 &amp; x&lt;2 -&gt; (x'=min(x+1,2));
+	// send probe
+	[send] l=2 &amp; x=2  &amp; probes&lt;K -&gt; (x'=0) &amp; (probes'=probes+1);
+	// sent K probes and waited 2 seconds
+	[] l=2 &amp; x=2 &amp; probes=K -&gt; (l'=3) &amp; (probes'=0) &amp; (coll'=0) &amp; (x'=0);
+	// get message and ip does not match: ignore
+	[rec] l=2 &amp; ip_mess!=ip -&gt; (l'=l);
+	// get a message with matching ip: reconfigure
+	[rec] l=2 &amp; ip_mess=ip -&gt; (l'=0) &amp; (coll'=min(coll+1,MAXCOLL)) &amp; (x'=0) &amp; (probes'=0);
+	
+	// WAITSG (sends two gratuitious arp probes)
+	// time passage
+	[time] l=3 &amp; mess=0 &amp; defend=0 &amp; x&lt;CONSEC -&gt; (x'=min(x+1,TIME_MAX_X)); 
+	[time] l=3 &amp; mess=0 &amp; defend=1 &amp; x&lt;CONSEC -&gt; (x'=min(x+1,TIME_MAX_X)) &amp; (y'=min(y+1,DEFEND));
+	
+	// receive message and same ip: defend
+	[rec] l=3 &amp; mess=0 &amp; ip_mess=ip &amp; (defend=0 | y&gt;=DEFEND) -&gt; (defend'=1) &amp; (mess'=1) &amp; (y'=0);
+	// receive message and same ip: defer
+	[rec] l=3 &amp; mess=0 &amp; ip_mess=ip &amp; (defend=0 | y&lt;DEFEND) -&gt; (l'=0) &amp; (probes'=0) &amp; (defend'=0) &amp; (x'=0) &amp; (y'=0);
+	// receive message and different ip
+	[rec] l=3 &amp; mess=0 &amp; ip_mess!=ip -&gt; (l'=l);
+	
+		
+	// send probe reply or message for defence
+	[send] l=3 &amp; mess=1 -&gt; (mess'=0);
+	// send first gratuitous arp message
+	[send] l=3 &amp; mess=0 &amp; x=CONSEC &amp; probes&lt;1 -&gt; (x'=0) &amp; (probes'=probes+1);
+	// send second gratuitous arp message (move to use)
+	[send] l=3 &amp; mess=0 &amp; x=CONSEC &amp; probes=1 -&gt; (l'=4) &amp; (x'=0) &amp; (y'=0) &amp; (probes'=0);
+	
+	// USE (only interested in reaching this state so do not need to add anything here)
+	[done] l=4 -&gt; true;
+	
+endmodule
+
+
+const int B=50; // time bound
+
+//time
+module timer
+	t : [0..B+1];
+
+	[time] t&lt;=B -&gt; (t'=min(t+1, B+1));
+	[done] l=4 -&gt; (t'=B+1);
+
+endmodule</content>
+    </model>
+    <model name="zeroconf_dl" type="rml">
+      <content>// IPv4: PTA model with digitial clocks
+// one concrete host attempting to choose an ip address 
+// when a number of (abstract) hosts have already got ip addresses
+// gxn/dxp/jzs 02/05/03
+
+// reset or noreset model
+//moved after mdp declaration
+//const bool reset;
+//const int deadline;
+
+//-------------------------------------------------------------
+
+// we suppose that
+// - the abstract hosts have already picked their addresses 
+//   and always defend their addresses
+// - the concrete host never picks the same ip address twice 
+//   (this can happen only with a verys small probability)
+
+// under these assumptions we do not need message types because:
+// 1) since messages to the concrete host will never be a probe, 
+//    this host will react to all messages in the same way
+// 2) since the abstract hosts always defend their addresses, 
+//    all messages from the host will get an arp reply if the ip matches
+
+// following from the above assumptions we require only three abstract IP addresses
+// (0,1 and 2) which correspond to the following sets of IP addresses:
+
+// 0 - the IP addresses of the abstract hosts which the concrete host 
+//     previously tried to configure
+// 1 - an IP address of an abstract host which the concrete host is 
+//     currently trying to configure
+// 2 - a fresh IP address which the concrete host is currently trying to configure
+
+// if the host picks an address that is being used it may end up picking another ip address
+// in which case there may still be messages corresponding to the old ip address
+// to be sent both from and to the host which the host should now disregard
+// (since it will never pick the same ip address)
+
+// to deal with this situation: when a host picks a new ip address we reconfigure the 
+// messages that are still be be sent or are being sent by changing the ip address to 0 
+// (an old ip address of the host)
+
+// all the messages from the abstract hosts for the 'old' address (in fact the
+// set of old addresses since it may have started again more than once)  
+// can arrive in any order since they are equivalent to the host - it ignores then all
+
+// also the messages for the old and new address will come from different hosts
+// (the ones with that ip address) which we model by allowing them to arrive in any order
+// i.e. not neccessarily in the order they where sent
+
+//-------------------------------------------------------------
+// model is an mdp
+mdp
+
+// reset or noreset model
+const bool reset;
+const int deadline;
+
+//-------------------------------------------------------------
+// VARIABLES
+const int N; // number of abstract hosts
+const int K; // number of probes to send
+const double loss = 0.1; // probability of message loss
+
+// PROBABILITIES
+const double old = N/65024; // probability pick an ip address being used
+const double new = (1-old); // probability pick a new ip address
+
+// TIMING CONSTANTS
+const int CONSEC = 2;  // time interval between sending consecutive probles 
+const int TRANSTIME = 1; // upper bound on transmission time delay
+const int LONGWAIT = 60; // minimum time delay after a high number of address collisions
+const int DEFEND = 10;
+
+const int TIME_MAX_X = 60; // max value of clock x
+const int TIME_MAX_Y = 10; // max value of clock y
+const int TIME_MAX_Z = 1;  // max value of clock z
+
+// OTHER CONSTANTS
+const int MAXCOLL = 10;  // maximum number of collisions before long wait
+// size of buffers for other hosts
+const int B0 = 20;  // buffer size for one abstract host
+const int B1 = 8;  // buffer sizes for all abstract hosts
+
+//-------------------------------------------------------------
+// ENVIRONMENT - models: medium, output buffer of concrete host and all other hosts
+module environment
+	
+	// buffer of concrete host
+	b_ip7 : [0..2]; // ip address of message in buffer position 8
+	b_ip6 : [0..2]; // ip address of message in buffer position 7
+	b_ip5 : [0..2]; // ip address of message in buffer position 6
+	b_ip4 : [0..2]; // ip address of message in buffer position 5
+	b_ip3 : [0..2]; // ip address of message in buffer position 4
+	b_ip2 : [0..2]; // ip address of message in buffer position 3
+	b_ip1 : [0..2]; // ip address of message in buffer position 2
+	b_ip0 : [0..2]; // ip address of message in buffer position 1
+	n : [0..8]; // number of places in the buffer used (from host)
+	
+	// messages to be sent from abstract hosts to concrete host
+	n0  : [0..B0]; // number of messages which do not have the host's current ip address
+	n1  : [0..B1]; // number of messages which have the host's current ip address
+	
+	b : [0..2]; // local state
+	// 0 - idle
+	// 1 - sending message from concrete host 
+	// 2 - sending message from abstract host
+	
+	z : [0..1]; // clock of environment (needed for the time to send a message)
+	
+	ip_mess : [0..2]; // ip in the current message being sent
+	// 0 - different from concrete host
+	// 1 - same as the concrete host and in use
+	// 2 - same as the concrete host and not in use
+	
+	// RESET/RECONFIG: when host is about to choose new ip address
+	// suppose that the host cannot choose the same ip address
+	// (since happens with very small probability). 
+	// Therefore all messages will have a different ip address, 
+	// i.e. all n1 messages become n0 ones.
+	// Note this include any message currently being sent (ip is set to zero 0)
+	[reset] true -&gt; (n1'=0) &amp; (n0'=min(B0,n0+n1)) // abstract buffers 
+	               &amp; (ip_mess'=0) // message being set
+	               &amp; (n'=(reset)?0:n) // concrete buffer (remove this update to get NO_RESET model)
+	               &amp; (b_ip7'=0) 
+	               &amp; (b_ip6'=0) 
+	               &amp; (b_ip5'=0) 
+	               &amp; (b_ip4'=0) 
+	               &amp; (b_ip3'=0) 
+	               &amp; (b_ip2'=0) 
+	               &amp; (b_ip1'=0) 
+	               &amp; (b_ip0'=0);
+	// note: prevent anything else from happening when reconfiguration needs to take place
+	
+	// time passage (only if no messages to send or sending a message)
+	[time] l&gt;0 &amp; b=0 &amp; n=0 &amp; n0=0 &amp; n1=0 -&gt; (b'=b); // cannot send a message
+	[time] l&gt;0 &amp; b&gt;0 &amp; z&lt;1 -&gt; (z'=min(z+1,TIME_MAX_Z)); // sending a message
+	
+	// get messages to be sent (so message has same ip address as host)
+	[send] l&gt;0 &amp; n=0 -&gt; (b_ip0'=ip) &amp; (n'=n+1);
+	[send] l&gt;0 &amp; n=1 -&gt; (b_ip1'=ip) &amp; (n'=n+1);
+	[send] l&gt;0 &amp; n=2 -&gt; (b_ip2'=ip) &amp; (n'=n+1);
+	[send] l&gt;0 &amp; n=3 -&gt; (b_ip3'=ip) &amp; (n'=n+1);
+	[send] l&gt;0 &amp; n=4 -&gt; (b_ip4'=ip) &amp; (n'=n+1);
+	[send] l&gt;0 &amp; n=5 -&gt; (b_ip5'=ip) &amp; (n'=n+1);
+	[send] l&gt;0 &amp; n=6 -&gt; (b_ip6'=ip) &amp; (n'=n+1);
+	[send] l&gt;0 &amp; n=7 -&gt; (b_ip7'=ip) &amp; (n'=n+1);
+	[send] l&gt;0 &amp; n=8 -&gt; (n'=n); // buffer full so lose message
+	
+	// start sending message from host
+	[] l&gt;0 &amp; b=0 &amp; n&gt;0 -&gt; (1-loss) : (b'=1) &amp; (ip_mess'=b_ip0) 
+	                                &amp; (n'=n-1)
+	                                &amp; (b_ip7'=0) 
+	                                &amp; (b_ip6'=b_ip7) 
+	                                &amp; (b_ip5'=b_ip6) 
+	                                &amp; (b_ip4'=b_ip5) 
+	                                &amp; (b_ip3'=b_ip4) 
+	                                &amp; (b_ip2'=b_ip3) 
+	                                &amp; (b_ip1'=b_ip2) 
+	                                &amp; (b_ip0'=b_ip1) // send message
+	                         + loss : (n'=n-1)
+	                                &amp; (b_ip7'=0) 
+	                                &amp; (b_ip6'=b_ip7) 
+	                                &amp; (b_ip5'=b_ip6) 
+	                                &amp; (b_ip4'=b_ip5) 
+	                                &amp; (b_ip3'=b_ip4) 
+	                                &amp; (b_ip2'=b_ip3) 
+	                                &amp; (b_ip1'=b_ip2) 
+	                                &amp; (b_ip0'=b_ip1); // lose message
+	
+	// start sending message to host
+	[] l&gt;0 &amp; b=0 &amp; n0&gt;0 -&gt; (1-loss) : (b'=2) &amp; (ip_mess'=0) &amp; (n0'=n0-1) + loss : (n0'=n0-1); // different ip
+	[] l&gt;0 &amp; b=0 &amp; n1&gt;0 -&gt; (1-loss) : (b'=2) &amp; (ip_mess'=1) &amp; (n1'=n1-1) + loss : (n1'=n1-1); // same ip
+	
+	// finish sending message from host
+	[] l&gt;0 &amp; b=1 &amp; ip_mess=0 -&gt; (b'=0) &amp; (z'=0) &amp; (n0'=min(n0+1,B0)) &amp; (ip_mess'=0);
+	[] l&gt;0 &amp; b=1 &amp; ip_mess=1 -&gt; (b'=0) &amp; (z'=0) &amp; (n1'=min(n1+1,B1)) &amp; (ip_mess'=0);
+	[] l&gt;0 &amp; b=1 &amp; ip_mess=2 -&gt; (b'=0) &amp; (z'=0) &amp; (ip_mess'=0);
+	
+	// finish sending message to host
+	[rec] l&gt;0 &amp; b=2 -&gt; (b'=0) &amp; (z'=0) &amp; (ip_mess'=0);
+	
+endmodule
+
+//-------------------------------------------------------------
+// CONCRETE HOST
+module host0
+	
+	x : [0..TIME_MAX_X]; // first clock of the host
+	y : [0..TIME_MAX_Y]; // second clock of the host
+	
+	coll : [0..MAXCOLL]; // number of address collisions
+	probes : [0..K]; // counter (number of probes sent)
+	mess : [0..1]; // need to send a message or not
+	defend : [0..1]; // defend (if =1, try to defend IP address)
+	
+	ip : [1..2]; // ip address (1 - in use &amp; 2 - fresh)
+	
+	l : [0..4] init 1; // location
+	// 0 : RECONFIGURE 
+	// 1 : RANDOM
+	// 2 : WAITSP
+	// 3 : WAITSG 
+	// 4 : USE
+	
+	// RECONFIGURE
+	[reset] l=0 -&gt; (l'=1);
+	
+	// RANDOM (choose IP address)
+	[rec] (l=1) -&gt; true; // get message (ignore since have no ip address)
+	// small number of collisions (choose straight away)
+	[] l=1 &amp; coll&lt;MAXCOLL -&gt; 1/3*old : (l'=2) &amp; (ip'=1) &amp; (x'=0) 
+		                     + 1/3*old : (l'=2) &amp; (ip'=1) &amp; (x'=1) 
+		                     + 1/3*old : (l'=2) &amp; (ip'=1) &amp; (x'=2) 
+		                     + 1/3*new : (l'=2) &amp; (ip'=2) &amp; (x'=0) 
+		                     + 1/3*new : (l'=2) &amp; (ip'=2) &amp; (x'=1) 
+		                     + 1/3*new : (l'=2) &amp; (ip'=2) &amp; (x'=2); 
+	// large number of collisions: (wait for LONGWAIT)
+	[time] l=1 &amp; coll=MAXCOLL &amp; x&lt;LONGWAIT -&gt; (x'=min(x+1,TIME_MAX_X));
+	[]     l=1 &amp; coll=MAXCOLL &amp; x=LONGWAIT -&gt; 1/3*old : (l'=2) &amp; (ip'=1) &amp; (x'=0) 
+			                                   + 1/3*old : (l'=2) &amp; (ip'=1) &amp; (x'=1) 
+			                                   + 1/3*old : (l'=2) &amp; (ip'=1) &amp; (x'=2) 
+			                                   + 1/3*new : (l'=2) &amp; (ip'=2) &amp; (x'=0) 
+			                                   + 1/3*new : (l'=2) &amp; (ip'=2) &amp; (x'=1) 
+			                                   + 1/3*new : (l'=2) &amp; (ip'=2) &amp; (x'=2);
+	
+	// WAITSP 
+	// let time pass
+	[time]  l=2 &amp; x&lt;2 -&gt; (x'=min(x+1,2));
+	// send probe
+	[send] l=2 &amp; x=2  &amp; probes&lt;K -&gt; (x'=0) &amp; (probes'=probes+1);
+	// sent K probes and waited 2 seconds
+	[] l=2 &amp; x=2 &amp; probes=K -&gt; (l'=3) &amp; (probes'=0) &amp; (coll'=0) &amp; (x'=0);
+	// get message and ip does not match: ignore
+	[rec] l=2 &amp; ip_mess!=ip -&gt; (l'=l);
+	// get a message with matching ip: reconfigure
+	[rec] l=2 &amp; ip_mess=ip -&gt; (l'=0) &amp; (coll'=min(coll+1,MAXCOLL)) &amp; (x'=0) &amp; (probes'=0);
+	
+	// WAITSG (sends two gratuitious arp probes)
+	// time passage
+	[time] l=3 &amp; mess=0 &amp; defend=0 &amp; x&lt;CONSEC -&gt; (x'=min(x+1,TIME_MAX_X)); 
+	[time] l=3 &amp; mess=0 &amp; defend=1 &amp; x&lt;CONSEC -&gt; (x'=min(x+1,TIME_MAX_X)) &amp; (y'=min(y+1,DEFEND));
+	
+	// receive message and same ip: defend
+	[rec] l=3 &amp; mess=0 &amp; ip_mess=ip &amp; (defend=0 | y&gt;=DEFEND) -&gt; (defend'=1) &amp; (mess'=1) &amp; (y'=0);
+	// receive message and same ip: defer
+	[rec] l=3 &amp; mess=0 &amp; ip_mess=ip &amp; (defend=0 | y&lt;DEFEND) -&gt; (l'=0) &amp; (probes'=0) &amp; (defend'=0) &amp; (x'=0) &amp; (y'=0);
+	// receive message and different ip
+	[rec] l=3 &amp; mess=0 &amp; ip_mess!=ip -&gt; (l'=l);
+	
+		
+	// send probe reply or message for defence
+	[send] l=3 &amp; mess=1 -&gt; (mess'=0);
+	// send first gratuitous arp message
+	[send] l=3 &amp; mess=0 &amp; x=CONSEC &amp; probes&lt;1 -&gt; (x'=0) &amp; (probes'=probes+1);
+	// send second gratuitous arp message (move to use)
+	[send] l=3 &amp; mess=0 &amp; x=CONSEC &amp; probes=1 -&gt; (l'=4) &amp; (x'=0) &amp; (y'=0) &amp; (probes'=0);
+	
+	// USE (only interested in reaching this state so do not need to add anything here)
+	[] l=4 -&gt; true;
+	
+endmodule
+
+//-------------------------------------------------------------
+
+// timer
+module timer
+
+	t : [0..deadline+1];
+	
+	[time] t&lt;=deadline -&gt; (t'=min(t+1,deadline+1));
+	[done] l=4 -&gt; (t'=deadline+1);
+	
+endmodule</content>
+    </model>
+    <model name="zeroconf_time_bounded" type="rml">
+      <content>//-------------------------------------------------------------
+// model is an mdp
+mdp
+
+// IPv4: PTA model with digitial clocks
+// one concrete host attempting to choose an ip address 
+// when a number of (abstract) hosts have already got ip addresses
+// gxn/dxp/jzs 02/05/03
+
+// reset or noreset model
+const bool reset = true;
+const int T = 50;
+
+//-------------------------------------------------------------
+
+// we suppose that
+// - the abstract hosts have already picked their addresses 
+//   and always defend their addresses
+// - the concrete host never picks the same ip address twice 
+//   (this can happen only with a verys small probability)
+
+// under these assumptions we do not need message types because:
+// 1) since messages to the concrete host will never be a probe, 
+//    this host will react to all messages in the same way
+// 2) since the abstract hosts always defend their addresses, 
+//    all messages from the host will get an arp reply if the ip matches
+
+// following from the above assumptions we require only three abstract IP addresses
+// (0,1 and 2) which correspond to the following sets of IP addresses:
+
+// 0 - the IP addresses of the abstract hosts which the concrete host 
+//     previously tried to configure
+// 1 - an IP address of an abstract host which the concrete host is 
+//     currently trying to configure
+// 2 - a fresh IP address which the concrete host is currently trying to configure
+
+// if the host picks an address that is being used it may end up picking another ip address
+// in which case there may still be messages corresponding to the old ip address
+// to be sent both from and to the host which the host should now disregard
+// (since it will never pick the same ip address)
+
+// to deal with this situation: when a host picks a new ip address we reconfigure the 
+// messages that are still be be sent or are being sent by changing the ip address to 0 
+// (an old ip address of the host)
+
+// all the messages from the abstract hosts for the 'old' address (in fact the
+// set of old addresses since it may have started again more than once)  
+// can arrive in any order since they are equivalent to the host - it ignores then all
+
+// also the messages for the old and new address will come from different hosts
+// (the ones with that ip address) which we model by allowing them to arrive in any order
+// i.e. not neccessarily in the order they where sent
+
+
+
+//-------------------------------------------------------------
+// VARIABLES
+const int N = 1000; // number of abstract hosts
+const int K = 4; // number of probes to send
+const double loss = 0.1; // probability of message loss
+
+// PROBABILITIES
+const double old = N/65024; // probability pick an ip address being used
+const double new = (1-old); // probability pick a new ip address
+
+// TIMING CONSTANTS
+const int CONSEC = 2;  // time interval between sending consecutive probles 
+const int TRANSTIME = 1; // upper bound on transmission time delay
+const int LONGWAIT = 60; // minimum time delay after a high number of address collisions
+const int DEFEND = 10;
+
+const int TIME_MAX_X = 60; // max value of clock x
+const int TIME_MAX_Y = 10; // max value of clock y
+const int TIME_MAX_Z = 1;  // max value of clock z
+
+// OTHER CONSTANTS
+const int MAXCOLL = 10;  // maximum number of collisions before long wait
+// size of buffers for other hosts
+const int B0 = 20;  // buffer size for one abstract host
+const int B1 = 8;  // buffer sizes for all abstract hosts
+
+//-------------------------------------------------------------
+// ENVIRONMENT - models: medium, output buffer of concrete host and all other hosts
+module environment
+	
+	// buffer of concrete host
+	b_ip7 : [0..2]; // ip address of message in buffer position 8
+	b_ip6 : [0..2]; // ip address of message in buffer position 7
+	b_ip5 : [0..2]; // ip address of message in buffer position 6
+	b_ip4 : [0..2]; // ip address of message in buffer position 5
+	b_ip3 : [0..2]; // ip address of message in buffer position 4
+	b_ip2 : [0..2]; // ip address of message in buffer position 3
+	b_ip1 : [0..2]; // ip address of message in buffer position 2
+	b_ip0 : [0..2]; // ip address of message in buffer position 1
+	n : [0..8]; // number of places in the buffer used (from host)
+	
+	// messages to be sent from abstract hosts to concrete host
+	n0  : [0..B0]; // number of messages which do not have the host's current ip address
+	n1  : [0..B1]; // number of messages which have the host's current ip address
+	
+	b : [0..2]; // local state
+	// 0 - idle
+	// 1 - sending message from concrete host 
+	// 2 - sending message from abstract host
+	
+	z : [0..1]; // clock of environment (needed for the time to send a message)
+	
+	ip_mess : [0..2]; // ip in the current message being sent
+	// 0 - different from concrete host
+	// 1 - same as the concrete host and in use
+	// 2 - same as the concrete host and not in use
+	
+	// RESET/RECONFIG: when host is about to choose new ip address
+	// suppose that the host cannot choose the same ip address
+	// (since happens with very small probability). 
+	// Therefore all messages will have a different ip address, 
+	// i.e. all n1 messages become n0 ones.
+	// Note this include any message currently being sent (ip is set to zero 0)
+	[reset] true -&gt; (n1'=0) &amp; (n0'=min(B0,n0+n1)) // abstract buffers 
+	               &amp; (ip_mess'=0) // message being set
+	               &amp; (n'=(reset)?0:n) // concrete buffer (remove this update to get NO_RESET model)
+	               &amp; (b_ip7'=0) 
+	               &amp; (b_ip6'=0) 
+	               &amp; (b_ip5'=0) 
+	               &amp; (b_ip4'=0) 
+	               &amp; (b_ip3'=0) 
+	               &amp; (b_ip2'=0) 
+	               &amp; (b_ip1'=0) 
+	               &amp; (b_ip0'=0);
+	// note: prevent anything else from happening when reconfiguration needs to take place
+	
+	// time passage (only if no messages to send or sending a message)
+	[time] l&gt;0 &amp; b=0 &amp; n=0 &amp; n0=0 &amp; n1=0 -&gt; (b'=b); // cannot send a message
+	[time] l&gt;0 &amp; b&gt;0 &amp; z&lt;1 -&gt; (z'=min(z+1,TIME_MAX_Z)); // sending a message
+	
+	// get messages to be sent (so message has same ip address as host)
+	[send] l&gt;0 &amp; n=0 -&gt; (b_ip0'=ip) &amp; (n'=n+1);
+	[send] l&gt;0 &amp; n=1 -&gt; (b_ip1'=ip) &amp; (n'=n+1);
+	[send] l&gt;0 &amp; n=2 -&gt; (b_ip2'=ip) &amp; (n'=n+1);
+	[send] l&gt;0 &amp; n=3 -&gt; (b_ip3'=ip) &amp; (n'=n+1);
+	[send] l&gt;0 &amp; n=4 -&gt; (b_ip4'=ip) &amp; (n'=n+1);
+	[send] l&gt;0 &amp; n=5 -&gt; (b_ip5'=ip) &amp; (n'=n+1);
+	[send] l&gt;0 &amp; n=6 -&gt; (b_ip6'=ip) &amp; (n'=n+1);
+	[send] l&gt;0 &amp; n=7 -&gt; (b_ip7'=ip) &amp; (n'=n+1);
+	[send] l&gt;0 &amp; n=8 -&gt; (n'=n); // buffer full so lose message
+	
+	// start sending message from host
+	[] l&gt;0 &amp; b=0 &amp; n&gt;0 -&gt; (1-loss) : (b'=1) &amp; (ip_mess'=b_ip0) 
+	                                &amp; (n'=n-1)
+	                                &amp; (b_ip7'=0) 
+	                                &amp; (b_ip6'=b_ip7) 
+	                                &amp; (b_ip5'=b_ip6) 
+	                                &amp; (b_ip4'=b_ip5) 
+	                                &amp; (b_ip3'=b_ip4) 
+	                                &amp; (b_ip2'=b_ip3) 
+	                                &amp; (b_ip1'=b_ip2) 
+	                                &amp; (b_ip0'=b_ip1) // send message
+	                         + loss : (n'=n-1)
+	                                &amp; (b_ip7'=0) 
+	                                &amp; (b_ip6'=b_ip7) 
+	                                &amp; (b_ip5'=b_ip6) 
+	                                &amp; (b_ip4'=b_ip5) 
+	                                &amp; (b_ip3'=b_ip4) 
+	                                &amp; (b_ip2'=b_ip3) 
+	                                &amp; (b_ip1'=b_ip2) 
+	                                &amp; (b_ip0'=b_ip1); // lose message
+	
+	// start sending message to host
+	[] l&gt;0 &amp; b=0 &amp; n0&gt;0 -&gt; (1-loss) : (b'=2) &amp; (ip_mess'=0) &amp; (n0'=n0-1) + loss : (n0'=n0-1); // different ip
+	[] l&gt;0 &amp; b=0 &amp; n1&gt;0 -&gt; (1-loss) : (b'=2) &amp; (ip_mess'=1) &amp; (n1'=n1-1) + loss : (n1'=n1-1); // same ip
+	
+	// finish sending message from host
+	[] l&gt;0 &amp; b=1 &amp; ip_mess=0 -&gt; (b'=0) &amp; (z'=0) &amp; (n0'=min(n0+1,B0)) &amp; (ip_mess'=0);
+	[] l&gt;0 &amp; b=1 &amp; ip_mess=1 -&gt; (b'=0) &amp; (z'=0) &amp; (n1'=min(n1+1,B1)) &amp; (ip_mess'=0);
+	[] l&gt;0 &amp; b=1 &amp; ip_mess=2 -&gt; (b'=0) &amp; (z'=0) &amp; (ip_mess'=0);
+	
+	// finish sending message to host
+	[rec] l&gt;0 &amp; b=2 -&gt; (b'=0) &amp; (z'=0) &amp; (ip_mess'=0);
+	
+endmodule
+
+//-------------------------------------------------------------
+// CONCRETE HOST
+module host0
+	
+	x : [0..TIME_MAX_X]; // first clock of the host
+	y : [0..TIME_MAX_Y]; // second clock of the host
+	
+	coll : [0..MAXCOLL]; // number of address collisions
+	probes : [0..K]; // counter (number of probes sent)
+	mess : [0..1]; // need to send a message or not
+	defend : [0..1]; // defend (if =1, try to defend IP address)
+	
+	ip : [1..2]; // ip address (1 - in use &amp; 2 - fresh)
+	
+	l : [0..4] init 1; // location
+	// 0 : RECONFIGURE 
+	// 1 : RANDOM
+	// 2 : WAITSP
+	// 3 : WAITSG 
+	// 4 : USE
+	
+	// RECONFIGURE
+	[reset] l=0 -&gt; (l'=1);
+	
+	// RANDOM (choose IP address)
+	[rec] (l=1) -&gt; true; // get message (ignore since have no ip address)
+	// small number of collisions (choose straight away)
+	[] l=1 &amp; coll&lt;MAXCOLL -&gt; 1/3*old : (l'=2) &amp; (ip'=1) &amp; (x'=0) 
+		                     + 1/3*old : (l'=2) &amp; (ip'=1) &amp; (x'=1) 
+		                     + 1/3*old : (l'=2) &amp; (ip'=1) &amp; (x'=2) 
+		                     + 1/3*new : (l'=2) &amp; (ip'=2) &amp; (x'=0) 
+		                     + 1/3*new : (l'=2) &amp; (ip'=2) &amp; (x'=1) 
+		                     + 1/3*new : (l'=2) &amp; (ip'=2) &amp; (x'=2); 
+	// large number of collisions: (wait for LONGWAIT)
+	[time] l=1 &amp; coll=MAXCOLL &amp; x&lt;LONGWAIT -&gt; (x'=min(x+1,TIME_MAX_X));
+	[]     l=1 &amp; coll=MAXCOLL &amp; x=LONGWAIT -&gt; 1/3*old : (l'=2) &amp; (ip'=1) &amp; (x'=0) 
+			                                   + 1/3*old : (l'=2) &amp; (ip'=1) &amp; (x'=1) 
+			                                   + 1/3*old : (l'=2) &amp; (ip'=1) &amp; (x'=2) 
+			                                   + 1/3*new : (l'=2) &amp; (ip'=2) &amp; (x'=0) 
+			                                   + 1/3*new : (l'=2) &amp; (ip'=2) &amp; (x'=1) 
+			                                   + 1/3*new : (l'=2) &amp; (ip'=2) &amp; (x'=2);
+	
+	// WAITSP 
+	// let time pass
+	[time]  l=2 &amp; x&lt;2 -&gt; (x'=min(x+1,2));
+	// send probe
+	[send] l=2 &amp; x=2  &amp; probes&lt;K -&gt; (x'=0) &amp; (probes'=probes+1);
+	// sent K probes and waited 2 seconds
+	[] l=2 &amp; x=2 &amp; probes=K -&gt; (l'=3) &amp; (probes'=0) &amp; (coll'=0) &amp; (x'=0);
+	// get message and ip does not match: ignore
+	[rec] l=2 &amp; ip_mess!=ip -&gt; (l'=l);
+	// get a message with matching ip: reconfigure
+	[rec] l=2 &amp; ip_mess=ip -&gt; (l'=0) &amp; (coll'=min(coll+1,MAXCOLL)) &amp; (x'=0) &amp; (probes'=0);
+	
+	// WAITSG (sends two gratuitious arp probes)
+	// time passage
+	[time] l=3 &amp; mess=0 &amp; defend=0 &amp; x&lt;CONSEC -&gt; (x'=min(x+1,TIME_MAX_X)); 
+	[time] l=3 &amp; mess=0 &amp; defend=1 &amp; x&lt;CONSEC -&gt; (x'=min(x+1,TIME_MAX_X)) &amp; (y'=min(y+1,DEFEND));
+	
+	// receive message and same ip: defend
+	[rec] l=3 &amp; mess=0 &amp; ip_mess=ip &amp; (defend=0 | y&gt;=DEFEND) -&gt; (defend'=1) &amp; (mess'=1) &amp; (y'=0);
+	// receive message and same ip: defer
+	[rec] l=3 &amp; mess=0 &amp; ip_mess=ip &amp; (defend=0 | y&lt;DEFEND) -&gt; (l'=0) &amp; (probes'=0) &amp; (defend'=0) &amp; (x'=0) &amp; (y'=0);
+	// receive message and different ip
+	[rec] l=3 &amp; mess=0 &amp; ip_mess!=ip -&gt; (l'=l);
+	
+		
+	// send probe reply or message for defence
+	[send] l=3 &amp; mess=1 -&gt; (mess'=0);
+	// send first gratuitous arp message
+	[send] l=3 &amp; mess=0 &amp; x=CONSEC &amp; probes&lt;1 -&gt; (x'=0) &amp; (probes'=probes+1);
+	// send second gratuitous arp message (move to use)
+	[send] l=3 &amp; mess=0 &amp; x=CONSEC &amp; probes=1 -&gt; (l'=4) &amp; (x'=0) &amp; (y'=0) &amp; (probes'=0);
+	
+	// USE (only interested in reaching this state so do not need to add anything here)
+	[] l=4 -&gt; true;
+	
+endmodule
+
+//-------------------------------------------------------------
+
+// timer
+module timer
+
+	t : [0..T+1];
+	
+	[time] t&lt;=T -&gt; (t'=min(t+1,T+1));
+	[] l=4 -&gt; (t'=T+1);
+	
+endmodule</content>
+    </model>
+  </models>
+  <requirements>
+    <requirement name="IP_in_use" type="bltl">
+      <content>// N = 20, 1000
+// K = 2, 4, 6, 8
+// reset = true, false 
+
+optimize 
+N := [20;1000;980];
+K := [2;8;2]
+//, reset=[true;false])
+end
+
+F&lt;=#1000 (l=4 &amp; ip=1)</content>
+    </requirement>
+    <requirement name="not_choosing_fresh_before_B" type="bltl">
+      <content>declare
+Bound := [0;50;50]
+optimize
+K := [2;8;2]
+end
+
+!(l=4 &amp; ip=2) U &lt;=# 10000 t&gt;Bound</content>
+    </requirement>
+    <requirement name="using_fresh_IP_within_T" type="bltl">
+      <content>// probability of using fresh ip address within time T
+G &lt;=# 5 l!=4 | ip!=2</content>
+    </requirement>
+  </requirements>
+  <resources />
+</PlasmaProject>

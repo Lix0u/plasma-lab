@@ -1,0 +1,79 @@
+<!-- License : Copyright -->
+<!-- Project : fr.inria.plasmalab -->
+<!-- Copyright : INRIA -->
+<!-- Authors : Corre Kevin <kevin.corre@inria.fr>, Matthieu Simonin <matthieu.simonin@inria.fr> -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>fr.inria.plasmalab.terminal</artifactId>
+	<name>fr.inria.plasmalab.terminal</name>
+
+	<parent>
+		<groupId>fr.inria.plasmalab</groupId>
+		<artifactId>fr.inria.plasmalab.root</artifactId>
+		<version>1.4.5-SNAPSHOT</version>
+	<relativePath>..</relativePath>
+	</parent>
+
+	<build>
+		<outputDirectory>target/classes</outputDirectory>
+		<sourceDirectory>src/java</sourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+						</manifest>
+						<manifestEntries>
+							<Main-Class>fr.inria.plasmalab.terminal.PlasmaLabTerminal</Main-Class>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>fr.inria.plasmalab</groupId>
+			<artifactId>fr.inria.plasmalab.algorithm</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.inria.plasmalab</groupId>
+			<artifactId>fr.inria.plasmalab.distributed</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.inria.plasmalab</groupId>
+			<artifactId>fr.inria.plasmalab.workflow</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.beust</groupId>
+			<artifactId>jcommander</artifactId>
+			<version>1.35</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.16</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.inria.plasmalab</groupId>
+			<artifactId>fr.inria.plasmalab.common-cli</artifactId>
+			<version>1.4.5-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.inria.plasmalab</groupId>
+			<artifactId>fr.inria.plasmalab.controler</artifactId>
+			<version>1.4.5-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+</project>
