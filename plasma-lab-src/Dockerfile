@@ -34,6 +34,8 @@ COPY fr.inria.plasmalab.root /fr.inria.plasmalab.root
 
 COPY plasma_lab_examples /plasma_lab_examples
 
+COPY test /test
+
 RUN chmod +x install_dependencies.sh
 
 RUN ./install_dependencies.sh

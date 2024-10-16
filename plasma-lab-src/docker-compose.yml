@@ -1,0 +1,11 @@
+services:
+  front:
+    image: lasmalab:latest
+    build: .
+    command: "./target/fr.inria.plasmalab-1.4.5-SNAPSHOT-distribution/plasmalab-1.4.5-SNAPSHOT/plasmagui.sh launch"
+    environment:
+      DISPLAY: $DISPLAY
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ./test:/test
+      - ./fr.inri.plasmalab.root:/fr.inri.plasmalab.root
